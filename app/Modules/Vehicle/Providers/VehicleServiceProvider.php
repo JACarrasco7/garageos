@@ -14,6 +14,12 @@ class VehicleServiceProvider extends ServiceProvider
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../Routes/vehicle.php');
         });
+
+        // Registrar listener para crear alertas por defecto
+        $this->app['events']->listen(
+            \App\Modules\Vehicle\Events\VehicleRegistered::class,
+            \App\Modules\Alerts\Listeners\CreateDefaultAlertRules::class
+        );
     }
 
     public function register(): void
