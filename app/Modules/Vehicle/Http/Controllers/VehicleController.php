@@ -48,6 +48,9 @@ class VehicleController extends Controller
 
         $vehicle = Vehicle::create($validated);
 
+        // Disparar evento para crear alertas por defecto
+        event(new \App\Modules\Vehicle\Events\VehicleRegistered($vehicle));
+
         return redirect()->route('vehicles.show', $vehicle)->with('success', 'Vehículo creado correctamente');
     }
 
