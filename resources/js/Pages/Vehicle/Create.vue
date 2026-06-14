@@ -7,12 +7,12 @@ interface Garage {
   name: string
 }
 
-defineProps<{
+const props = defineProps<{
   garages: Garage[]
 }>()
 
 const form = useForm({
-  garage_id: garages[0]?.id || '',
+  garage_id: props.garages[0]?.id || '',
   plate: '',
   vin: '',
   brand: '',
