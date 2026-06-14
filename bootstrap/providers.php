@@ -5,6 +5,7 @@ use App\Modules\Identity\Providers\IdentityServiceProvider;
 use App\Modules\Vehicle\Providers\VehicleServiceProvider;
 use App\Modules\Documents\Providers\DocumentServiceProvider;
 use App\Modules\Alerts\Providers\AlertServiceProvider;
+use App\Modules\Maintenance\Providers\MaintenanceServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -12,4 +13,5 @@ return [
     VehicleServiceProvider::class,
     DocumentServiceProvider::class,
     AlertServiceProvider::class,
+    MaintenanceServiceProvider::class,
 ];
