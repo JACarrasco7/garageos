@@ -26,6 +26,12 @@ class DocumentController extends Controller
         ]);
     }
 
+    public function create(Vehicle $vehicle): Response
+    {
+        $this->authorize('update', $vehicle->garage);
+        return Inertia::render('Documents/Upload', ['vehicle' => $vehicle]);
+    }
+
     public function store(Request $request, Vehicle $vehicle): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('update', $vehicle->garage);
@@ -33,7 +39,7 @@ class DocumentController extends Controller
         $validated = $request->validate([
             'type' => ['required', 'in:factura,itv,seguro,impuesto,otro'],
             'title' => ['nullable', 'string', 'max:150'],
-            'file' => ['required', 'file', 'max:20480'], // 20MB
+            'file' => ['required', 'file', 'max:20480'],
             'document_date' => ['nullable', 'date'],
             'expiry_date' => ['nullable', 'date'],
             'amount' => ['nullable', 'numeric', 'min:0'],
@@ -41,7 +47,7 @@ class DocumentController extends Controller
 
         $path = $request->file('file')->store('documents', 'public');
 
-        $document = $vehicle->documents()->create([
+        $vehicle->documents()->create([
             'type' => $validated['type'],
             'title' => $validated['title'] ?? $request->file('file')->getClientOriginalName(),
             'file_path' => $path,
@@ -53,7 +59,6 @@ class DocumentController extends Controller
             'km_at_time' => $vehicle->current_km,
         ]);
 
-        // Si es ITV o Seguro, crear alerta automática
         if (in_array($validated['type'], ['itv', 'seguro']) && $validated['expiry_date']) {
             $vehicle->alertRules()->create([
                 'type' => $validated['type'],

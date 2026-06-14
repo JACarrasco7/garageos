@@ -20,13 +20,8 @@ class MaintenanceController extends Controller
             ->orderByDesc('service_date')
             ->get();
 
-        // Calcular coste total
         $totalCost = $entries->sum('cost');
-
-        // Calcular coste por km
-        $costPerKm = $vehicle->current_km > 0
-            ? round($totalCost / $vehicle->current_km, 2)
-            : 0;
+        $costPerKm = $vehicle->current_km > 0 ? round($totalCost / $vehicle->current_km, 2) : 0;
 
         return Inertia::render('Maintenance/Index', [
             'vehicle' => $vehicle,
@@ -37,6 +32,12 @@ class MaintenanceController extends Controller
                 'entries_count' => $entries->count(),
             ],
         ]);
+    }
+
+    public function create(Vehicle $vehicle): Response
+    {
+        $this->authorize('update', $vehicle->garage);
+        return Inertia::render('Maintenance/Create', ['vehicle' => $vehicle]);
     }
 
     public function store(Request $request, Vehicle $vehicle): \Illuminate\Http\RedirectResponse
@@ -55,7 +56,6 @@ class MaintenanceController extends Controller
 
         $vehicle->maintenanceEntries()->create($validated);
 
-        // Actualizar km del vehículo si es mayor
         if ($validated['km_at_service'] > $vehicle->current_km) {
             $vehicle->update(['current_km' => $validated['km_at_service']]);
         }
