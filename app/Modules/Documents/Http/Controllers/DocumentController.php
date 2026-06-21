@@ -47,7 +47,7 @@ class DocumentController extends Controller
 
         $path = $request->file('file')->store('documents', 'public');
 
-        $vehicle->documents()->create([
+        $document = $vehicle->documents()->create([
             'type' => $validated['type'],
             'title' => $validated['title'] ?? $request->file('file')->getClientOriginalName(),
             'file_path' => $path,
@@ -58,6 +58,9 @@ class DocumentController extends Controller
             'amount' => $validated['amount'],
             'km_at_time' => $vehicle->current_km,
         ]);
+
+        // Disparar job de OCR
+        \App\Modules\Documents\Jobs\ParseDocumentJob::dispatch($document);
 
         if (in_array($validated['type'], ['itv', 'seguro']) && $validated['expiry_date']) {
             $vehicle->alertRules()->create([

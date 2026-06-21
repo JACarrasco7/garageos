@@ -29,7 +29,7 @@ defineProps<{
         <h1 class="text-2xl font-bold mb-4">
           {{ vehicle.brand }} {{ vehicle.model }}
         </h1>
-        
+
         <div class="grid grid-cols-2 gap-4 mb-6">
           <div>
             <span class="text-gray-500">Matrícula:</span>

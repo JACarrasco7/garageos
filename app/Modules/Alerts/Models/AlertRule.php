@@ -2,11 +2,14 @@
 
 namespace App\Modules\Alerts\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AlertRule extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'vehicle_id',
         'type',

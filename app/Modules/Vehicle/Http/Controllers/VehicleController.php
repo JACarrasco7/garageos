@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Identity\Models\Garage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,7 +36,7 @@ class VehicleController extends Controller
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
-            'garage_id' => ['required', 'exists:garages,id', fn($q) => $q->where('user_id', auth()->id())],
+            'garage_id' => ['required', 'exists:garages,id'],
             'plate' => ['required', 'string', 'max:10'],
             'vin' => ['nullable', 'string', 'max:17', 'unique:vehicles'],
             'brand' => ['required', 'string', 'max:50'],
@@ -45,6 +46,9 @@ class VehicleController extends Controller
             'color' => ['nullable', 'string', 'max:40'],
             'current_km' => ['required', 'integer', 'min:0'],
         ]);
+
+        // Verificar que el garaje pertenece al usuario
+        $request->user()->garages()->where('id', $validated['garage_id'])->firstOrFail();
 
         $vehicle = Vehicle::create($validated);
 
@@ -56,7 +60,7 @@ class VehicleController extends Controller
 
     public function show(Vehicle $vehicle): Response
     {
-        $this->authorize('view', $vehicle->garage);
+        Gate::authorize('view', $vehicle->garage);
 
         $vehicle->load([
             'specs',
@@ -68,5 +72,47 @@ class VehicleController extends Controller
         return Inertia::render('Vehicle/Show', [
             'vehicle' => $vehicle,
         ]);
+    }
+
+    public function edit(Vehicle $vehicle): Response
+    {
+        Gate::authorize('update', $vehicle->garage);
+
+        $garages = Garage::where('user_id', auth()->id())->get(['id', 'name']);
+
+        return Inertia::render('Vehicle/Edit', [
+            'vehicle' => $vehicle->load('specs'),
+            'garages' => $garages,
+        ]);
+    }
+
+    public function update(Request $request, Vehicle $vehicle): \Illuminate\Http\RedirectResponse
+    {
+        Gate::authorize('update', $vehicle->garage);
+
+        $validated = $request->validate([
+            'garage_id' => ['required', 'exists:garages,id'],
+            'plate' => ['required', 'string', 'max:10'],
+            'vin' => ['nullable', 'string', 'max:17', 'unique:vehicles,vin,' . $vehicle->id],
+            'brand' => ['required', 'string', 'max:50'],
+            'model' => ['required', 'string', 'max:80'],
+            'year' => ['required', 'integer', 'min:1900', 'max:' . now()->year + 1],
+            'fuel_type' => ['required', 'in:gasolina,diesel,hibrido,electrico,glp'],
+            'color' => ['nullable', 'string', 'max:40'],
+            'current_km' => ['required', 'integer', 'min:0'],
+        ]);
+
+        $vehicle->update($validated);
+
+        return redirect()->route('vehicles.show', $vehicle)->with('success', 'Vehículo actualizado');
+    }
+
+    public function destroy(Vehicle $vehicle): \Illuminate\Http\RedirectResponse
+    {
+        Gate::authorize('update', $vehicle->garage);
+
+        $vehicle->update(['is_active' => false]);
+
+        return redirect()->route('vehicles.index')->with('success', 'Vehículo desactivado');
     }
 }
