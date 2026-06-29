@@ -29,8 +29,8 @@ test('job handles missing fcm token gracefully', function () {
     $rule = AlertRule::factory()->create(['vehicle_id' => $vehicle->id]);
 
     $job = new SendPushJob($user, $rule);
-    
+
     $job->handle();
-    
+
     expect(true)->toBeTrue();
 });

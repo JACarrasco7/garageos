@@ -4,7 +4,7 @@ import { router } from '@inertiajs/vue3'
 export function useFcm() {
   const registerFcm = async () => {
     const permission = await PushNotifications.requestPermissions()
-    
+
     if (permission.receive === 'granted') {
       await PushNotifications.register()
     }

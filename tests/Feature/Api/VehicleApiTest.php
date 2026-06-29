@@ -24,7 +24,7 @@ test('api returns vehicle data by qr token', function () {
 
 test('api returns service pack with affiliate links', function () {
     $vehicle = Vehicle::factory()->create(['garage_id' => $this->garage->id]);
-    
+
     ServicePack::create([
         'maintenance_type' => 'aceite',
         'name' => 'Cambio de aceite básico',
