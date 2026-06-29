@@ -1,0 +1,126 @@
+openapi: 3.0.0
+info:
+  title: GarageOS API
+  version: 1.0.0
+  description: API pública para integraciones OBD y talleres
+
+paths:
+  /api/v1/vehicles/{qr_token}:
+    get:
+      summary: Obtener datos del vehículo por QR
+      parameters:
+        - name: qr_token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Datos del vehículo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+
+  /api/v1/vehicles/{qr_token}/service-pack/{type}:
+    get:
+      summary: Obtener service pack con enlaces de afiliado
+      parameters:
+        - name: qr_token
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [aceite, filtros, neumaticos, frenos]
+      responses:
+        '200':
+          description: Service pack con afiliados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicePack'
+
+components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        plate:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        current_km:
+          type: integer
+        specs:
+          $ref: '#/components/schemas/Specs'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+
+    Specs:
+      type: object
+      properties:
+        engine_cc:
+          type: integer
+        power_hp:
+          type: integer
+        transmission:
+          type: string
+
+    Document:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        document_date:
+          type: string
+          format: date
+        expiry_date:
+          type: string
+          format: date
+
+    ServicePack:
+      type: object
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        affiliate_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/AffiliateLink'
+
+    Item:
+      type: object
+      properties:
+        name:
+          type: string
+        reference:
+          type: string
+        price:
+          type: number
+
+    AffiliateLink:
+      type: object
+      properties:
+        name:
+          type: string
+        reference:
+          type: string
+        affiliate_url:
+          type: string
