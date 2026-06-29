@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import { HomeIcon, TruckIcon, DocumentIcon, WrenchIcon, ChartBarIcon, CogIcon } from '@heroicons/vue/24/outline'
+import { Home, Truck, FileText, Wrench, BarChart3, Settings } from 'lucide-vue-next'
 
 const navigation = [
-  { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon },
-  { name: 'Vehículos', href: route('vehicles.index'), icon: TruckIcon },
-  { name: 'Documentos', href: route('documents.index'), icon: DocumentIcon },
-  { name: 'Mantenimiento', href: route('maintenance.index'), icon: WrenchIcon },
-  { name: 'Estadísticas', href: '#', icon: ChartBarIcon },
-  { name: 'Configuración', href: route('profile.edit'), icon: CogIcon },
+  { name: 'Dashboard', href: route('dashboard'), icon: Home },
+  { name: 'Vehículos', href: route('vehicles.index'), icon: Truck },
+  { name: 'Documentos', href: route('documents.index'), icon: FileText },
+  { name: 'Mantenimiento', href: route('maintenance.index'), icon: Wrench },
+  { name: 'Estadísticas', href: '#', icon: BarChart3 },
+  { name: 'Configuración', href: route('profile.edit'), icon: Settings },
 ]
 </script>
 

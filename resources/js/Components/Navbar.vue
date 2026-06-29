@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import { BellIcon, UserIcon, CogIcon, ArrowLeftOnRectangleIcon } from '@heroicons/vue/24/outline'
+import { Bell, User, Settings, LogOut } from 'lucide-vue-next'
 import NotificationBell from '@/Components/NotificationBell.vue'
 
 interface Props {
@@ -28,7 +28,7 @@ defineProps<Props>()
             class="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
             id="user-menu"
           >
-            <UserIcon class="w-5 h-5" />
+            <User class="w-5 h-5" />
             <span class="text-sm font-medium">{{ user.name }}</span>
           </button>
 
