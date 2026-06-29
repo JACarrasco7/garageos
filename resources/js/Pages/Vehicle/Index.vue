@@ -2,8 +2,10 @@
 import { Link } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import Card from '@/Components/Card.vue'
-import Badge from '@/Components/Badge.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Badge } from '@/Components/ui/badge'
+import { Button } from '@/Components/ui/button'
+import { Plus, Car } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -31,48 +33,49 @@ defineProps<{
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <Card title="Lista de vehículos">
-          <div class="flex justify-end mb-4">
-            <Link
-              :href="route('vehicles.create')"
-              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              Añadir vehículo
-            </Link>
-          </div>
+        <Card>
+          <CardHeader class="flex flex-row items-center justify-between">
+            <CardTitle>Lista de vehículos</CardTitle>
+            <Button as-child>
+              <Link :href="route('vehicles.create')">
+                <Plus class="mr-2 h-4 w-4" />
+                Añadir vehículo
+              </Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div v-if="vehicles.length === 0" class="text-center py-8 text-muted-foreground">
+              <Car class="mx-auto h-12 w-12 mb-2 opacity-50" />
+              <p>No tienes vehículos registrados</p>
+            </div>
 
-          <div v-if="vehicles.length === 0" class="text-center py-8">
-            <p class="text-gray-500">No tienes vehículos registrados</p>
-          </div>
-
-          <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div
-              v-for="vehicle in vehicles"
-              :key="vehicle.id"
-              class="border dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-            >
-              <div class="flex justify-between items-start mb-2">
-                <h4 class="font-semibold text-lg">
-                  {{ vehicle.brand }} {{ vehicle.model }}
-                </h4>
-                <Badge :variant="vehicle.is_active ? 'success' : 'gray'">
-                  {{ vehicle.is_active ? 'Activo' : 'Inactivo' }}
-                </Badge>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ vehicle.plate }} • {{ vehicle.year }}
-              </p>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ vehicle.current_km.toLocaleString() }} km
-              </p>
+            <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               <Link
+                v-for="vehicle in vehicles"
+                :key="vehicle.id"
                 :href="route('vehicles.show', vehicle.id)"
-                class="mt-3 inline-block text-blue-600 hover:underline text-sm"
+                class="block border border-border rounded-lg p-4 hover:bg-accent transition"
               >
-                Ver detalles →
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold text-lg">
+                    {{ vehicle.brand }} {{ vehicle.model }}
+                  </h4>
+                  <Badge :variant="vehicle.is_active ? 'default' : 'secondary'">
+                    {{ vehicle.is_active ? 'Activo' : 'Inactivo' }}
+                  </Badge>
+                </div>
+                <p class="text-sm text-muted-foreground">
+                  {{ vehicle.plate }} • {{ vehicle.year }}
+                </p>
+                <p class="text-sm text-muted-foreground">
+                  {{ vehicle.current_km.toLocaleString() }} km
+                </p>
+                <span class="mt-3 inline-block text-primary hover:underline text-sm">
+                  Ver detalles →
+                </span>
               </Link>
             </div>
-          </div>
+          </CardContent>
         </Card>
       </div>
     </div>

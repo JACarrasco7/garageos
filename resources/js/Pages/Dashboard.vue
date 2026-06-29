@@ -3,9 +3,11 @@ import { ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import Card from '@/Components/Card.vue'
-import Badge from '@/Components/Badge.vue'
-import Input from '@/Components/Input.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Badge } from '@/Components/ui/badge'
+import { Input } from '@/Components/ui/input'
+import { Button } from '@/Components/ui/button'
+import { BarChart3, FileText, Bell, Plus, Car } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -43,7 +45,7 @@ const search = ref('')
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+      <h2 class="text-xl font-semibold leading-tight text-foreground">
         Dashboard
       </h2>
     </template>
@@ -54,84 +56,84 @@ const search = ref('')
         placeholder="Buscar vehículos..."
         class="max-w-xs"
       />
-      <Link :href="route('dashboard.stats')" class="text-sm text-blue-600 hover:underline">
-        Ver estadísticas →
-      </Link>
+      <Button as-child variant="link" size="sm">
+        <Link :href="route('dashboard.stats')">
+          Ver estadísticas →
+        </Link>
+      </Button>
     </div>
 
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card padding>
-            <div class="flex items-center">
-              <div class="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2v12zM15 19v-6a2 2 0 00-2-2h-2a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2v12z" />
-                </svg>
+          <Card>
+            <CardContent class="pt-6">
+              <div class="flex items-center">
+                <div class="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
+                  <BarChart3 class="h-6 w-6 text-blue-600" />
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm text-muted-foreground">Vehículos</p>
+                  <p class="text-2xl font-bold text-foreground">{{ stats?.total_vehicles ?? 0 }}</p>
+                </div>
               </div>
-              <div class="ml-4">
-                <p class="text-sm text-gray-500">Vehículos</p>
-                <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ stats?.total_vehicles ?? 0 }}</p>
-              </div>
-            </div>
-            <Link :href="route('vehicles.index')" class="text-sm text-blue-600 hover:underline mt-4 inline-block">
-              Ver todos →
-            </Link>
+              <Button as-child variant="link" size="sm" class="mt-4 p-0">
+                <Link :href="route('vehicles.index')">Ver todos →</Link>
+              </Button>
+            </CardContent>
           </Card>
 
-          <Card padding>
-            <div class="flex items-center">
-              <div class="p-3 bg-green-100 dark:bg-green-900/50 rounded-lg">
-                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
+          <Card>
+            <CardContent class="pt-6">
+              <div class="flex items-center">
+                <div class="p-3 bg-green-100 dark:bg-green-900/50 rounded-lg">
+                  <FileText class="h-6 w-6 text-green-600" />
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm text-muted-foreground">Documentos</p>
+                  <p class="text-2xl font-bold text-foreground">{{ stats?.total_documents ?? 0 }}</p>
+                </div>
               </div>
-              <div class="ml-4">
-                <p class="text-sm text-gray-500">Documentos</p>
-                <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ stats?.total_documents ?? 0 }}</p>
-              </div>
-            </div>
+            </CardContent>
           </Card>
 
-          <Card padding>
-            <div class="flex items-center">
-              <div class="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-lg">
-                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+          <Card>
+            <CardContent class="pt-6">
+              <div class="flex items-center">
+                <div class="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-lg">
+                  <Bell class="h-6 w-6 text-orange-600" />
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm text-muted-foreground">Alertas pendientes</p>
+                  <p class="text-2xl font-bold" :class="stats?.pending_alerts ? 'text-orange-500' : 'text-foreground'">
+                    {{ stats?.pending_alerts ?? 0 }}
+                  </p>
+                </div>
               </div>
-              <div class="ml-4">
-                <p class="text-sm text-gray-500">Alertas pendientes</p>
-                <p class="text-2xl font-bold" :class="stats?.pending_alerts ? 'text-orange-500' : 'text-gray-900 dark:text-gray-100'">
-                  {{ stats?.pending_alerts ?? 0 }}
-                </p>
-              </div>
-            </div>
+            </CardContent>
           </Card>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Vehículos -->
-          <Card title="Mis Vehículos" :hover="false">
-            <template #default>
-              <div class="flex justify-end mb-4">
-                <Link
-                  :href="route('vehicles.create')"
-                  class="text-sm text-blue-600 hover:underline"
-                >
-                  + Añadir
+          <Card>
+            <CardHeader class="flex flex-row items-center justify-between">
+              <CardTitle>Mis Vehículos</CardTitle>
+              <Button as-child variant="outline" size="sm">
+                <Link :href="route('vehicles.create')">
+                  <Plus class="mr-2 h-4 w-4" />
+                  Añadir
                 </Link>
-              </div>
-
-              <div v-if="!vehicles?.length" class="text-center py-8 text-gray-500">
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div v-if="!vehicles?.length" class="text-center py-8 text-muted-foreground">
+                <Car class="mx-auto h-12 w-12 mb-2 opacity-50" />
                 <p>No tienes vehículos registrados</p>
-                <Link
-                  :href="route('vehicles.create')"
-                  class="mt-2 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-                >
-                  Añadir primer vehículo
-                </Link>
+                <Button as-child class="mt-4">
+                  <Link :href="route('vehicles.create')">Añadir primer vehículo</Link>
+                </Button>
               </div>
 
               <div v-else class="space-y-3">
@@ -139,46 +141,51 @@ const search = ref('')
                   v-for="vehicle in vehicles"
                   :key="vehicle.id"
                   :href="route('vehicles.show', vehicle.id)"
-                  class="block p-3 border dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                  class="block p-3 border border-border rounded-lg hover:bg-accent transition"
                 >
                   <div class="flex justify-between items-start">
                     <div>
                       <span class="font-medium">{{ vehicle.brand }} {{ vehicle.model }}</span>
-                      <span class="text-sm text-gray-500 ml-2">{{ vehicle.plate }}</span>
+                      <span class="text-sm text-muted-foreground ml-2">{{ vehicle.plate }}</span>
                     </div>
-                    <Badge :variant="vehicle.is_active ? 'success' : 'gray'">
+                    <Badge :variant="vehicle.is_active ? 'default' : 'secondary'">
                       {{ vehicle.is_active ? 'Activo' : 'Inactivo' }}
                     </Badge>
                   </div>
-                  <div class="text-sm text-gray-500 mt-1">
+                  <div class="text-sm text-muted-foreground mt-1">
                     {{ vehicle.current_km.toLocaleString() }} km
                   </div>
                 </Link>
               </div>
-            </template>
+            </CardContent>
           </Card>
 
           <!-- Alertas -->
-          <Card title="Alertas Recientes" :hover="false">
-            <div v-if="!alerts?.length" class="text-center py-8 text-gray-500">
-              <p>✅ No hay alertas pendientes</p>
-            </div>
-
-            <div v-else class="space-y-3">
-              <div
-                v-for="alert in alerts"
-                :key="alert.id"
-                class="p-3 border dark:border-gray-700 rounded-lg bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800"
-              >
-                <div class="flex justify-between items-start">
-                  <span class="font-medium text-sm">{{ alert.title }}</span>
-                  <Badge variant="warning" size="sm">
-                    {{ alert.type }}
-                  </Badge>
-                </div>
-                <p class="text-sm text-gray-500 mt-1">{{ alert.body }}</p>
+          <Card>
+            <CardHeader>
+              <CardTitle>Alertas Recientes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div v-if="!alerts?.length" class="text-center py-8 text-muted-foreground">
+                <p>✅ No hay alertas pendientes</p>
               </div>
-            </div>
+
+              <div v-else class="space-y-3">
+                <div
+                  v-for="alert in alerts"
+                  :key="alert.id"
+                  class="p-3 border border-orange-200 dark:border-orange-800 rounded-lg bg-orange-50 dark:bg-orange-900/20"
+                >
+                  <div class="flex justify-between items-start">
+                    <span class="font-medium text-sm">{{ alert.title }}</span>
+                    <Badge variant="outline" class="border-orange-300 text-orange-700 dark:border-orange-700 dark:text-orange-400">
+                      {{ alert.type }}
+                    </Badge>
+                  </div>
+                  <p class="text-sm text-muted-foreground mt-1">{{ alert.body }}</p>
+                </div>
+              </div>
+            </CardContent>
           </Card>
         </div>
       </div>
