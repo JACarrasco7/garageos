@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ServicePackSeeder::class,
+            AffiliateLinkSeeder::class,
         ]);
 
         User::factory()->create([
