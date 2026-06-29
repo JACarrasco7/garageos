@@ -14,6 +14,12 @@ class DocumentServiceProvider extends ServiceProvider
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../Routes/documents.php');
         });
+
+        // Listeners
+        $this->app['events']->listen(
+            \App\Modules\Documents\Events\DocumentProcessed::class,
+            \App\Modules\Documents\Listeners\CreateMaintenanceFromDocument::class
+        );
     }
 
     public function register(): void

@@ -14,6 +14,12 @@ class MaintenanceServiceProvider extends ServiceProvider
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../Routes/maintenance.php');
         });
+
+        // Listeners
+        $this->app['events']->listen(
+            \App\Modules\Maintenance\Events\RevisionCompleted::class,
+            \App\Modules\Maintenance\Listeners\UpdateVehicleScore::class
+        );
     }
 
     public function register(): void
