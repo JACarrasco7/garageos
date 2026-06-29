@@ -40,6 +40,19 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
+    public function updateFcmToken(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate([
+            'fcm_token' => ['required', 'string', 'max:255'],
+        ]);
+
+        $request->user()->update([
+            'fcm_token' => $request->fcm_token,
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
     /**
      * Delete the user's account.
      */

@@ -21,12 +21,30 @@ class SendPushJob implements ShouldQueue
 
     public function handle(): void
     {
-        // TODO: Implementar Firebase Cloud Messaging
-        // Por ahora solo log
-        \Log::info("Push notification sent", [
-            'user_id' => $this->user->id,
-            'vehicle_id' => $this->rule->vehicle_id,
-            'type' => $this->rule->type,
-        ]);
+        if (!$this->user->fcm_token) {
+            return;
+        }
+
+        try {
+            $messaging = app('firebase.messaging');
+            $messaging->send([
+                'token' => $this->user->fcm_token,
+                'notification' => [
+                    'title' => 'Alerta: ' . ucfirst($this->rule->type),
+                    'body' => $this->rule->trigger_date
+                        ? 'Vence: ' . $this->rule->trigger_date->format('d/m/Y')
+                        : 'Próximo mantenimiento',
+                ],
+                'data' => [
+                    'vehicle_id' => (string) $this->rule->vehicle_id,
+                    'type' => $this->rule->type,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('FCM send failed', [
+                'user_id' => $this->user->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }
