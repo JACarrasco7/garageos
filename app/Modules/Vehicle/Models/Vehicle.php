@@ -93,4 +93,36 @@ class Vehicle extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function lastOilChangeKm(): ?int
+    {
+        return $this->maintenanceEntries()
+            ->where('type', 'aceite')
+            ->latest('service_date')
+            ->value('km_at_service');
+    }
+
+    public function lastFilterChangeKm(): ?int
+    {
+        return $this->maintenanceEntries()
+            ->where('type', 'filtros')
+            ->latest('service_date')
+            ->value('km_at_service');
+    }
+
+    public function lastTireChangeKm(): ?int
+    {
+        return $this->maintenanceEntries()
+            ->where('type', 'neumaticos')
+            ->latest('service_date')
+            ->value('km_at_service');
+    }
+
+    public function lastBrakeChangeKm(): ?int
+    {
+        return $this->maintenanceEntries()
+            ->where('type', 'frenos')
+            ->latest('service_date')
+            ->value('km_at_service');
+    }
 }
