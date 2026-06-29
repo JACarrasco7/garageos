@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/Components/ui/card'
+import { Badge } from '@/Components/ui/badge'
+import { Eye, Calendar } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -26,27 +29,30 @@ defineProps<{
 <template>
   <Head title="Informe de Venta" />
 
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 py-12">
+  <div class="bg-background min-h-screen py-12">
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="text-center mb-6 p-6">
-          <h1 class="text-2xl font-bold">Informe de Venta</h1>
-          <h2 class="text-xl">{{ vehicle.brand }} {{ vehicle.model }}</h2>
-          <p class="text-gray-500">{{ vehicle.plate }} • {{ vehicle.year }}</p>
-        </div>
+      <Card>
+        <CardHeader class="text-center">
+          <CardTitle class="text-2xl">Informe de Venta</CardTitle>
+          <CardDescription class="text-xl">{{ vehicle.brand }} {{ vehicle.model }}</CardDescription>
+          <p class="text-muted-foreground">{{ vehicle.plate }} • {{ vehicle.year }}</p>
+        </CardHeader>
 
-        <div class="text-center mb-8 p-6">
-          <p class="text-sm text-gray-500 mb-2">Puntuación de Salud</p>
-          <div class="text-6xl font-bold" :class="report.score >= 70 ? 'text-green-500' : report.score >= 40 ? 'text-amber-500' : 'text-red-500'">
+        <CardContent class="text-center mb-8">
+          <p class="text-sm text-muted-foreground mb-2">Puntuación de Salud</p>
+          <div class="text-6xl font-bold" :class="report.score >= 70 ? 'text-green-600 dark:text-green-400' : report.score >= 40 ? 'text-amber-600 dark:text-amber-400' : 'text-destructive'">
             {{ report.score }}/100
           </div>
-        </div>
+          <Badge :variant="report.score >= 70 ? 'default' : report.score >= 40 ? 'secondary' : 'destructive'" class="mt-2">
+            {{ report.score >= 70 ? 'Excelente' : report.score >= 40 ? 'Regular' : 'Necesita atención' }}
+          </Badge>
+        </CardContent>
 
-        <div class="p-6 text-center text-gray-500">
-          <p>Informe generado el {{ new Date(report.created_at).toLocaleDateString() }}</p>
-          <p>Visto {{ report.views }} veces</p>
-        </div>
-      </div>
+        <CardFooter class="flex justify-center gap-6 text-muted-foreground">
+          <span class="flex items-center gap-1"><Calendar class="h-4 w-4" /> {{ new Date(report.created_at).toLocaleDateString() }}</span>
+          <span class="flex items-center gap-1"><Eye class="h-4 w-4" /> {{ report.views }} vistas</span>
+        </CardFooter>
+      </Card>
     </div>
   </div>
 </template>

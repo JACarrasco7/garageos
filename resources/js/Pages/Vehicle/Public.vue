@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Badge } from '@/Components/ui/badge'
+
 interface Vehicle {
   id: number
   plate: string
@@ -23,54 +26,57 @@ defineProps<{
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 py-12">
+  <div class="min-h-screen bg-background py-12">
     <div class="max-w-2xl mx-auto px-4">
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <h1 class="text-2xl font-bold mb-4">
-          {{ vehicle.brand }} {{ vehicle.model }}
-        </h1>
+      <Card>
+        <CardHeader>
+          <CardTitle class="text-2xl">
+            {{ vehicle.brand }} {{ vehicle.model }}
+          </CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-6">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <span class="text-muted-foreground">Matrícula:</span>
+              <span class="font-medium">{{ vehicle.plate }}</span>
+            </div>
+            <div>
+              <span class="text-muted-foreground">Año:</span>
+              <span class="font-medium">{{ vehicle.year }}</span>
+            </div>
+            <div>
+              <span class="text-muted-foreground">Km:</span>
+              <span class="font-medium">{{ vehicle.current_km.toLocaleString() }}</span>
+            </div>
+            <div>
+              <span class="text-muted-foreground">Combustible:</span>
+              <Badge variant="secondary" class="ml-1 capitalize">{{ vehicle.fuel_type }}</Badge>
+            </div>
+          </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-6">
-          <div>
-            <span class="text-gray-500">Matrícula:</span>
-            <span class="font-medium">{{ vehicle.plate }}</span>
+          <div v-if="vehicle.specs">
+            <h2 class="text-lg font-semibold mb-2">Especificaciones</h2>
+            <p v-if="vehicle.specs.engine_cc">{{ vehicle.specs.engine_cc }} cc</p>
+            <p v-if="vehicle.specs.power_hp">{{ vehicle.specs.power_hp }} CV</p>
           </div>
-          <div>
-            <span class="text-gray-500">Año:</span>
-            <span class="font-medium">{{ vehicle.year }}</span>
-          </div>
-          <div>
-            <span class="text-gray-500">Km:</span>
-            <span class="font-medium">{{ vehicle.current_km.toLocaleString() }}</span>
-          </div>
-          <div>
-            <span class="text-gray-500">Combustible:</span>
-            <span class="font-medium capitalize">{{ vehicle.fuel_type }}</span>
-          </div>
-        </div>
 
-        <div v-if="vehicle.specs" class="mb-6">
-          <h2 class="text-lg font-semibold mb-2">Especificaciones</h2>
-          <p v-if="vehicle.specs.engine_cc">{{ vehicle.specs.engine_cc }} cc</p>
-          <p v-if="vehicle.specs.power_hp">{{ vehicle.specs.power_hp }} CV</p>
-        </div>
-
-        <div v-if="vehicle.documents?.length" class="mb-6">
-          <h2 class="text-lg font-semibold mb-2">ITV</h2>
-          <div
-            v-for="doc in vehicle.documents"
-            :key="doc.type"
-            class="text-sm"
-          >
-            <span class="text-gray-500">Vence:</span>
-            {{ doc.expiry_date }}
+          <div v-if="vehicle.documents?.length">
+            <h2 class="text-lg font-semibold mb-2">ITV</h2>
+            <div
+              v-for="doc in vehicle.documents"
+              :key="doc.type"
+              class="text-sm"
+            >
+              <span class="text-muted-foreground">Vence:</span>
+              {{ doc.expiry_date }}
+            </div>
           </div>
-        </div>
 
-        <p class="text-sm text-gray-500 mt-8">
-          Escanea el QR para ver la información del vehículo
-        </p>
-      </div>
+          <p class="text-sm text-muted-foreground mt-8">
+            Escanea el QR para ver la información del vehículo
+          </p>
+        </CardContent>
+      </Card>
     </div>
   </div>
 </template>

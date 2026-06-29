@@ -106,7 +106,7 @@ const search = ref('')
                 </div>
                 <div class="ml-4">
                   <p class="text-sm text-muted-foreground">Alertas pendientes</p>
-                  <p class="text-2xl font-bold" :class="stats?.pending_alerts ? 'text-orange-500' : 'text-foreground'">
+                  <p class="text-2xl font-bold" :class="stats?.pending_alerts ? 'text-amber-600 dark:text-amber-400' : 'text-foreground'">
                     {{ stats?.pending_alerts ?? 0 }}
                   </p>
                 </div>

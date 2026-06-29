@@ -2,8 +2,11 @@
 import { Link, useForm } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import Card from '@/Components/Card.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
+import { ArrowLeft, Upload } from 'lucide-vue-next'
 
 const form = useForm({
   file: null as File | null,
@@ -29,34 +32,42 @@ const handleFile = (event: Event) => {
 
     <div class="py-12">
       <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-        <Card title="Importar desde CSV">
-          <form @submit.prevent="submit" class="space-y-6">
-            <div>
-              <label class="block text-sm font-medium mb-2">Archivo CSV</label>
-              <input
-                type="file"
-                accept=".csv,.txt"
-                @change="handleFile"
-                class="block w-full text-sm border-gray-300 rounded-md"
-                required
-              />
-              <p class="text-xs text-gray-500 mt-1">
-                Columnas: plate, brand, model, year, fuel_type, current_km
-              </p>
-            </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Importar desde CSV</CardTitle>
+            <CardDescription>Sube un archivo CSV con los datos de los vehículos</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form @submit.prevent="submit" class="space-y-6">
+              <div>
+                <Label for="csv_file">Archivo CSV</Label>
+                <Input
+                  id="csv_file"
+                  type="file"
+                  accept=".csv,.txt"
+                  @change="handleFile"
+                  class="mt-1"
+                  required
+                />
+                <p class="text-xs text-muted-foreground mt-1">
+                  Columnas: plate, brand, model, year, fuel_type, current_km
+                </p>
+              </div>
 
-            <div class="flex justify-end space-x-3">
-              <Link
-                :href="route('vehicles.index')"
-                class="px-4 py-2 text-gray-600 hover:underline"
-              >
-                Cancelar
-              </Link>
-              <PrimaryButton :disabled="form.processing">
-                {{ form.processing ? 'Importando...' : 'Importar' }}
-              </PrimaryButton>
-            </div>
-          </form>
+              <div class="flex justify-end space-x-3">
+                <Button as-child variant="ghost">
+                  <Link :href="route('vehicles.index')">
+                    <ArrowLeft class="w-4 h-4 mr-1" />
+                    Cancelar
+                  </Link>
+                </Button>
+                <Button type="submit" :disabled="form.processing">
+                  <Upload class="w-4 h-4 mr-1" />
+                  {{ form.processing ? 'Importando...' : 'Importar' }}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
         </Card>
       </div>
     </div>

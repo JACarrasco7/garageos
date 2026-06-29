@@ -2,8 +2,10 @@
 import { Link } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import Card from '@/Components/Card.vue'
-import Badge from '@/Components/Badge.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Badge } from '@/Components/ui/badge'
+import { Button } from '@/Components/ui/button'
+import { ArrowLeft, FileText } from 'lucide-vue-next'
 
 interface Document {
   id: number
@@ -32,39 +34,39 @@ defineProps<{
     <div class="py-12">
       <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
         <Card>
-          <div class="space-y-4">
+          <CardHeader>
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-lg font-medium">{{ document.title }}</h3>
-                <p class="text-sm text-gray-500">{{ document.type }}</p>
+                <CardTitle>{{ document.title }}</CardTitle>
+                <p class="text-sm text-muted-foreground mt-1">{{ document.type }}</p>
               </div>
-              <Badge variant="info">
+              <Badge variant="secondary">
                 {{ (document.file_size / 1024).toFixed(1) }} KB
               </Badge>
             </div>
-
+          </CardHeader>
+          <CardContent class="space-y-4">
             <div class="border-t pt-4">
-              <p class="text-sm text-gray-500">Fecha: {{ document.document_date }}</p>
-              <p class="text-sm text-gray-500">Vence: {{ document.expiry_date || 'N/A' }}</p>
-              <p class="text-sm text-gray-500">Importe: {{ document.amount ? document.amount + ' €' : 'N/A' }}</p>
+              <p class="text-sm text-muted-foreground">Fecha: {{ document.document_date }}</p>
+              <p class="text-sm text-muted-foreground">Vence: {{ document.expiry_date || 'N/A' }}</p>
+              <p class="text-sm text-muted-foreground">Importe: {{ document.amount ? document.amount + ' €' : 'N/A' }}</p>
             </div>
 
             <div class="flex justify-end space-x-3 pt-4">
-              <a
-                :href="`/storage/${document.file_path}`"
-                target="_blank"
-                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Ver documento
-              </a>
-              <Link
-                :href="route('documents.index')"
-                class="px-4 py-2 text-gray-600 hover:underline"
-              >
-                Volver
-              </Link>
+              <Button as-child>
+                <a :href="`/storage/${document.file_path}`" target="_blank">
+                  <FileText class="w-4 h-4 mr-1" />
+                  Ver documento
+                </a>
+              </Button>
+              <Button as-child variant="ghost">
+                <Link :href="route('documents.index')">
+                  <ArrowLeft class="w-4 h-4 mr-1" />
+                  Volver
+                </Link>
+              </Button>
             </div>
-          </div>
+          </CardContent>
         </Card>
       </div>
     </div>

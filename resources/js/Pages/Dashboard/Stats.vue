@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import Card from '@/Components/Card.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { TrendingUp } from 'lucide-vue-next'
 
 interface Stats {
   total_vehicles: number
@@ -29,28 +30,60 @@ defineProps<{
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card title="Vehículos">
-            <p class="text-3xl font-bold">{{ stats.total_vehicles }}</p>
+          <Card>
+            <CardHeader>
+              <CardTitle>Vehículos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p class="text-3xl font-bold">{{ stats.total_vehicles }}</p>
+            </CardContent>
           </Card>
 
-          <Card title="Documentos">
-            <p class="text-3xl font-bold">{{ stats.total_documents }}</p>
+          <Card>
+            <CardHeader>
+              <CardTitle>Documentos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p class="text-3xl font-bold">{{ stats.total_documents }}</p>
+            </CardContent>
           </Card>
 
-          <Card title="Mantenimientos">
-            <p class="text-3xl font-bold">{{ stats.total_maintenance }}</p>
+          <Card>
+            <CardHeader>
+              <CardTitle>Mantenimientos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p class="text-3xl font-bold">{{ stats.total_maintenance }}</p>
+            </CardContent>
           </Card>
 
-          <Card title="Gasto total">
-            <p class="text-3xl font-bold">{{ stats.total_spent }} €</p>
+          <Card>
+            <CardHeader>
+              <CardTitle>Gasto total</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p class="text-3xl font-bold">{{ stats.total_spent }} €</p>
+            </CardContent>
           </Card>
 
-          <Card title="Coste/km">
-            <p class="text-3xl font-bold">{{ stats.avg_cost_per_km }} €/km</p>
+          <Card>
+            <CardHeader>
+              <CardTitle>Coste/km</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p class="text-3xl font-bold">{{ stats.avg_cost_per_km }} €/km</p>
+            </CardContent>
           </Card>
         </div>
 
-        <Card v-if="stats.monthly_spending?.length" title="Gastos mensuales" class="mt-6">
+        <Card v-if="stats.monthly_spending?.length" class="mt-6">
+          <CardHeader>
+            <CardTitle class="flex items-center gap-2">
+              <TrendingUp class="h-5 w-5" />
+              Gastos mensuales
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           <div class="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart :data="stats.monthly_spending">
@@ -61,6 +94,7 @@ defineProps<{
               </LineChart>
             </ResponsiveContainer>
           </div>
+          </CardContent>
         </Card>
       </div>
     </div>

@@ -2,8 +2,9 @@
 import { Link, useForm } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import Card from '@/Components/Card.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { ArrowLeft, FileText } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -35,36 +36,40 @@ const submit = () => {
 
     <div class="py-12">
       <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-        <Card title="Informe para venta">
-          <div class="space-y-4">
-            <div class="border-b pb-4">
+        <Card>
+          <CardHeader>
+            <CardTitle class="flex items-center gap-2">
+              <FileText class="h-5 w-5" />
+              Informe para venta
+            </CardTitle>
+          </CardHeader>
+          <CardContent class="space-y-4">
+            <div class="border-b border-border pb-4">
               <h4 class="font-medium text-lg">{{ vehicle.brand }} {{ vehicle.model }}</h4>
-              <p class="text-gray-500">{{ vehicle.plate }} • {{ vehicle.year }}</p>
-              <p class="text-sm text-gray-500">{{ vehicle.current_km.toLocaleString() }} km</p>
+              <p class="text-muted-foreground">{{ vehicle.plate }} • {{ vehicle.year }}</p>
+              <p class="text-sm text-muted-foreground">{{ vehicle.current_km.toLocaleString() }} km</p>
             </div>
 
             <div>
               <h5 class="font-medium mb-2">El informe incluirá:</h5>
-              <ul class="text-sm text-gray-600 space-y-1">
+              <ul class="text-sm text-muted-foreground space-y-1">
                 <li>• Puntuación de salud del vehículo</li>
                 <li>• Historial de mantenimientos</li>
                 <li>• Documentación disponible</li>
                 <li>• PDF descargable con certificado</li>
               </ul>
             </div>
-
-            <div class="flex justify-end space-x-3 pt-4">
-              <Link
-                :href="route('vehicles.show', vehicle.id)"
-                class="px-4 py-2 text-gray-600 hover:underline"
-              >
+          </CardContent>
+          <CardFooter class="justify-end space-x-3">
+            <Button as-child variant="ghost">
+              <Link :href="route('vehicles.show', vehicle.id)">
                 Cancelar
               </Link>
-              <PrimaryButton @click="submit" :disabled="form.processing">
-                {{ form.processing ? 'Generando...' : 'Generar Informe' }}
-              </PrimaryButton>
-            </div>
-          </div>
+            </Button>
+            <Button @click="submit" :disabled="form.processing">
+              {{ form.processing ? 'Generando...' : 'Generar Informe' }}
+            </Button>
+          </CardFooter>
         </Card>
       </div>
     </div>
