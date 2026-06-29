@@ -14,7 +14,9 @@ class ServicePackFactory extends Factory
         return [
             'maintenance_type' => $this->faker->randomElement(['aceite', 'revision', 'itv']),
             'name' => 'Pack ' . $this->faker->word(),
-            'items' => $this->faker->words(5),
+            'items' => [
+                ['name' => 'Aceite', 'reference' => 'OIL-123', 'price' => 45.00],
+            ],
         ];
     }
 }
