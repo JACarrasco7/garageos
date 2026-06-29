@@ -58,4 +58,29 @@ class DashboardController extends Controller
             'stats' => $stats,
         ]);
     }
+
+    public function stats(): Response
+    {
+        $user = auth()->user();
+
+        $stats = [
+            'total_vehicles' => Vehicle::whereHas('garage', fn($q) => $q->where('user_id', $user->id))->count(),
+            'total_documents' => Document::whereHas('vehicle.garage', fn($q) => $q->where('user_id', $user->id))->count(),
+            'total_maintenance' => \App\Modules\Maintenance\Models\MaintenanceEntry::whereHas('vehicle.garage', fn($q) => $q->where('user_id', $user->id))->count(),
+            'total_spent' => (float) \App\Modules\Maintenance\Models\MaintenanceEntry::whereHas('vehicle.garage', fn($q) => $q->where('user_id', $user->id))->sum('cost'),
+            'avg_cost_per_km' => $this->calculateAvgCostPerKm($user),
+        ];
+
+        return Inertia::render('Dashboard/Stats', [
+            'stats' => $stats,
+        ]);
+    }
+
+    private function calculateAvgCostPerKm($user): float
+    {
+        $totalCost = \App\Modules\Maintenance\Models\MaintenanceEntry::whereHas('vehicle.garage', fn($q) => $q->where('user_id', $user->id))->sum('cost');
+        $totalKm = Vehicle::whereHas('garage', fn($q) => $q->where('user_id', $user->id))->avg('current_km');
+
+        return $totalKm > 0 ? round($totalCost / $totalKm, 4) : 0;
+    }
 }

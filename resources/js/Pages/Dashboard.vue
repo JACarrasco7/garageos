@@ -44,6 +44,12 @@ defineProps<{
       </h2>
     </template>
 
+    <div class="flex justify-end mb-4">
+      <Link :href="route('dashboard.stats')" class="text-sm text-blue-600 hover:underline">
+        Ver estadísticas →
+      </Link>
+    </div>
+
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <!-- Stats -->
