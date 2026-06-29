@@ -13,3 +13,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/marketplace/{report}/download', [SaleReportController::class, 'download'])
         ->name('marketplace.download');
 });
+
+// Ruta pública para informes
+Route::get('/r/{token}', [SaleReportController::class, 'showPublic'])
+    ->name('marketplace.public');

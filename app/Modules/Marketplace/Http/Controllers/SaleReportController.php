@@ -64,4 +64,22 @@ class SaleReportController extends Controller
 
         return response()->download($path);
     }
+
+    public function showPublic(string $token): Response
+    {
+        $report = SaleReport::where('token', $token)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        if ($report->isExpired()) {
+            abort(404, 'Informe expirado');
+        }
+
+        $report->incrementViews();
+
+        return Inertia::render('Marketplace/PublicReport', [
+            'report' => $report->load('vehicle.specs'),
+            'vehicle' => $report->vehicle,
+        ]);
+    }
 }

@@ -72,4 +72,13 @@ class DocumentController extends Controller
 
         return back()->with('success', 'Documento subido correctamente');
     }
+
+    public function show(Document $document): Response
+    {
+        $this->authorize('view', $document->vehicle->garage);
+
+        return Inertia::render('Documents/Show', [
+            'document' => $document,
+        ]);
+    }
 }
