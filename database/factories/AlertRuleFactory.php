@@ -14,7 +14,7 @@ class AlertRuleFactory extends Factory
     {
         return [
             'vehicle_id' => Vehicle::factory(),
-            'type' => $this->faker->randomElement(['itv', 'seguro', 'aceite', 'revisions']),
+            'type' => $this->faker->randomElement(['itv', 'seguro', 'aceite', 'revision']),
             'trigger_km' => $this->faker->optional()->numberBetween(10000, 30000),
             'trigger_date' => $this->faker->optional()->dateTimeBetween('now', '+1 year'),
             'advance_days' => 30,
