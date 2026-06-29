@@ -27,4 +27,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Modules\Identity\Models\Garage::class);
     }
+
+    public function workshop(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(\App\Modules\Maintenance\Models\Workshop::class);
+    }
 }
