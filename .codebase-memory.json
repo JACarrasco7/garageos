@@ -1,0 +1,13 @@
+{
+    "extra_extensions": {
+        ".blade.php": "php"
+    },
+    "ignore": [
+        "vendor",
+        "node_modules",
+        ".git",
+        "bootstrap/cache",
+        "storage",
+        "public/build"
+    ]
+}
