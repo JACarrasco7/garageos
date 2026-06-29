@@ -69,11 +69,24 @@ class DashboardController extends Controller
             'total_maintenance' => \App\Modules\Maintenance\Models\MaintenanceEntry::whereHas('vehicle.garage', fn($q) => $q->where('user_id', $user->id))->count(),
             'total_spent' => (float) \App\Modules\Maintenance\Models\MaintenanceEntry::whereHas('vehicle.garage', fn($q) => $q->where('user_id', $user->id))->sum('cost'),
             'avg_cost_per_km' => $this->calculateAvgCostPerKm($user),
+            'monthly_spending' => $this->getMonthlySpending($user),
         ];
 
         return Inertia::render('Dashboard/Stats', [
             'stats' => $stats,
         ]);
+    }
+
+    private function getMonthlySpending($user): array
+    {
+        return \App\Modules\Maintenance\Models\MaintenanceEntry::whereHas('vehicle.garage', fn($q) => $q->where('user_id', $user->id))
+            ->selectRaw('DATE_FORMAT(service_date, "%Y-%m") as month, SUM(cost) as amount')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->limit(12)
+            ->get()
+            ->map(fn($row) => ['month' => $row->month, 'amount' => (float) $row->amount])
+            ->toArray();
     }
 
     private function calculateAvgCostPerKm($user): float
