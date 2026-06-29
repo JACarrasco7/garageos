@@ -1,25 +1,14 @@
-# GarageOS — Instrucciones para Copilot
+# GarageOS
 
-## Proyecto
-- Laravel 11 + Inertia.js + Vue 3 + PrimeVue + Tailwind
-- Módulos en `app/Modules/`: Vehicle, Maintenance, Alerts, Documents, Identity, Marketplace
+Laravel 11 + Inertia + Vue 3 + PrimeVue. Módulos: Vehicle, Maintenance, Alerts, Documents, Identity, Marketplace.
 
 ## Convenciones
-- FormRequests para TODA validación (no inline)
-- Eager loading obligatorio en relaciones
+- FormRequests para validación (no inline)
+- Eager loading obligatorio
 - Tests: happy path + validación + edge cases
-- Idioma: español para comentarios y mensajes
+- Código sin comentarios obvios
 
-## Ahorro de Tokens
-- Usa `#file:` en vez de pegar contenido
-- Usa `/compact` tras 30 mensajes
-- Prefiere `@Explore` para investigación read-only
-- Usa `codebase-memory-mcp` tools para exploración estructural
-
-## Estructura de Módulos
-```
-app/Modules/{Module}/
-    Controllers/  Models/  Requests/  Services/  Routes/
-resources/js/Pages/{Module}/
-tests/Feature/{Module}/
-```
+## Tokens
+- `#file:` en vez de pegar contenido
+- `/compact` tras 30 mensajes
+- `codebase-memory-mcp` para exploración estructural

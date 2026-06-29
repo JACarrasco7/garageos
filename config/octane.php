@@ -4,6 +4,11 @@ return [
 
     'server' => env('OCTANE_SERVER', 'frankenphp'),
 
+    'frankenphp' => [
+        'host' => env('OCTANE_FRANKENPHP_HOST', '0.0.0.0'),
+        'port' => env('OCTANE_FRANKENPHP_PORT', 8000),
+    ],
+
     'listeners' => [
         'redis' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),
