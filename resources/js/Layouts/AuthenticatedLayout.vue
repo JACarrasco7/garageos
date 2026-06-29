@@ -208,6 +208,8 @@ onMounted(() => {
             <main>
                 <slot />
             </main>
+
+            <Toaster position="top-right" :richColors="true" />
         </div>
     </div>
 </template>
