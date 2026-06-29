@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 class Vehicle extends Model
 {
     use HasFactory;
+    use \Laravel\Scout\Searchable;
 
     protected $fillable = [
         'garage_id',
@@ -76,6 +77,16 @@ class Vehicle extends Model
     public function alertRules(): HasMany
     {
         return $this->hasMany(\App\Modules\Alerts\Models\AlertRule::class);
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'brand' => $this->brand,
+            'model' => $this->model,
+            'plate' => $this->plate,
+            'year' => $this->year,
+        ];
     }
 
     public function scopeActive($query)

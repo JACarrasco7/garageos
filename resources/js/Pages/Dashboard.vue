@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import Card from '@/Components/Card.vue'
 import Badge from '@/Components/Badge.vue'
+import Input from '@/Components/Input.vue'
 
 interface Vehicle {
   id: number
@@ -32,6 +34,8 @@ defineProps<{
     pending_alerts: number
   }
 }>()
+
+const search = ref('')
 </script>
 
 <template>
@@ -44,7 +48,12 @@ defineProps<{
       </h2>
     </template>
 
-    <div class="flex justify-end mb-4">
+    <div class="flex justify-between mb-4">
+      <Input
+        v-model="search"
+        placeholder="Buscar vehículos..."
+        class="max-w-xs"
+      />
       <Link :href="route('dashboard.stats')" class="text-sm text-blue-600 hover:underline">
         Ver estadísticas →
       </Link>
