@@ -4,30 +4,70 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Laravel\Cashier\Checkout;
-
 class SubscriptionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+        $plans = collect(config('subscription.plans'))->map(function ($plan, $key) {
+            return array_merge($plan, ['id' => $key]);
+        })->values()->all();
+
         return Inertia::render('Subscription/Index', [
-            'plans' => [
-                ['id' => 'basic', 'name' => 'Básico', 'price' => 4.99, 'features' => ['Hasta 3 vehículos', 'Alertas básicas']],
-                ['id' => 'pro', 'name' => 'Pro', 'price' => 9.99, 'features' => ['Vehículos ilimitados', 'Alertas + OCR', 'Informes PDF']],
-            ],
+            'plans' => $plans,
+            'subscribed' => $user->subscribed('default'),
+            'subscription' => $user->subscription('default'),
         ]);
     }
 
     public function checkout(Request $request, string $plan)
     {
-        return $request->user()->checkoutRedirect($plan, [
-            'success_url' => route('subscription.success'),
-            'cancel_url' => route('subscription.cancel'),
-        ]);
+        $planConfig = config("subscription.plans.{$plan}");
+
+        if (!$planConfig) {
+            abort(404, 'Plan no encontrado');
+        }
+
+        $user = $request->user();
+
+        if ($user->subscribed('default')) {
+            return redirect()->route('subscription.index')
+                ->with('info', 'Ya tienes una suscripción activa.');
+        }
+
+        return $user->newSubscription('default', $plan)
+            ->checkout([
+                'success_url' => route('subscription.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('subscription.index'),
+            ]);
     }
 
-    public function success()
+    public function success(Request $request)
     {
         return Inertia::render('Subscription/Success');
+    }
+
+    public function cancel(Request $request)
+    {
+        $subscription = $request->user()->subscription('default');
+
+        if ($subscription && $subscription->active()) {
+            $subscription->cancel();
+        }
+
+        return redirect()->route('subscription.index')
+            ->with('success', 'Suscripción cancelada. Seguirá activa hasta el fin del período.');
+    }
+
+    public function resume(Request $request)
+    {
+        $subscription = $request->user()->subscription('default');
+
+        if ($subscription && $subscription->onGracePeriod()) {
+            $subscription->resume();
+        }
+
+        return redirect()->route('subscription.index')
+            ->with('success', 'Suscripción reactivada.');
     }
 }

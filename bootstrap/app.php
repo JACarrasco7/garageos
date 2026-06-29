@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'vehicle.limit' => \App\Http\Middleware\EnforceVehicleLimit::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
