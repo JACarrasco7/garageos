@@ -4,6 +4,7 @@ namespace App\Modules\Maintenance\Actions;
 
 use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Maintenance\Models\ServicePack;
+use Illuminate\Support\Collection;
 
 class RecommendServicePackAction
 {
@@ -23,5 +24,19 @@ class RecommendServicePackAction
         }
 
         return null;
+    }
+
+    /**
+     * Get affiliate links for the recommended service pack for a vehicle.
+     */
+    public function getAffiliateLinksForVehicle(Vehicle $vehicle): Collection
+    {
+        $pack = $this->execute($vehicle);
+
+        if (!$pack) {
+            return collect();
+        }
+
+        return $pack->getAffiliateLinks();
     }
 }
