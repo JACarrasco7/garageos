@@ -26,12 +26,14 @@ class GarageFullSeeder extends Seeder
             'name' => 'Carlos García',
             'email' => 'carlos@garageos.com',
             'role' => 'owner',
+            'password' => bcrypt('password'),
         ]);
 
         $workshop = User::factory()->create([
             'name' => 'Taller Mecánico SL',
             'email' => 'taller@garageos.com',
             'role' => 'workshop',
+            'password' => bcrypt('password'),
         ]);
 
         // 2. Garajes
@@ -50,7 +52,7 @@ class GarageFullSeeder extends Seeder
                 'fuel_type' => 'gasolina',
                 'current_km' => 45000,
                 'color' => 'Blanco',
-                'specs' => ['engine_cc' => 1500, 'power_kw' => 110],
+                'specs' => ['engine_cc' => 1500, 'power_hp' => 150],
             ],
             [
                 'plate' => '5678-XYZ',
@@ -60,7 +62,7 @@ class GarageFullSeeder extends Seeder
                 'fuel_type' => 'diesel',
                 'current_km' => 78000,
                 'color' => 'Negro',
-                'specs' => ['engine_cc' => 2000, 'power_kw' => 140],
+                'specs' => ['engine_cc' => 2000, 'power_hp' => 190],
             ],
             [
                 'plate' => '9012-DEF',
@@ -70,7 +72,7 @@ class GarageFullSeeder extends Seeder
                 'fuel_type' => 'hibrido',
                 'current_km' => 12000,
                 'color' => 'Rojo',
-                'specs' => ['engine_cc' => 1400, 'power_kw' => 110],
+                'specs' => ['engine_cc' => 1400, 'power_hp' => 150],
             ],
         ];
 
@@ -85,7 +87,7 @@ class GarageFullSeeder extends Seeder
                 'purchase_price' => rand(15000, 35000),
             ]));
 
-            VehicleSpec::create(array_merge($specs, ['vehicle_id' => $vehicle->id]));
+            VehicleSpec::create(array_merge(['vehicle_id' => $vehicle->id], $specs));
 
             // Km history
             KmHistory::create([
@@ -152,7 +154,7 @@ class GarageFullSeeder extends Seeder
             'vehicle_id' => $vehicle->id,
             'workshop_id' => $workshop2->id,
             'type' => 'itv',
-            'title' 'Revisión ITV',
+            'title' => 'Revisión ITV',
             'description' => 'ITV favorable',
             'km_at_service' => 44000,
             'service_date' => now()->subMonth(),

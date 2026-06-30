@@ -10,6 +10,8 @@ class KmHistory extends Model
 {
     use HasFactory;
 
+    protected $table = 'km_history';
+
     protected $fillable = [
         'vehicle_id',
         'km',
