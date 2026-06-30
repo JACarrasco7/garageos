@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Link } from '@inertiajs/vue3'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { FileText, Calendar, Plus, ExternalLink } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -33,56 +36,58 @@ const documentLabels: Record<string, string> = {
 </script>
 
 <template>
-  <AuthenticatedLayout>
+  <AppSidebarLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight">
-        Documentos - {{ vehicle.brand }} {{ vehicle.model }}
-      </h2>
+      Documentos - {{ vehicle.brand }} {{ vehicle.model }}
     </template>
 
-    <div class="py-12">
-      <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-          <div class="p-6">
-            <div class="flex justify-between items-center mb-6">
-              <h3 class="text-lg font-medium">Documentos del vehículo</h3>
-              <button
-                @click="$emit('open-upload')"
-                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Subir documento
-              </button>
-            </div>
+    <Card class="border-0 shadow-lg">
+      <CardHeader class="flex flex-row items-center justify-between pb-3">
+        <CardTitle class="text-lg font-semibold">Documentos del vehículo</CardTitle>
+        <Button variant="outline" size="sm" class="rounded-lg" @click="$emit('open-upload')">
+          <Plus class="mr-2 h-4 w-4" />
+          Subir documento
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <div v-if="Object.keys(documents).length === 0" class="text-center py-12">
+          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
+            <FileText class="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h3 class="font-medium text-foreground mb-1">No hay documentos</h3>
+          <p class="text-sm text-muted-foreground">Sube tu primer documento</p>
+        </div>
 
-            <div v-for="(group, type) in documents" :key="type" class="mb-6">
-              <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-3">
-                {{ documentLabels[type] || type }}
-              </h4>
-              <div class="space-y-2">
-                <div
-                  v-for="doc in group"
-                  :key="doc.id"
-                  class="flex justify-between items-center p-3 border dark:border-gray-700 rounded"
-                >
-                  <div>
-                    <p class="font-medium">{{ doc.title }}</p>
-                    <p v-if="doc.expiry_date" class="text-sm text-gray-500">
-                      Vence: {{ doc.expiry_date }}
-                    </p>
-                  </div>
-                  <a
-                    :href="`/storage/${doc.file_path}`"
-                    target="_blank"
-                    class="text-blue-600 hover:underline"
-                  >
-                    Ver
-                  </a>
+        <div v-else class="space-y-6">
+          <div v-for="(group, type) in documents" :key="type">
+            <h4 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              {{ documentLabels[type] || type }}
+            </h4>
+            <div class="space-y-2">
+              <div
+                v-for="doc in group"
+                :key="doc.id"
+                class="flex justify-between items-center p-3 rounded-lg border border-border hover:bg-accent transition-colors"
+              >
+                <div>
+                  <p class="font-medium text-foreground">{{ doc.title }}</p>
+                  <p v-if="doc.expiry_date" class="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                    <Calendar class="h-3 w-3" />
+                    Vence: {{ doc.expiry_date }}
+                  </p>
                 </div>
+                <a
+                  :href="`/storage/${doc.file_path}`"
+                  target="_blank"
+                  class="flex items-center gap-1 text-sm text-primary hover:underline"
+                >
+                  Ver <ExternalLink class="h-3 w-3" />
+                </a>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </AuthenticatedLayout>
+      </CardContent>
+    </Card>
+  </AppSidebarLayout>
 </template>
