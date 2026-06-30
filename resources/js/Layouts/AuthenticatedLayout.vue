@@ -1,27 +1,44 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { useFcm } from '@/Composables/useFcm';
-import { Button } from '@/Components/ui/button';
+import Toaster from 'vue-sonner';
+
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarInset,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarProvider,
+    SidebarRail,
+    SidebarSeparator,
+    SidebarTrigger,
+} from '@/Components/ui/sidebar';
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetHeader,
-  SheetTitle,
-} from '@/Components/ui/sheet';
-import { Menu, ChevronDown, LayoutDashboard, Car, User, LogOut } from 'lucide-vue-next';
+
+import { Avatar, AvatarFallback } from '@/Components/ui/avatar';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/Components/ui/breadcrumb';
+import { Separator } from '@/Components/ui/separator';
+
+import { ChevronUp, LayoutDashboard, Car, Wrench, FileText, ShoppingBag, CreditCard, Settings, User, LogOut, BarChart3 } from 'lucide-vue-next';
 
 const { registerFcm, addListeners } = useFcm();
+const page = usePage();
 
 onMounted(() => {
     if ('PushNotifications' in window) {
@@ -29,134 +46,169 @@ onMounted(() => {
         addListeners();
     }
 });
+
+const navMain = [
+    { title: 'Dashboard', route: 'dashboard', icon: LayoutDashboard },
+    { title: 'Vehículos', route: 'vehicles.index', icon: Car },
+    { title: 'Mantenimiento', route: 'maintenance.index', icon: Wrench },
+    { title: 'Documentos', route: 'documents.index', icon: FileText },
+    { title: 'Marketplace', route: 'marketplace.index', icon: ShoppingBag },
+    { title: 'Importar', route: 'vehicles.import', icon: BarChart3 },
+];
+
+const navSecondary = [
+    { title: 'Suscripción', route: 'subscription.index', icon: CreditCard },
+    { title: 'Configuración', route: 'profile.edit', icon: Settings },
+];
+
+const isActive = (routeName: string) => {
+    try {
+        const path = page.url;
+        const section = routeName.split('.')[0];
+        return path.startsWith('/' + section);
+    } catch {
+        return false;
+    }
+};
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-background">
-            <nav class="border-b border-border bg-card">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo class="block h-9 w-auto fill-current text-foreground" />
-                                </Link>
-                            </div>
+    <SidebarProvider>
+        <Sidebar collapsible="icon" variant="sidebar">
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" as-child>
+                            <Link :href="route('dashboard')">
+                                <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                                    <Car class="size-4" />
+                                </div>
+                                <div class="grid flex-1 text-left text-sm leading-tight">
+                                    <span class="truncate font-semibold">GarageOS</span>
+                                    <span class="truncate text-xs text-muted-foreground">Gestión vehículos</span>
+                                </div>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
 
-                            <div class="hidden space-x-1 sm:-my-px sm:ms-10 sm:flex">
-                                <Button
-                                    as-child
-                                    :variant="route().current('dashboard') ? 'secondary' : 'ghost'"
-                                    size="sm"
-                                >
-                                    <Link :href="route('dashboard')">
-                                        <LayoutDashboard class="mr-2 h-4 w-4" />
-                                        Dashboard
+            <SidebarContent>
+                <SidebarGroup>
+                    <SidebarGroupLabel>Principal</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            <SidebarMenuItem v-for="item in navMain" :key="item.route">
+                                <SidebarMenuButton as-child :tooltip="item.title" :isActive="isActive(item.route)">
+                                    <Link :href="route(item.route)">
+                                        <component :is="item.icon" />
+                                        <span>{{ item.title }}</span>
                                     </Link>
-                                </Button>
-                                <Button
-                                    as-child
-                                    :variant="route().current('vehicles.*') ? 'secondary' : 'ghost'"
-                                    size="sm"
-                                >
-                                    <Link :href="route('vehicles.index')">
-                                        <Car class="mr-2 h-4 w-4" />
-                                        Vehículos
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarSeparator />
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Cuenta</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            <SidebarMenuItem v-for="item in navSecondary" :key="item.route">
+                                <SidebarMenuButton as-child :tooltip="item.title" :isActive="isActive(item.route)">
+                                    <Link :href="route(item.route)">
+                                        <component :is="item.icon" />
+                                        <span>{{ item.title }}</span>
                                     </Link>
-                                </Button>
-                            </div>
-                        </div>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarContent>
 
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger as-child>
-                                    <Button variant="ghost" size="sm">
-                                        {{ $page.props.auth.user.name }}
-                                        <ChevronDown class="ml-2 h-4 w-4" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" class="w-56">
-                                    <DropdownMenuLabel class="font-normal">
-                                        <div class="flex flex-col space-y-1">
-                                            <p class="text-sm font-medium">{{ $page.props.auth.user.name }}</p>
-                                            <p class="text-xs text-muted-foreground">{{ $page.props.auth.user.email }}</p>
-                                        </div>
-                                    </DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem as-child>
-                                        <Link :href="route('profile.edit')" class="cursor-pointer">
-                                            <User class="mr-2 h-4 w-4" />
-                                            Perfil
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem as-child>
-                                        <Link :href="route('logout')" method="post" as="button" class="cursor-pointer w-full text-destructive">
-                                            <LogOut class="mr-2 h-4 w-4" />
-                                            Cerrar sesión
-                                        </Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-
-                        <!-- Mobile menu -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <Sheet>
-                                <SheetTrigger as-child>
-                                    <Button variant="ghost" size="icon">
-                                        <Menu class="h-5 w-5" />
-                                    </Button>
-                                </SheetTrigger>
-                                <SheetContent side="right" class="w-72">
-                                    <SheetHeader>
-                                        <SheetTitle>{{ $page.props.auth.user.name }}</SheetTitle>
-                                    </SheetHeader>
-                                    <div class="mt-4 space-y-2">
-                                        <Button as-child variant="ghost" class="w-full justify-start">
-                                            <Link :href="route('dashboard')">
-                                                <LayoutDashboard class="mr-2 h-4 w-4" />
-                                                Dashboard
-                                            </Link>
-                                        </Button>
-                                        <Button as-child variant="ghost" class="w-full justify-start">
-                                            <Link :href="route('vehicles.index')">
-                                                <Car class="mr-2 h-4 w-4" />
-                                                Vehículos
-                                            </Link>
-                                        </Button>
-                                        <Button as-child variant="ghost" class="w-full justify-start">
-                                            <Link :href="route('profile.edit')">
-                                                <User class="mr-2 h-4 w-4" />
-                                                Perfil
-                                            </Link>
-                                        </Button>
-                                        <Button as-child variant="ghost" class="w-full justify-start text-destructive">
-                                            <Link :href="route('logout')" method="post" as="button">
-                                                <LogOut class="mr-2 h-4 w-4" />
-                                                Cerrar sesión
-                                            </Link>
-                                        </Button>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                                <SidebarMenuButton size="lg">
+                                    <Avatar class="h-8 w-8 rounded-lg">
+                                        <AvatarFallback class="rounded-lg bg-primary text-primary-foreground">
+                                            {{ ($page.props.auth.user?.name || 'U').charAt(0).toUpperCase() }}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div class="grid flex-1 text-left text-sm leading-tight">
+                                        <span class="truncate font-semibold">{{ $page.props.auth.user?.name }}</span>
+                                        <span class="truncate text-xs text-muted-foreground">{{ $page.props.auth.user?.email }}</span>
                                     </div>
-                                </SheetContent>
-                            </Sheet>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+                                    <ChevronUp class="ml-auto size-4" />
+                                </SidebarMenuButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="bottom" align="end" :side-offset="4">
+                                <DropdownMenuLabel class="p-0 font-normal">
+                                    <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                                        <Avatar class="h-8 w-8 rounded-lg">
+                                            <AvatarFallback class="rounded-lg bg-primary text-primary-foreground">
+                                                {{ ($page.props.auth.user?.name || 'U').charAt(0).toUpperCase() }}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div class="grid flex-1 text-left text-sm leading-tight">
+                                            <span class="truncate font-semibold">{{ $page.props.auth.user?.name }}</span>
+                                            <span class="truncate text-xs text-muted-foreground">{{ $page.props.auth.user?.email }}</span>
+                                        </div>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem as-child>
+                                    <Link :href="route('profile.edit')" class="cursor-pointer">
+                                        <User class="mr-2 h-4 w-4" />
+                                        Perfil
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem as-child>
+                                    <Link :href="route('logout')" method="post" as="button" class="cursor-pointer w-full text-destructive">
+                                        <LogOut class="mr-2 h-4 w-4" />
+                                        Cerrar sesión
+                                    </Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
+            <SidebarRail />
+        </Sidebar>
 
-            <header class="bg-card shadow" v-if="$slots.header">
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
+        <SidebarInset>
+            <header class="flex h-16 shrink-0 items-center gap-2 border-b border-border px-4">
+                <SidebarTrigger class="-ml-1" />
+                <Separator orientation="vertical" class="mr-2 h-4" />
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink as-child>
+                                <Link :href="route('dashboard')">Dashboard</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator v-if="$slots.header" />
+                        <BreadcrumbItem v-if="$slots.header">
+                            <BreadcrumbPage>
+                                <slot name="header" />
+                            </BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
             </header>
 
-            <main>
+            <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
                 <slot />
-            </main>
+            </div>
 
             <Toaster position="top-right" :richColors="true" />
-        </div>
-    </div>
+        </SidebarInset>
+    </SidebarProvider>
 </template>
