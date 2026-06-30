@@ -21,7 +21,12 @@ defineProps<{
             Perfil
         </template>
 
-        <div class="max-w-3xl space-y-6">
+        <div class="space-y-6">
+            <div>
+                <h2 class="text-xl font-semibold text-foreground mb-1">Configuración de la cuenta</h2>
+                <p class="text-sm text-muted-foreground">Administra tu perfil y preferencias</p>
+            </div>
+
             <Card class="border-0 shadow-lg">
                 <CardHeader class="pb-3">
                     <CardTitle class="flex items-center gap-2 text-lg font-semibold">

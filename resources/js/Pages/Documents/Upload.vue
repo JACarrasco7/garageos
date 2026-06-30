@@ -1,8 +1,21 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
+import { Textarea } from '@/Components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/Components/ui/select'
+import { ArrowLeft, Upload, FileText } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -50,58 +63,67 @@ const submit = () => {
     },
   })
 }
+
+const typeOptions = [
+  { value: 'factura', label: 'Factura' },
+  { value: 'itv', label: 'ITV' },
+  { value: 'seguro', label: 'Seguro' },
+  { value: 'impuesto', label: 'Impuesto' },
+  { value: 'otro', label: 'Otro' },
+]
 </script>
 
 <template>
   <Head title="Subir Documento" />
 
-  <AuthenticatedLayout>
+  <AppSidebarLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight">
-        Subir Documento - {{ vehicle.brand }} {{ vehicle.model }}
-      </h2>
+      Subir Documento - {{ vehicle.brand }} {{ vehicle.model }}
     </template>
 
-    <div class="py-12">
-      <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-          <form @submit.prevent="submit" class="p-6 space-y-6">
+    <div class="max-w-2xl mx-auto space-y-6">
+      <Card class="border-0 shadow-lg">
+        <CardHeader>
+          <CardTitle>Subir Documento</CardTitle>
+          <CardDescription>Arrastra o selecciona el archivo</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form @submit.prevent="submit" class="space-y-6">
             <!-- Tipo -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Tipo de documento</label>
-              <select
-                v-model="form.type"
-                required
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-              >
-                <option value="factura">Factura</option>
-                <option value="itv">ITV</option>
-                <option value="seguro">Seguro</option>
-                <option value="impuesto">Impuesto</option>
-                <option value="otro">Otro</option>
-              </select>
+            <div class="space-y-2">
+              <Label for="type">Tipo de documento</Label>
+              <Select v-model="form.type">
+                <SelectTrigger id="type">
+                  <SelectValue placeholder="Selecciona tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem v-for="opt in typeOptions" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <!-- Título -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Título</label>
-              <input
+            <div class="space-y-2">
+              <Label for="title">Título</Label>
+              <Input
+                id="title"
                 v-model="form.title"
                 type="text"
                 placeholder="Ej: Factura cambio aceite"
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
             <!-- File upload -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Archivo</label>
+            <div class="space-y-2">
+              <Label>Archivo</Label>
               <div
                 @dragover.prevent="dragOver = true"
                 @dragleave="dragOver = false"
                 @drop.prevent="handleDrop"
                 class="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition"
-                :class="dragOver ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'"
+                :class="dragOver ? 'border-primary bg-primary/10' : 'border-border'"
                 @click="fileInput?.click()"
               >
                 <input
@@ -113,68 +135,58 @@ const submit = () => {
                 />
                 <div v-if="form.file">
                   <p class="font-medium">{{ form.file.name }}</p>
-                  <p class="text-sm text-gray-500">{{ (form.file.size / 1024).toFixed(0) }} KB</p>
+                  <p class="text-sm text-muted-foreground">{{ (form.file.size / 1024).toFixed(0) }} KB</p>
                 </div>
-                <div v-else>
-                  <p class="text-gray-500">Arrastra un archivo o haz clic para seleccionar</p>
-                  <p class="text-xs text-gray-400 mt-1">PDF, JPG, PNG (máx. 20MB)</p>
+                <div v-else class="space-y-2">
+                  <FileText class="h-8 w-8 mx-auto text-muted-foreground" />
+                  <p class="text-muted-foreground">Arrastra un archivo o haz clic para seleccionar</p>
+                  <p class="text-xs text-muted-foreground">PDF, JPG, PNG (máx. 20MB)</p>
                 </div>
               </div>
-              <p v-if="form.errors.file" class="text-red-500 text-sm mt-1">{{ form.errors.file }}</p>
+              <p v-if="form.errors.file" class="text-sm text-destructive">{{ form.errors.file }}</p>
             </div>
 
             <!-- Fecha del documento -->
             <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium mb-1">Fecha del documento</label>
-                <input
-                  v-model="form.document_date"
-                  type="date"
-                  class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                />
+              <div class="space-y-2">
+                <Label for="document_date">Fecha del documento</Label>
+                <Input id="document_date" v-model="form.document_date" type="date" />
               </div>
-              <div>
-                <label class="block text-sm font-medium mb-1">Fecha de caducidad</label>
-                <input
-                  v-model="form.expiry_date"
-                  type="date"
-                  class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                />
+              <div class="space-y-2">
+                <Label for="expiry_date">Fecha de caducidad</Label>
+                <Input id="expiry_date" v-model="form.expiry_date" type="date" />
               </div>
             </div>
 
             <!-- Importe -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Importe (€)</label>
-              <input
+            <div class="space-y-2">
+              <Label for="amount">Importe (€)</Label>
+              <Input
+                id="amount"
                 v-model="form.amount"
                 type="number"
                 step="0.01"
                 min="0"
                 placeholder="0.00"
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
             <!-- Botones -->
-            <div class="flex justify-end space-x-3">
-              <Link
-                :href="route('vehicles.show', vehicle.id)"
-                class="px-4 py-2 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                Cancelar
-              </Link>
-              <button
-                type="submit"
-                :disabled="form.processing || !form.file"
-                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-              >
+            <div class="flex justify-end space-x-3 pt-4">
+              <Button as-child variant="ghost">
+                <Link :href="route('vehicles.show', vehicle.id)">
+                  <ArrowLeft class="w-4 h-4 mr-1" />
+                  Cancelar
+                </Link>
+              </Button>
+              <Button type="submit" :disabled="form.processing || !form.file">
+                <Upload class="w-4 h-4 mr-1" />
                 {{ form.processing ? 'Subiendo...' : 'Subir documento' }}
-              </button>
+              </Button>
             </div>
           </form>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
-  </AuthenticatedLayout>
+  </AppSidebarLayout>
 </template>

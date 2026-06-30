@@ -59,16 +59,8 @@ class DocumentController extends Controller
             'km_at_time' => $vehicle->current_km,
         ]);
 
-        // Disparar job de OCR
-        \App\Modules\Documents\Jobs\ParseDocumentJob::dispatch($document);
-
-        if (in_array($validated['type'], ['itv', 'seguro']) && $validated['expiry_date']) {
-            $vehicle->alertRules()->create([
-                'type' => $validated['type'],
-                'trigger_date' => $validated['expiry_date'],
-                'advance_days' => 30,
-            ]);
-        }
+        // Disparar evento para que los listeners procesen
+        event(new \App\Modules\Documents\Events\DocumentUploaded($document));
 
         return back()->with('success', 'Documento subido correctamente');
     }

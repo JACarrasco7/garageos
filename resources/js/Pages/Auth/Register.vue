@@ -90,7 +90,8 @@ const submit = () => {
                     class="w-full"
                     :disabled="form.processing"
                 >
-                    Crear cuenta
+                    <span v-if="form.processing">Creando cuenta...</span>
+                    <span v-else>Crear cuenta</span>
                 </Button>
             </form>
 

@@ -33,7 +33,7 @@ const submit = () => {
         <div class="space-y-6">
             <div class="text-center">
                 <h2 class="text-2xl font-bold text-foreground">Bienvenido</h2>
-                <p class="text-sm text-muted-foreground mt-1">Ingresa a tu cuenta</p>
+                <p class="text-sm text-muted-foreground mt-1">Ingresa a tu cuenta para continuar</p>
             </div>
 
             <div v-if="status" class="rounded-lg bg-green-50 dark:bg-green-900/20 p-3 text-sm font-medium text-green-600 dark:text-green-400">
@@ -88,9 +88,17 @@ const submit = () => {
                     class="w-full"
                     :disabled="form.processing"
                 >
-                    Iniciar sesión
+                    <span v-if="form.processing">Iniciando sesión...</span>
+                    <span v-else>Iniciar sesión</span>
                 </Button>
             </form>
+
+            <p class="text-center text-sm text-muted-foreground">
+                ¿No tienes cuenta?
+                <Link :href="route('register')" class="text-primary hover:underline ml-1">
+                    Regístrate
+                </Link>
+            </p>
         </div>
     </AuthCardLayout>
 </template>

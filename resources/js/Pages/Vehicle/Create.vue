@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
@@ -35,6 +36,8 @@ const submit = () => {
 </script>
 
 <template>
+  <Head title="Añadir Vehículo" />
+
   <AppSidebarLayout>
     <template #header>
       Añadir Vehículo

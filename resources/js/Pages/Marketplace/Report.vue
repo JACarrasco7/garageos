@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -30,45 +30,43 @@ defineProps<{
 <template>
   <Head title="Informe de Venta" />
 
-  <AuthenticatedLayout>
+  <AppSidebarLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight">Informe de Venta</h2>
+      Informe de Venta
     </template>
 
-    <div class="py-12">
-      <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <Card>
-          <CardHeader class="text-center">
-            <CardTitle class="text-2xl">{{ vehicle.brand }} {{ vehicle.model }}</CardTitle>
-            <CardDescription>{{ vehicle.plate }}</CardDescription>
-          </CardHeader>
+    <div class="max-w-3xl mx-auto">
+      <Card>
+        <CardHeader class="text-center">
+          <CardTitle class="text-2xl">{{ vehicle.brand }} {{ vehicle.model }}</CardTitle>
+          <CardDescription>{{ vehicle.plate }}</CardDescription>
+        </CardHeader>
 
-          <CardContent class="text-center mb-8">
-            <p class="text-sm text-muted-foreground mb-2">Puntuación de Salud</p>
-            <div class="text-6xl font-bold" :class="report.score >= 70 ? 'text-green-600 dark:text-green-400' : report.score >= 40 ? 'text-amber-600 dark:text-amber-400' : 'text-destructive'">
-              {{ report.score }}/100
-            </div>
-            <Badge :variant="report.score >= 70 ? 'default' : report.score >= 40 ? 'secondary' : 'destructive'" class="mt-2">
-              {{ report.score >= 70 ? 'Excelente' : report.score >= 40 ? 'Regular' : 'Necesita atención' }}
-            </Badge>
-          </CardContent>
+        <CardContent class="text-center mb-8">
+          <p class="text-sm text-muted-foreground mb-2">Puntuación de Salud</p>
+          <div class="text-6xl font-bold" :class="report.score >= 70 ? 'text-green-600 dark:text-green-400' : report.score >= 40 ? 'text-amber-600 dark:text-amber-400' : 'text-destructive'">
+            {{ report.score }}/100
+          </div>
+          <Badge :variant="report.score >= 70 ? 'default' : report.score >= 40 ? 'secondary' : 'destructive'" class="mt-2">
+            {{ report.score >= 70 ? 'Excelente' : report.score >= 40 ? 'Regular' : 'Necesita atención' }}
+          </Badge>
+        </CardContent>
 
-          <CardFooter class="flex justify-center space-x-4">
-            <Button as-child>
-              <a :href="route('marketplace.download', report)" target="_blank">
-                <Download class="mr-2 h-4 w-4" />
-                Descargar PDF
-              </a>
-            </Button>
-            <Button as-child variant="ghost">
-              <Link :href="route('vehicles.show', vehicle.id)">
-                <ArrowLeft class="mr-2 h-4 w-4" />
-                Volver al vehículo
-              </Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+        <CardFooter class="flex justify-center space-x-4">
+          <Button as-child>
+            <a :href="route('marketplace.download', report)" target="_blank">
+              <Download class="mr-2 h-4 w-4" />
+              Descargar PDF
+            </a>
+          </Button>
+          <Button as-child variant="ghost">
+            <Link :href="route('vehicles.show', vehicle.id)">
+              <ArrowLeft class="mr-2 h-4 w-4" />
+              Volver al vehículo
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
-  </AuthenticatedLayout>
+  </AppSidebarLayout>
 </template>

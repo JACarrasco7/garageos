@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import { Head } from '@inertiajs/vue3'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Badge } from '@/Components/ui/badge'
+import { Button } from '@/Components/ui/button'
+import { ArrowLeft, CheckCircle, XCircle, Clock, RefreshCw } from 'lucide-vue-next'
 
 interface VehicleImport {
   id: number
@@ -16,54 +23,67 @@ defineProps<{ vehicleImport: VehicleImport }>()
 
 const processForm = useForm({})
 
-function statusClass(status: string): string {
-  const classes: Record<string, string> = {
-    pending: 'text-yellow-600',
-    processing: 'text-blue-600',
-    approved: 'text-green-600',
-    rejected: 'text-red-600',
-  }
-  return classes[status] || 'text-gray-600'
+const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' | 'success'; icon: any }> = {
+  pending: { label: 'Pendiente', variant: 'outline', icon: Clock },
+  processing: { label: 'Procesando', variant: 'secondary', icon: RefreshCw },
+  approved: { label: 'Aprobado', variant: 'default', icon: CheckCircle },
+  rejected: { label: 'Rechazado', variant: 'destructive', icon: XCircle },
 }
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto py-6 sm:px-6 lg:px-8">
-    <h1 class="text-2xl font-bold mb-6">Detalle Importación</h1>
+  <Head title="Detalle Importación" />
 
-    <div class="bg-white shadow rounded-lg p-6 space-y-4">
-      <div>
-        <span class="text-sm text-gray-500">Matrícula Original (Alemania)</span>
-        <p class="font-semibold">{{ vehicleImport.plate_original }}</p>
-      </div>
+  <AppSidebarLayout>
+    <template #header>
+      Detalle Importación
+    </template>
 
-      <div>
-        <span class="text-sm text-gray-500">Matrícula Asignada (España)</span>
-        <p class="font-semibold text-green-600">{{ vehicleImport.plate_new || 'Pendiente' }}</p>
-      </div>
+    <div class="max-w-2xl mx-auto space-y-6">
+      <Card class="border-0 shadow-lg">
+        <CardHeader>
+          <CardTitle>Importación de Vehículo</CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Matrícula Original (Alemania)</p>
+            <p class="font-semibold">{{ vehicleImport.plate_original }}</p>
+          </div>
 
-      <div>
-        <span class="text-sm text-gray-500">Vehículo</span>
-        <p class="font-semibold">{{ vehicleImport.brand }} {{ vehicleImport.model }} ({{ vehicleImport.year }})</p>
-      </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Matrícula Asignada (España)</p>
+            <p class="font-semibold" :class="vehicleImport.plate_new ? 'text-green-600' : 'text-muted-foreground'">
+              {{ vehicleImport.plate_new || 'Pendiente' }}
+            </p>
+          </div>
 
-      <div>
-        <span class="text-sm text-gray-500">Estado</span>
-        <span :class="statusClass(vehicleImport.status)" class="font-semibold">{{ vehicleImport.status }}</span>
-      </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Vehículo</p>
+            <p class="font-semibold">{{ vehicleImport.brand }} {{ vehicleImport.model }} ({{ vehicleImport.year }})</p>
+          </div>
 
-      <div v-if="vehicleImport.rejection_reason" class="bg-red-50 p-4 rounded">
-        <span class="text-sm text-red-600">Motivo rechazo: {{ vehicleImport.rejection_reason }}</span>
-      </div>
+          <div class="space-y-1">
+            <p class="text-sm text-muted-foreground">Estado</p>
+            <Badge :variant="statusConfig[vehicleImport.status]?.variant ?? 'outline'" class="capitalize">
+              {{ statusConfig[vehicleImport.status]?.label ?? vehicleImport.status }}
+            </Badge>
+          </div>
 
-      <div class="pt-4 border-t">
-        <button v-if="vehicleImport.status === 'approved'"
-          @click="processForm.post(route('imports.process', vehicleImport.id))"
-          :disabled="processForm.processing"
-          class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">
-          {{ processForm.processing ? 'Procesando...' : 'Procesar Importación' }}
-        </button>
-      </div>
+          <div v-if="vehicleImport.rejection_reason" class="bg-destructive/10 p-4 rounded-lg">
+            <p class="text-sm text-destructive font-medium">Motivo rechazo: {{ vehicleImport.rejection_reason }}</p>
+          </div>
+
+          <div v-if="vehicleImport.status === 'approved'" class="pt-4 border-t">
+            <Button
+              @click="processForm.post(route('imports.process', vehicleImport.id))"
+              :disabled="processForm.processing"
+            >
+              <RefreshCw v-if="processForm.processing" class="mr-2 h-4 w-4 animate-spin" />
+              {{ processForm.processing ? 'Procesando...' : 'Procesar Importación' }}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
-  </div>
+  </AppSidebarLayout>
 </template>

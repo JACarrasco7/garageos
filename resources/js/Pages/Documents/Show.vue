@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -26,49 +26,47 @@ defineProps<{
 <template>
   <Head :title="document.title" />
 
-  <AuthenticatedLayout>
+  <AppSidebarLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight">{{ document.title }}</h2>
+      {{ document.title }}
     </template>
 
-    <div class="py-12">
-      <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-        <Card>
-          <CardHeader>
-            <div class="flex justify-between items-start">
-              <div>
-                <CardTitle>{{ document.title }}</CardTitle>
-                <p class="text-sm text-muted-foreground mt-1">{{ document.type }}</p>
-              </div>
-              <Badge variant="secondary">
-                {{ (document.file_size / 1024).toFixed(1) }} KB
-              </Badge>
+    <div class="max-w-2xl mx-auto space-y-6">
+      <Card class="border-0 shadow-lg">
+        <CardHeader>
+          <div class="flex justify-between items-start">
+            <div>
+              <CardTitle>{{ document.title }}</CardTitle>
+              <p class="text-sm text-muted-foreground mt-1">{{ document.type }}</p>
             </div>
-          </CardHeader>
-          <CardContent class="space-y-4">
-            <div class="border-t pt-4">
-              <p class="text-sm text-muted-foreground">Fecha: {{ document.document_date }}</p>
-              <p class="text-sm text-muted-foreground">Vence: {{ document.expiry_date || 'N/A' }}</p>
-              <p class="text-sm text-muted-foreground">Importe: {{ document.amount ? document.amount + ' €' : 'N/A' }}</p>
-            </div>
+            <Badge variant="secondary">
+              {{ (document.file_size / 1024).toFixed(1) }} KB
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <div class="border-t border-border pt-4">
+            <p class="text-sm text-muted-foreground">Fecha: {{ document.document_date }}</p>
+            <p class="text-sm text-muted-foreground">Vence: {{ document.expiry_date || 'N/A' }}</p>
+            <p class="text-sm text-muted-foreground">Importe: {{ document.amount ? document.amount + ' €' : 'N/A' }}</p>
+          </div>
 
-            <div class="flex justify-end space-x-3 pt-4">
-              <Button as-child>
-                <a :href="`/storage/${document.file_path}`" target="_blank">
-                  <FileText class="w-4 h-4 mr-1" />
-                  Ver documento
-                </a>
-              </Button>
-              <Button as-child variant="ghost">
-                <Link :href="route('documents.index')">
-                  <ArrowLeft class="w-4 h-4 mr-1" />
-                  Volver
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <div class="flex justify-end space-x-3 pt-4">
+            <Button as-child>
+              <a :href="`/storage/${document.file_path}`" target="_blank">
+                <FileText class="w-4 h-4 mr-1" />
+                Ver documento
+              </a>
+            </Button>
+            <Button as-child variant="ghost">
+              <Link :href="route('documents.index')">
+                <ArrowLeft class="w-4 h-4 mr-1" />
+                Volver
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
-  </AuthenticatedLayout>
+  </AppSidebarLayout>
 </template>

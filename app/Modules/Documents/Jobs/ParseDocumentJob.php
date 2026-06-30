@@ -33,6 +33,9 @@ class ParseDocumentJob implements ShouldQueue
             'extracted_text' => $text,
             'parsed_data' => $this->parseData($text),
         ]);
+
+        // Disparar evento de documento procesado
+        event(new \App\Modules\Documents\Events\DocumentProcessed($this->document));
     }
 
     private function extractText(string $path): string

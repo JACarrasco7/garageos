@@ -29,7 +29,10 @@ class ProcessImportAction
             ]);
         }
 
-        $import->update(['status' => 'approved']);
+        $import->update(['status' => 'approved', 'vehicle_id' => $vehicle->id]);
+
+        // Disparar evento para crear alertas por defecto
+        event(new \App\Modules\Vehicle\Events\VehicleRegistered($vehicle));
 
         return $vehicle;
     }

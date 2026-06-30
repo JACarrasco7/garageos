@@ -19,6 +19,7 @@ class Document extends Model
         'expiry_date',
         'amount',
         'parsed_data',
+        'extracted_text',
         'is_verified',
         'verified_by',
         'verified_at',

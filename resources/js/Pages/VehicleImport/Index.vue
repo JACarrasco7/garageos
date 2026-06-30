@@ -1,25 +1,35 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Badge } from '@/Components/ui/badge'
-import { Plus, FileText, Car } from 'lucide-vue-next'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
+import { Plus, Car } from 'lucide-vue-next'
 
-defineProps<{ imports: any }>()
+interface VehicleImport {
+  id: number
+  plate_original: string
+  plate_new: string | null
+  brand: string
+  model: string
+  status: string
+}
 
-function statusVariant(status: string): string {
-  const variants: Record<string, string> = {
-    pending: 'secondary',
-    processing: 'default',
-    approved: 'default',
-    rejected: 'destructive',
-  }
-  return variants[status] || 'secondary'
+defineProps<{ imports: { data: VehicleImport[] } }>()
+
+const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+  pending: { label: 'Pendiente', variant: 'secondary' },
+  processing: { label: 'Procesando', variant: 'default' },
+  approved: { label: 'Aprobado', variant: 'default' },
+  rejected: { label: 'Rechazado', variant: 'destructive' },
 }
 </script>
 
 <template>
+  <Head title="Importaciones" />
+
   <AppSidebarLayout>
     <template #header>
       Importaciones
@@ -44,36 +54,34 @@ function statusVariant(status: string): string {
           <p class="text-sm text-muted-foreground">Crea tu primera importación</p>
         </div>
 
-        <div v-else class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-border">
-            <thead>
-              <tr>
-                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Matrícula Original</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Matrícula Nueva</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Vehículo</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estado</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Acciones</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-border">
-              <tr v-for="vehicleImport in imports.data" :key="vehicleImport.id" class="hover:bg-accent">
-                <td class="px-4 py-3 text-sm">{{ vehicleImport.plate_original }}</td>
-                <td class="px-4 py-3 text-sm">{{ vehicleImport.plate_new || '-' }}</td>
-                <td class="px-4 py-3 text-sm">{{ vehicleImport.brand }} {{ vehicleImport.model }}</td>
-                <td class="px-4 py-3">
-                  <Badge :variant="statusVariant(vehicleImport.status)" class="capitalize">
-                    {{ vehicleImport.status }}
-                  </Badge>
-                </td>
-                <td class="px-4 py-3">
-                  <Link :href="route('imports.show', vehicleImport.id)" class="text-sm text-primary hover:underline">
-                    Ver
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <Table v-else>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Matrícula Original</TableHead>
+              <TableHead>Matrícula Nueva</TableHead>
+              <TableHead>Vehículo</TableHead>
+              <TableHead>Estado</TableHead>
+              <TableHead class="text-right">Acciones</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow v-for="vehicleImport in imports.data" :key="vehicleImport.id">
+              <TableCell class="font-medium">{{ vehicleImport.plate_original }}</TableCell>
+              <TableCell>{{ vehicleImport.plate_new || '-' }}</TableCell>
+              <TableCell>{{ vehicleImport.brand }} {{ vehicleImport.model }}</TableCell>
+              <TableCell>
+                <Badge :variant="statusConfig[vehicleImport.status]?.variant ?? 'secondary'" class="capitalize">
+                  {{ statusConfig[vehicleImport.status]?.label ?? vehicleImport.status }}
+                </Badge>
+              </TableCell>
+              <TableCell class="text-right">
+                <Button as-child variant="ghost" size="sm">
+                  <Link :href="route('imports.show', vehicleImport.id)">Ver</Link>
+                </Button>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   </AppSidebarLayout>

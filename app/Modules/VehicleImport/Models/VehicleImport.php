@@ -32,4 +32,9 @@ class VehicleImport extends Model
     {
         return $this->belongsTo(\App\Models\User::class);
     }
+
+    public function vehicle(): BelongsTo
+    {
+        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+    }
 }

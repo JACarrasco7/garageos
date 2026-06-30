@@ -17,8 +17,18 @@ class DocumentServiceProvider extends ServiceProvider
 
         // Listeners
         $this->app['events']->listen(
+            \App\Modules\Documents\Events\DocumentUploaded::class,
+            \App\Modules\Documents\Listeners\ParseDocumentListener::class
+        );
+
+        $this->app['events']->listen(
             \App\Modules\Documents\Events\DocumentProcessed::class,
             \App\Modules\Documents\Listeners\CreateMaintenanceFromDocument::class
+        );
+
+        $this->app['events']->listen(
+            \App\Modules\Documents\Events\DocumentProcessed::class,
+            \App\Modules\Documents\Listeners\CreateAlertFromDocument::class
         );
     }
 

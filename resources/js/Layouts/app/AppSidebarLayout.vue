@@ -34,14 +34,14 @@ onMounted(() => {
     <AppSidebar />
 
     <SidebarInset>
-        <header class="flex h-16 items-center gap-2 border-b border-border bg-card px-4 shadow-sm">
+        <header class="flex h-16 items-center gap-2 border-b border-border bg-card/80 supports-backdrop-filter:bg-card/60 backdrop-blur px-4 shadow-sm">
             <SidebarTrigger class="-ml-1 h-8 w-8 rounded-lg hover:bg-muted" />
             <Separator orientation="vertical" class="mr-2 h-6" />
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <BreadcrumbLink as-child>
-                            <Link :href="route('dashboard')" class="text-sm font-medium">Dashboard</Link>
+                            <Link :href="route('dashboard')" class="text-sm font-medium text-foreground">Dashboard</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator v-if="$slots.header" />
@@ -57,7 +57,5 @@ onMounted(() => {
         <main class="flex flex-1 flex-col gap-4 p-4 md:p-6 pt-0">
             <slot />
         </main>
-
-        <Toaster position="top-right" :richColors="true" closeButton />
     </SidebarInset>
 </template>

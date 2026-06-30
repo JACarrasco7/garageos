@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
@@ -22,68 +22,67 @@ defineProps<{
 <template>
   <Head title="Estadísticas" />
 
-  <AuthenticatedLayout>
+  <AppSidebarLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight">Estadísticas</h2>
+      Estadísticas
     </template>
 
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Vehículos</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p class="text-3xl font-bold">{{ stats.total_vehicles }}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Documentos</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p class="text-3xl font-bold">{{ stats.total_documents }}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Mantenimientos</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p class="text-3xl font-bold">{{ stats.total_maintenance }}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Gasto total</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p class="text-3xl font-bold">{{ stats.total_spent }} €</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Coste/km</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p class="text-3xl font-bold">{{ stats.avg_cost_per_km }} €/km</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card v-if="stats.monthly_spending?.length" class="mt-6">
+    <div class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card class="border-0 shadow-lg">
           <CardHeader>
-            <CardTitle class="flex items-center gap-2">
-              <TrendingUp class="h-5 w-5" />
-              Gastos mensuales
-            </CardTitle>
+            <CardTitle>Vehículos</CardTitle>
           </CardHeader>
           <CardContent>
+            <p class="text-3xl font-bold">{{ stats.total_vehicles }}</p>
+          </CardContent>
+        </Card>
+
+        <Card class="border-0 shadow-lg">
+          <CardHeader>
+            <CardTitle>Documentos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p class="text-3xl font-bold">{{ stats.total_documents }}</p>
+          </CardContent>
+        </Card>
+
+        <Card class="border-0 shadow-lg">
+          <CardHeader>
+            <CardTitle>Mantenimientos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p class="text-3xl font-bold">{{ stats.total_maintenance }}</p>
+          </CardContent>
+        </Card>
+
+        <Card class="border-0 shadow-lg">
+          <CardHeader>
+            <CardTitle>Gasto total</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p class="text-3xl font-bold">{{ stats.total_spent }} €</p>
+          </CardContent>
+        </Card>
+
+        <Card class="border-0 shadow-lg">
+          <CardHeader>
+            <CardTitle>Coste/km</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p class="text-3xl font-bold">{{ stats.avg_cost_per_km }} €/km</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card v-if="stats.monthly_spending?.length" class="border-0 shadow-lg">
+        <CardHeader>
+          <CardTitle class="flex items-center gap-2">
+            <TrendingUp class="h-5 w-5" />
+            Gastos mensuales
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
           <div class="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart :data="stats.monthly_spending">
@@ -94,9 +93,8 @@ defineProps<{
               </LineChart>
             </ResponsiveContainer>
           </div>
-          </CardContent>
-        </Card>
-      </div>
+        </CardContent>
+      </Card>
     </div>
-  </AuthenticatedLayout>
+  </AppSidebarLayout>
 </template>

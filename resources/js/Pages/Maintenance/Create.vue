@@ -1,7 +1,20 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
+import { Textarea } from '@/Components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/Components/ui/select'
+import { ArrowLeft, Save } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -33,132 +46,137 @@ const submit = () => {
     },
   })
 }
+
+const typeOptions = [
+  { value: 'aceite', label: 'Aceite' },
+  { value: 'filtros', label: 'Filtros' },
+  { value: 'neumaticos', label: 'Neumáticos' },
+  { value: 'frenos', label: 'Frenos' },
+  { value: 'distribucion', label: 'Distribución' },
+  { value: 'embrague', label: 'Embrague' },
+  { value: 'bateria', label: 'Batería' },
+  { value: 'itv', label: 'ITV' },
+  { value: 'revision_general', label: 'Revisión General' },
+  { value: 'otro', label: 'Otro' },
+]
 </script>
 
 <template>
   <Head title="Añadir Mantenimiento" />
 
-  <AuthenticatedLayout>
+  <AppSidebarLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight">
-        Añadir Mantenimiento - {{ vehicle.brand }} {{ vehicle.model }}
-      </h2>
+      Añadir Mantenimiento - {{ vehicle.brand }} {{ vehicle.model }}
     </template>
 
-    <div class="py-12">
-      <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-          <form @submit.prevent="submit" class="p-6 space-y-6">
+    <div class="max-w-2xl mx-auto space-y-6">
+      <Card class="border-0 shadow-lg">
+        <CardHeader>
+          <CardTitle>Datos del servicio</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form @submit.prevent="submit" class="space-y-6">
             <!-- Tipo -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Tipo</label>
-              <select
-                v-model="form.type"
-                required
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-              >
-                <option value="aceite">Aceite</option>
-                <option value="filtros">Filtros</option>
-                <option value="neumaticos">Neumáticos</option>
-                <option value="frenos">Frenos</option>
-                <option value="distribucion">Distribución</option>
-                <option value="embrague">Embrague</option>
-                <option value="bateria">Batería</option>
-                <option value="itv">ITV</option>
-                <option value="revision_general">Revisión General</option>
-                <option value="otro">Otro</option>
-              </select>
+            <div class="space-y-2">
+              <Label for="type">Tipo</Label>
+              <Select v-model="form.type">
+                <SelectTrigger id="type">
+                  <SelectValue placeholder="Selecciona tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem v-for="opt in typeOptions" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <!-- Título -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Título</label>
-              <input
+            <div class="space-y-2">
+              <Label for="title">Título</Label>
+              <Input
+                id="title"
                 v-model="form.title"
                 type="text"
-                required
                 placeholder="Ej: Cambio de aceite y filtros"
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                required
               />
             </div>
 
             <!-- Descripción -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Descripción</label>
-              <textarea
+            <div class="space-y-2">
+              <Label for="description">Descripción</Label>
+              <Textarea
+                id="description"
                 v-model="form.description"
                 rows="3"
                 placeholder="Detalles del servicio realizado..."
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-              ></textarea>
+              />
             </div>
 
             <!-- Fecha y Km -->
             <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium mb-1">Fecha</label>
-                <input
+              <div class="space-y-2">
+                <Label for="service_date">Fecha</Label>
+                <Input
+                  id="service_date"
                   v-model="form.service_date"
                   type="date"
                   required
-                  class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                 />
               </div>
-              <div>
-                <label class="block text-sm font-medium mb-1">Km en el servicio</label>
-                <input
+              <div class="space-y-2">
+                <Label for="km_at_service">Km en el servicio</Label>
+                <Input
+                  id="km_at_service"
                   v-model="form.km_at_service"
                   type="number"
-                  required
                   min="0"
-                  class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  required
                 />
               </div>
             </div>
 
             <!-- Coste -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Coste (€)</label>
-              <input
+            <div class="space-y-2">
+              <Label for="cost">Coste (€)</Label>
+              <Input
+                id="cost"
                 v-model="form.cost"
                 type="number"
                 step="0.01"
                 min="0"
                 placeholder="0.00"
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
             <!-- Notas -->
-            <div>
-              <label class="block text-sm font-medium mb-1">Notas técnicas</label>
-              <textarea
+            <div class="space-y-2">
+              <Label for="notes">Notas técnicas</Label>
+              <Textarea
+                id="notes"
                 v-model="form.notes"
                 rows="2"
                 placeholder="Observaciones, piezas usadas, etc."
-                class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-              ></textarea>
+              />
             </div>
 
             <!-- Botones -->
-            <div class="flex justify-end space-x-3">
-              <Link
-                :href="route('maintenance.index', vehicle.id)"
-                class="px-4 py-2 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                Cancelar
-              </Link>
-              <button
-                type="submit"
-                :disabled="form.processing"
-                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50"
-              >
+            <div class="flex justify-end space-x-3 pt-4">
+              <Button as-child variant="ghost">
+                <Link :href="route('maintenance.index', vehicle.id)">
+                  <ArrowLeft class="w-4 h-4 mr-1" />
+                  Cancelar
+                </Link>
+              </Button>
+              <Button type="submit" :disabled="form.processing">
+                <Save class="w-4 h-4 mr-1" />
                 {{ form.processing ? 'Guardando...' : 'Guardar entrada' }}
-              </button>
+              </Button>
             </div>
           </form>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
-  </AuthenticatedLayout>
+  </AppSidebarLayout>
 </template>
