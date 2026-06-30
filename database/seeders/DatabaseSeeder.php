@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ServicePackSeeder::class,
             AffiliateLinkSeeder::class,
             VehicleImportSeeder::class,
+            GarageFullSeeder::class,
         ]);
 
         User::factory()->create([
