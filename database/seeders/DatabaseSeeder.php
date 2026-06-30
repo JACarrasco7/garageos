@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ServicePackSeeder::class,
             AffiliateLinkSeeder::class,
+            VehicleImportSeeder::class,
         ]);
 
         User::factory()->create([
