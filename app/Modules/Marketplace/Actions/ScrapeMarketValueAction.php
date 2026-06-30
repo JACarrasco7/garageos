@@ -12,13 +12,28 @@ class ScrapeMarketValueAction
     {
         $searchTerm = "{$vehicle->brand} {$vehicle->model} {$vehicle->year}";
 
-        // Placeholder: integrar con API real (coches.net, autocasion)
-        // $response = Http::get('https://api.example.com/vehicles/search', [
-        //     'q' => $searchTerm,
-        //     'year' => $vehicle->year,
-        // ]);
+        // Intentar API real si está configurada
+        $apiKey = config('services.cochesnet.key');
+        if ($apiKey) {
+            $response = Http::get('https://api.coches.net/vehicles/search', [
+                'q' => $searchTerm,
+                'year' => $vehicle->year,
+                'key' => $apiKey,
+            ]);
 
-        // Simular valor estimado
+            if ($response->successful() && $response->json('price')) {
+                $price = $response->json('price');
+                return MarketValue::create([
+                    'vehicle_id' => $vehicle->id,
+                    'estimated_value' => $price,
+                    'min_value' => $price * 0.85,
+                    'max_value' => $price * 1.15,
+                    'source' => 'coches.net',
+                ]);
+            }
+        }
+
+        // Fallback: estimación
         $estimatedValue = $this->estimateValue($vehicle);
 
         if (!$estimatedValue) {

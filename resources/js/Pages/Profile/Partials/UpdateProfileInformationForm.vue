@@ -1,58 +1,4 @@
 <script setup lang="ts">
-import s/vue3';
-
-defineProps<{
-    mustVerifyEmail?: Boolean;
-    status?: String;
-}>();
-
-const user = (usePage().props.auth as any).user;
-
-const form = useForm({
-    name: user.name,
-    email: user.email,
-});
-</script>
-
-<template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-foreground">
-                Profile Information
-             address.
-            </p>
-        </header>
-
-        <form
-            @submit.prevent="form.patch(route('profile.update'))"
-            class="mt-6 space-y-6"
-        >
-            <div>
-                <Label for="name">Name</Label>
-
-                l">Email</Label>
-
-                l_verified_at === null">
-                <p class="mt-2 text-sm text-muted-foreground">
-                    Your email address is un     class="mt-2 text-sm font-medium text-green-600 dark:text-green-400"
-                >
-                    A new verification link has been sent to your email address.
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <Button :disabled="form.processing">Save</Button>
-
-                nsition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-muted-foreground"
-                    >
-                      <script setup lang="ts">
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
@@ -153,4 +99,9 @@ const form = useForm({
                         class="text-sm text-muted-foreground"
                     >
                         Saved.
-                  
+                    </p>
+                </Transition>
+            </div>
+        </form>
+    </section>
+</template>

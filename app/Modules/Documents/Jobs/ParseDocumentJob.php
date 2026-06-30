@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
+use Smalot\PdfParser\Parser;
 
 class ParseDocumentJob implements ShouldQueue
 {
@@ -51,14 +52,23 @@ class ParseDocumentJob implements ShouldQueue
 
     private function extractFromPdf(string $path): string
     {
-        // Placeholder: usar pdftotext o smalot/pdfparser
-        return '';
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf = $parser->parseFile($path);
+        return $pdf->getText();
     }
 
     private function extractFromImage(string $path): string
     {
-        // Placeholder: usar tesseract OCR
-        // exec("tesseract {$path} stdout", $output);
+        $outputFile = sys_get_temp_dir() . '/ocr_' . uniqid();
+        $command = sprintf('tesseract %s %s -l spa+eng --psm 1 2>&1', escapeshellarg($path), escapeshellarg($outputFile));
+        exec($command, $output, $returnCode);
+        
+        if ($returnCode === 0 && file_exists($outputFile . '.txt')) {
+            $text = file_get_contents($outputFile . '.txt');
+            unlink($outputFile . '.txt');
+            return $text;
+        }
+        
         return '';
     }
 
