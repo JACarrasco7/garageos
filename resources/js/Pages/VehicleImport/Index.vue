@@ -1,5 +1,15 @@
 <script setup lang="ts">
-defineProps<{ imports: Object }>()
+defineProps<{ imports: any }>()
+
+function statusClass(status: string): string {
+  const classes: Record<string, string> = {
+    pending: 'text-yellow-600',
+    processing: 'text-blue-600',
+    approved: 'text-green-600',
+    rejected: 'text-red-600',
+  }
+  return classes[status] || 'text-gray-600'
+}
 </script>
 
 <template>
@@ -23,15 +33,15 @@ defineProps<{ imports: Object }>()
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
-          <tr v-for="import in imports.data" :key="import.id">
-            <td class="px-6 py-4">{{ import.plate_original }}</td>
-            <td class="px-6 py-4">{{ import.plate_new || '-' }}</td>
-            <td class="px-6 py-4">{{ import.brand }} {{ import.model }}</td>
+          <tr v-for="vehicleImport in imports.data" :key="vehicleImport.id">
+            <td class="px-6 py-4">{{ vehicleImport.plate_original }}</td>
+            <td class="px-6 py-4">{{ vehicleImport.plate_new || '-' }}</td>
+            <td class="px-6 py-4">{{ vehicleImport.brand }} {{ vehicleImport.model }}</td>
             <td class="px-6 py-4">
-              <span :class="statusClass(import.status)">{{ import.status }}</span>
+              <span :class="statusClass(vehicleImport.status)">{{ vehicleImport.status }}</span>
             </td>
             <td class="px-6 py-4">
-              <a :href="route('imports.show', import.id)" class="text-blue-600 hover:underline">Ver</a>
+              <a :href="route('imports.show', vehicleImport.id)" class="text-blue-600 hover:underline">Ver</a>
             </td>
           </tr>
         </tbody>
@@ -39,15 +49,3 @@ defineProps<{ imports: Object }>()
     </div>
   </div>
 </template>
-
-<script>
-function statusClass(status: string): string {
-  const classes = {
-    pending: 'text-yellow-600',
-    processing: 'text-blue-600',
-    approved: 'text-green-600',
-    rejected: 'text-red-600',
-  }
-  return classes[status] || 'text-gray-600'
-}
-</script>
