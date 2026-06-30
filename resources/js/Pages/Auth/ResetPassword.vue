@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
+import AuthCardLayout from '@/layouts/auth/AuthCardLayout.vue';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
@@ -27,64 +27,64 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Reset Password" />
+    <AuthCardLayout>
+        <Head title="Nueva contraseña" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <Label for="email">Email</Label>
-
-                <Input
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <p v-if="form.errors.email" class="text-sm text-destructive mt-2">{{ form.errors.email }}</p>
+        <div class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-foreground">Nueva contraseña</h2>
+                <p class="text-sm text-muted-foreground mt-1">Elige una contraseña segura</p>
             </div>
 
-            <div class="mt-4">
-                <Label for="password">Password</Label>
+            <form @submit.prevent="submit" class="space-y-4">
+                <div class="space-y-2">
+                    <Label for="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        v-model="form.email"
+                        required
+                        autofocus
+                        autocomplete="username"
+                        placeholder="tu@email.com"
+                    />
+                    <p v-if="form.errors.email" class="text-sm text-destructive">{{ form.errors.email }}</p>
+                </div>
 
-                <Input
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+                <div class="space-y-2">
+                    <Label for="password">Nueva contraseña</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        v-model="form.password"
+                        required
+                        autocomplete="new-password"
+                        placeholder="••••••••"
+                    />
+                    <p v-if="form.errors.password" class="text-sm text-destructive">{{ form.errors.password }}</p>
+                </div>
 
-                <p v-if="form.errors.password" class="text-sm text-destructive mt-2">{{ form.errors.password }}</p>
-            </div>
+                <div class="space-y-2">
+                    <Label for="password_confirmation">Confirmar contraseña</Label>
+                    <Input
+                        id="password_confirmation"
+                        type="password"
+                        v-model="form.password_confirmation"
+                        required
+                        autocomplete="new-password"
+                        placeholder="••••••••"
+                    />
+                    <p v-if="form.errors.password_confirmation" class="text-sm text-destructive">{{ form.errors.password_confirmation }}</p>
+                </div>
 
-            <div class="mt-4">
-                <Label for="password_confirmation">Confirm Password</Label>
-
-                <Input
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <p v-if="form.errors.password_confirmation" class="text-sm text-destructive mt-2">{{ form.errors.password_confirmation }}</p>
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
                 <Button
+                    type="submit"
+                    class="w-full"
                     :disabled="form.processing"
-                    :class="{ 'opacity-25': form.processing }"
                 >
-                    Reset Password
+                    Guardar contraseña
                 </Button>
-            </div>
-        </form>
-    </GuestLayout>
+            </form>
+        </div>
+    </AuthCardLayout>
 </template>

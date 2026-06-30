@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
+import AuthCardLayout from '@/layouts/auth/AuthCardLayout.vue';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
@@ -22,87 +22,84 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Register" />
+    <AuthCardLayout>
+        <Head title="Crear cuenta" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <Label for="name">Name</Label>
-
-                <Input
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-
-                <p v-if="form.errors.name" class="text-sm text-destructive mt-2">{{ form.errors.name }}</p>
+        <div class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-foreground">Crear cuenta</h2>
+                <p class="text-sm text-muted-foreground mt-1">Regístrate gratis</p>
             </div>
 
-            <div class="mt-4">
-                <Label for="email">Email</Label>
+            <form @submit.prevent="submit" class="space-y-4">
+                <div class="space-y-2">
+                    <Label for="name">Nombre</Label>
+                    <Input
+                        id="name"
+                        type="text"
+                        v-model="form.name"
+                        required
+                        autofocus
+                        autocomplete="name"
+                        placeholder="Tu nombre"
+                    />
+                    <p v-if="form.errors.name" class="text-sm text-destructive">{{ form.errors.name }}</p>
+                </div>
 
-                <Input
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+                <div class="space-y-2">
+                    <Label for="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        v-model="form.email"
+                        required
+                        autocomplete="username"
+                        placeholder="tu@email.com"
+                    />
+                    <p v-if="form.errors.email" class="text-sm text-destructive">{{ form.errors.email }}</p>
+                </div>
 
-                <p v-if="form.errors.email" class="text-sm text-destructive mt-2">{{ form.errors.email }}</p>
-            </div>
+                <div class="space-y-2">
+                    <Label for="password">Contraseña</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        v-model="form.password"
+                        required
+                        autocomplete="new-password"
+                        placeholder="••••••••"
+                    />
+                    <p v-if="form.errors.password" class="text-sm text-destructive">{{ form.errors.password }}</p>
+                </div>
 
-            <div class="mt-4">
-                <Label for="password">Password</Label>
-
-                <Input
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <p v-if="form.errors.password" class="text-sm text-destructive mt-2">{{ form.errors.password }}</p>
-            </div>
-
-            <div class="mt-4">
-                <Label for="password_confirmation">Confirm Password</Label>
-
-                <Input
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <p v-if="form.errors.password_confirmation" class="text-sm text-destructive mt-2">{{ form.errors.password_confirmation }}</p>
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="text-sm text-muted-foreground hover:underline"
-                >
-                    Already registered?
-                </Link>
+                <div class="space-y-2">
+                    <Label for="password_confirmation">Confirmar contraseña</Label>
+                    <Input
+                        id="password_confirmation"
+                        type="password"
+                        v-model="form.password_confirmation"
+                        required
+                        autocomplete="new-password"
+                        placeholder="••••••••"
+                    />
+                    <p v-if="form.errors.password_confirmation" class="text-sm text-destructive">{{ form.errors.password_confirmation }}</p>
+                </div>
 
                 <Button
-                    class="ms-4"
+                    type="submit"
+                    class="w-full"
                     :disabled="form.processing"
-                    :class="{ 'opacity-25': form.processing }"
                 >
-                    Register
+                    Crear cuenta
                 </Button>
-            </div>
-        </form>
-    </GuestLayout>
+            </form>
+
+            <p class="text-center text-sm text-muted-foreground">
+                ¿Ya tienes cuenta?
+                <Link :href="route('login')" class="text-primary hover:underline ml-1">
+                    Inicia sesión
+                </Link>
+            </p>
+        </div>
+    </AuthCardLayout>
 </template>
