@@ -1,13 +1,13 @@
 ﻿<script setup lang="ts">
 import { Link, useForm } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
-import { ArrowLeft } from 'lucide-vue-next'
+import { ArrowLeft, Car } from 'lucide-vue-next'
 
 interface Garage {
   id: number
@@ -60,157 +60,149 @@ const submit = () => {
 <template>
   <Head title="Editar Vehículo" />
 
-  <AuthenticatedLayout>
+  <AppSidebarLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight">Editar Vehículo</h2>
+      Editar Vehículo
     </template>
 
-    <div class="py-12">
-      <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Editar vehículo</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form @submit.prevent="submit" class="space-y-6">
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <Label for="brand">Marca</Label>
-                  <Input
-                    id="brand"
-                    v-model="form.brand"
-                    type="text"
-                    class="mt-1"
-                    required
-                  />
-                  <p v-if="form.errors.brand" class="text-sm text-destructive mt-1">{{ form.errors.brand }}</p>
-                </div>
+    <Card class="border-0 shadow-lg max-w-2xl">
+      <CardHeader class="pb-3">
+        <CardTitle class="flex items-center gap-2 text-lg font-semibold">
+          <Car class="h-5 w-5" />
+          Editar vehículo
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form @submit.prevent="submit" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <Label for="brand">Marca</Label>
+              <Input
+                id="brand"
+                v-model="form.brand"
+                type="text"
+                required
+              />
+              <p v-if="form.errors.brand" class="text-sm text-destructive">{{ form.errors.brand }}</p>
+            </div>
 
-                <div>
-                  <Label for="model">Modelo</Label>
-                  <Input
-                    id="model"
-                    v-model="form.model"
-                    type="text"
-                    class="mt-1"
-                    required
-                  />
-                  <p v-if="form.errors.model" class="text-sm text-destructive mt-1">{{ form.errors.model }}</p>
-                </div>
+            <div class="space-y-2">
+              <Label for="model">Modelo</Label>
+              <Input
+                id="model"
+                v-model="form.model"
+                type="text"
+                required
+              />
+              <p v-if="form.errors.model" class="text-sm text-destructive">{{ form.errors.model }}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <Label for="plate">Matrícula</Label>
+              <Input
+                id="plate"
+                v-model="form.plate"
+                type="text"
+                required
+              />
+              <p v-if="form.errors.plate" class="text-sm text-destructive">{{ form.errors.plate }}</p>
+            </div>
+
+            <div class="space-y-2">
+              <Label for="year">Año</Label>
+              <Input
+                id="year"
+                v-model="form.year"
+                type="number"
+                required
+              />
+              <p v-if="form.errors.year" class="text-sm text-destructive">{{ form.errors.year }}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <Label for="fuel_type">Combustible</Label>
+              <Select v-model="form.fuel_type">
+                <SelectTrigger>
+                  <SelectValue placeholder="Seleccionar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="gasolina">Gasolina</SelectItem>
+                  <SelectItem value="diesel">Diesel</SelectItem>
+                  <SelectItem value="hibrido">Híbrido</SelectItem>
+                  <SelectItem value="electrico">Eléctrico</SelectItem>
+                  <SelectItem value="glp">GLP</SelectItem>
+                </SelectContent>
+              </Select>
+              <p v-if="form.errors.fuel_type" class="text-sm text-destructive">{{ form.errors.fuel_type }}</p>
+            </div>
+
+            <div class="space-y-2">
+              <Label for="current_km">Km actuales</Label>
+              <Input
+                id="current_km"
+                v-model="form.current_km"
+                type="number"
+                required
+              />
+              <p v-if="form.errors.current_km" class="text-sm text-destructive">{{ form.errors.current_km }}</p>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Especificaciones</h3>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="space-y-2">
+                <Label for="engine_cc">Cilindrada (cc)</Label>
+                <Input
+                  id="engine_cc"
+                  v-model="form.engine_cc"
+                  type="number"
+                />
               </div>
 
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <Label for="plate">Matrícula</Label>
-                  <Input
-                    id="plate"
-                    v-model="form.plate"
-                    type="text"
-                    class="mt-1"
-                    required
-                  />
-                  <p v-if="form.errors.plate" class="text-sm text-destructive mt-1">{{ form.errors.plate }}</p>
-                </div>
-
-                <div>
-                  <Label for="year">Año</Label>
-                  <Input
-                    id="year"
-                    v-model="form.year"
-                    type="number"
-                    class="mt-1"
-                    required
-                  />
-                  <p v-if="form.errors.year" class="text-sm text-destructive mt-1">{{ form.errors.year }}</p>
-                </div>
+              <div class="space-y-2">
+                <Label for="power_hp">Potencia (CV)</Label>
+                <Input
+                  id="power_hp"
+                  v-model="form.power_hp"
+                  type="number"
+                />
               </div>
 
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <Label for="fuel_type">Combustible</Label>
-                  <Select v-model="form.fuel_type">
-                    <SelectTrigger class="mt-1">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="gasolina">Gasolina</SelectItem>
-                      <SelectItem value="diesel">Diesel</SelectItem>
-                      <SelectItem value="hibrido">Híbrido</SelectItem>
-                      <SelectItem value="electrico">Eléctrico</SelectItem>
-                      <SelectItem value="glp">GLP</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p v-if="form.errors.fuel_type" class="text-sm text-destructive mt-1">{{ form.errors.fuel_type }}</p>
-                </div>
-
-                <div>
-                  <Label for="current_km">Km actuales</Label>
-                  <Input
-                    id="current_km"
-                    v-model="form.current_km"
-                    type="number"
-                    class="mt-1"
-                    required
-                  />
-                  <p v-if="form.errors.current_km" class="text-sm text-destructive mt-1">{{ form.errors.current_km }}</p>
-                </div>
+              <div class="space-y-2">
+                <Label for="transmission">Transmisión</Label>
+                <Select v-model="form.transmission">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Seleccionar</SelectItem>
+                    <SelectItem value="manual">Manual</SelectItem>
+                    <SelectItem value="automatic">Automático</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
+            </div>
+          </div>
 
-              <div>
-                <h3 class="text-lg font-medium mb-3">Especificaciones</h3>
-                <div class="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label for="engine_cc">Cilindrada (cc)</Label>
-                    <Input
-                      id="engine_cc"
-                      v-model="form.engine_cc"
-                      type="number"
-                      class="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label for="power_hp">Potencia (CV)</Label>
-                    <Input
-                      id="power_hp"
-                      v-model="form.power_hp"
-                      type="number"
-                      class="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label for="transmission">Transmisión</Label>
-                    <Select v-model="form.transmission">
-                      <SelectTrigger class="mt-1">
-                        <SelectValue placeholder="Seleccionar" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">Seleccionar</SelectItem>
-                        <SelectItem value="manual">Manual</SelectItem>
-                        <SelectItem value="automatic">Automático</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex justify-end space-x-3">
-                <Button as-child variant="ghost">
-                  <Link :href="route('vehicles.show', props.vehicle.id)">
-                    <ArrowLeft class="w-4 h-4 mr-1" />
-                    Cancelar
-                  </Link>
-                </Button>
-                <Button type="submit" :disabled="form.processing">
-                  {{ form.processing ? 'Guardando...' : 'Guardar cambios' }}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  </AuthenticatedLayout>
+          <div class="flex justify-end gap-3 pt-4">
+            <Button as-child variant="outline" size="sm" class="rounded-lg">
+              <Link :href="route('vehicles.show', props.vehicle.id)">
+                <ArrowLeft class="mr-2 h-4 w-4" />
+                Cancelar
+              </Link>
+            </Button>
+            <Button type="submit" size="sm" class="rounded-lg" :disabled="form.processing">
+              {{ form.processing ? 'Guardando...' : 'Guardar cambios' }}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  </AppSidebarLayout>
 </template>
 

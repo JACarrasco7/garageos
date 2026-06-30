@@ -1,51 +1,80 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3'
+import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { Button } from '@/Components/ui/button'
+import { Badge } from '@/Components/ui/badge'
+import { Plus, FileText, Car } from 'lucide-vue-next'
+
 defineProps<{ imports: any }>()
 
-function statusClass(status: string): string {
-  const classes: Record<string, string> = {
-    pending: 'text-yellow-600',
-    processing: 'text-blue-600',
-    approved: 'text-green-600',
-    rejected: 'text-red-600',
+function statusVariant(status: string): string {
+  const variants: Record<string, string> = {
+    pending: 'secondary',
+    processing: 'default',
+    approved: 'default',
+    rejected: 'destructive',
   }
-  return classes[status] || 'text-gray-600'
+  return variants[status] || 'secondary'
 }
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Importaciones de Vehículos</h1>
-      <a :href="route('imports.create')" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-        Nueva Importación
-      </a>
-    </div>
+  <AppSidebarLayout>
+    <template #header>
+      Importaciones
+    </template>
 
-    <div class="bg-white shadow rounded-lg">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead>
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Matrícula Original</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Matrícula Nueva</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vehículo</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-          <tr v-for="vehicleImport in imports.data" :key="vehicleImport.id">
-            <td class="px-6 py-4">{{ vehicleImport.plate_original }}</td>
-            <td class="px-6 py-4">{{ vehicleImport.plate_new || '-' }}</td>
-            <td class="px-6 py-4">{{ vehicleImport.brand }} {{ vehicleImport.model }}</td>
-            <td class="px-6 py-4">
-              <span :class="statusClass(vehicleImport.status)">{{ vehicleImport.status }}</span>
-            </td>
-            <td class="px-6 py-4">
-              <a :href="route('imports.show', vehicleImport.id)" class="text-blue-600 hover:underline">Ver</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+    <Card class="border-0 shadow-lg">
+      <CardHeader class="flex flex-row items-center justify-between pb-3">
+        <CardTitle class="text-lg font-semibold">Importaciones de Vehículos</CardTitle>
+        <Button as-child variant="outline" size="sm" class="rounded-lg">
+          <Link :href="route('imports.create')">
+            <Plus class="mr-2 h-4 w-4" />
+            Nueva Importación
+          </Link>
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <div v-if="!imports?.data?.length" class="text-center py-12">
+          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
+            <Car class="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h3 class="font-medium text-foreground mb-1">No hay importaciones</h3>
+          <p class="text-sm text-muted-foreground">Crea tu primera importación</p>
+        </div>
+
+        <div v-else class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-border">
+            <thead>
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Matrícula Original</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Matrícula Nueva</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Vehículo</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estado</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border">
+              <tr v-for="vehicleImport in imports.data" :key="vehicleImport.id" class="hover:bg-accent">
+                <td class="px-4 py-3 text-sm">{{ vehicleImport.plate_original }}</td>
+                <td class="px-4 py-3 text-sm">{{ vehicleImport.plate_new || '-' }}</td>
+                <td class="px-4 py-3 text-sm">{{ vehicleImport.brand }} {{ vehicleImport.model }}</td>
+                <td class="px-4 py-3">
+                  <Badge :variant="statusVariant(vehicleImport.status)" class="capitalize">
+                    {{ vehicleImport.status }}
+                  </Badge>
+                </td>
+                <td class="px-4 py-3">
+                  <Link :href="route('imports.show', vehicleImport.id)" class="text-sm text-primary hover:underline">
+                    Ver
+                  </Link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+  </AppSidebarLayout>
 </template>
