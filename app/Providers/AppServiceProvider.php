@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(\App\Modules\Maintenance\Providers\MaintenanceServiceProvider::class);
         $this->app->register(\App\Modules\Alerts\Providers\AlertServiceProvider::class);
         $this->app->register(\App\Modules\Marketplace\Providers\MarketplaceServiceProvider::class);
+        $this->app->register(\App\Modules\VehicleImport\Providers\VehicleImportServiceProvider::class);
         $this->app->register(\App\Providers\FirebaseServiceProvider::class);
     }
 }

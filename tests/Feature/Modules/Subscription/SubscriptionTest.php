@@ -40,16 +40,10 @@ class SubscriptionTest extends TestCase
         $this->assertEquals(1, $plan['vehicle_limit']);
     }
 
-    public function test_subscription_helper_returns_null_remaining_for_unlimited_plan()
+    public function test_subscription_helper_returns_one_remaining_for_free_user()
     {
         $user = User::factory()->create();
-        
-        // Mock pro subscription
-        $this->mock(\Laravel\Cashier\Subscription::class, function ($mock) {
-            $mock->shouldReceive('stripe_price')->andReturn('pro');
-        });
 
-        // For free user, remaining should be 1
         $remaining = SubscriptionHelper::getRemainingVehicles($user);
         $this->assertEquals(1, $remaining);
     }
@@ -64,15 +58,6 @@ class SubscriptionTest extends TestCase
             ->where('subscribed', false)
             ->has('plans')
         );
-    }
-
-    public function test_remaining_vehicles_for_free_user_starts_at_one()
-    {
-        $user = User::factory()->create();
-
-        $remaining = SubscriptionHelper::getRemainingVehicles($user);
-
-        $this->assertEquals(1, $remaining);
     }
 
     public function test_can_add_vehicle_for_free_user_with_zero_vehicles()
