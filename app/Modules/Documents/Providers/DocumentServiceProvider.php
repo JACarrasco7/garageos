@@ -40,7 +40,6 @@ class DocumentServiceProvider extends ServiceProvider
     protected function routeConfiguration(): array
     {
         return [
-            'prefix' => 'api',
             'middleware' => ['web', 'auth'],
         ];
     }
