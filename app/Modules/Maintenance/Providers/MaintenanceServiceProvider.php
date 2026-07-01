@@ -15,6 +15,11 @@ class MaintenanceServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__ . '/../Routes/maintenance.php');
         });
 
+        // Public routes (no auth)
+        Route::group($this->publicRouteConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../Routes/public_workshops.php');
+        });
+
         // Listeners
         $this->app['events']->listen(
             \App\Modules\Maintenance\Events\RevisionCompleted::class,
@@ -31,6 +36,13 @@ class MaintenanceServiceProvider extends ServiceProvider
     {
         return [
             'middleware' => ['web', 'auth'],
+        ];
+    }
+
+    protected function publicRouteConfiguration(): array
+    {
+        return [
+            'middleware' => ['web'],
         ];
     }
 }

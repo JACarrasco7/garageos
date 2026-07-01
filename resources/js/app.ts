@@ -9,6 +9,19 @@ import Toaster from 'vue-sonner';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+// Sentry error monitoring
+if (import.meta.env.VITE_SENTRY_DSN) {
+    import('@sentry/vue').then(({ init } => {
+        init({
+            appName,
+            dsn: import.meta.env.VITE_SENTRY_DSN,
+            tracesSampleRate: 1.0,
+            replaysSessionSampleRate: 0.1,
+            replaysErrorSampleRate: 1.0,
+        });
+    });
+}
+
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

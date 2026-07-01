@@ -2,6 +2,7 @@
 
 namespace App\Modules\Vehicle\Providers;
 
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,14 @@ class VehicleServiceProvider extends ServiceProvider
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../Routes/vehicle.php');
         });
+
+        // Public routes (no auth)
+        Route::group($this->publicRouteConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../Routes/public.php');
+        });
+
+        // Register Policy
+        \Illuminate\Support\Facades\Gate::policy(Vehicle::class, \App\Modules\Vehicle\Policies\VehiclePolicy::class);
 
         // Listeners de eventos
         $this->app['events']->listen(
@@ -36,6 +45,13 @@ class VehicleServiceProvider extends ServiceProvider
     {
         return [
             'middleware' => ['web', 'auth'],
+        ];
+    }
+
+    protected function publicRouteConfiguration(): array
+    {
+        return [
+            'middleware' => ['web'],
         ];
     }
 }

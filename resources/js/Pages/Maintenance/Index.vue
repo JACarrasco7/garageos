@@ -67,7 +67,7 @@ const typeLabels: Record<string, string> = {
               <p class="text-2xl font-bold text-foreground">{{ stats.total_cost?.toLocaleString() ?? 0 }} €</p>
             </div>
             <div class="p-2 bg-blue-500 rounded-lg">
-              <Wrench class="h-5 w-5 text-white" />
+              <Wrench class="h-5 w-5 text-primary-foreground" />
             </div>
           </div>
         </CardContent>
@@ -81,7 +81,7 @@ const typeLabels: Record<string, string> = {
               <p class="text-2xl font-bold text-foreground">{{ stats.cost_per_km?.toFixed(2) ?? 0 }} €/km</p>
             </div>
             <div class="p-2 bg-green-500 rounded-lg">
-              <Fuel class="h-5 w-5 text-white" />
+              <Fuel class="h-5 w-5 text-primary-foreground" />
             </div>
           </div>
         </CardContent>
@@ -95,7 +95,7 @@ const typeLabels: Record<string, string> = {
               <p class="text-2xl font-bold text-foreground">{{ stats.entries_count }}</p>
             </div>
             <div class="p-2 bg-amber-500 rounded-lg">
-              <Calendar class="h-5 w-5 text-white" />
+              <Calendar class="h-5 w-5 text-primary-foreground" />
             </div>
           </div>
         </CardContent>

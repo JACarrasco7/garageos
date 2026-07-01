@@ -18,6 +18,7 @@ class Vehicle extends Model
         'garage_id',
         'plate',
         'vin',
+        'qr_token',
         'brand',
         'model',
         'year',

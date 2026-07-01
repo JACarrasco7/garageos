@@ -9,6 +9,8 @@ import {
     Download,
     Shield,
     Settings,
+    User,
+    LogOut,
 } from 'lucide-vue-next';
 
 import { cn } from '@/lib/utils';
@@ -77,24 +79,26 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
         <!-- Header / Logo -->
         <div
             :class="[
-                'flex shrink-0 items-center border-b border-border bg-gradient-to-r from-primary/5 to-accent/5 h-16 backdrop-blur-xl',
+                'flex shrink-0 items-center border-b h-16 backdrop-blur-xl shadow-sm transition-all duration-300',
+                'border-border bg-gradient-to-r from-primary/15 to-accent/8',
                 collapsed ? 'justify-center px-2' : 'gap-3 px-4',
             ]"
         >
             <Link
                 :href="route('dashboard')"
                 :class="cn(
-                    'flex items-center gap-3 rounded-lg text-foreground hover:bg-muted/50',
+                    'flex items-center gap-3 rounded-lg transition-all duration-200 hover:scale-105',
                     collapsed ? 'h-10 w-10 justify-center' : 'h-10 flex-1 px-2',
+                    'text-foreground hover:bg-muted/50'
                 )"
             >
                 <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow"
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg interactive-item"
                 >
                     <Car class="h-4 w-4" />
                 </div>
                 <div v-if="!collapsed" class="grid min-w-0 flex-1 text-left text-sm leading-tight">
-                    <span class="truncate font-bold">GarageOS</span>
+                    <span class="truncate font-bold text-foreground">GarageOS</span>
                     <span class="truncate text-xs text-muted-foreground">
                         Gestión inteligente
                     </span>
@@ -111,7 +115,10 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
             >
                 <div
                     v-if="!collapsed"
-                    class="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                    :class="cn(
+                        'px-3 pb-2 text-xs font-semibold uppercase tracking-wider transition-colors',
+                        'text-muted-foreground/70'
+                    )"
                 >
                     {{ group.label }}
                 </div>
@@ -119,13 +126,12 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                     <li v-for="item in group.items" :key="item.route">
                         <Link
                             :href="route(item.route)"
-                            @click="emit('navigate')"
                             :class="cn(
-                                'group relative flex items-center rounded-lg text-sm font-medium transition-all duration-200',
+                                'group relative flex items-center rounded-lg text-sm font-medium transition-all duration-200 interactive-item',
                                 collapsed ? 'h-10 w-10 justify-center mx-auto' : 'h-10 gap-3 px-3',
                                 isActive(item.route)
-                                    ? 'bg-primary/10 text-primary shadow-inner'
-                                    : 'text-foreground/70 hover:bg-muted hover:text-foreground hover:translate-x-1',
+                                    ? 'bg-primary/20 text-primary shadow-[0_0_15px_-3px_rgba(10,58,47,0.3)]'
+                                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground hover:translate-x-1',
                             )"
                             :title="collapsed ? item.title : undefined"
                         >
@@ -138,17 +144,23 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                             </span>
                             <span
                                 v-if="item.badge && !collapsed"
-                                class="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent text-accent-foreground px-1.5 text-[10px] font-semibold"
+                                :class="cn(
+                                    'flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold',
+                                    'bg-accent text-accent-foreground'
+                                )"
                             >
                                 {{ item.badge }}
                             </span>
                             <span
                                 v-if="item.badge && collapsed"
-                                class="absolute top-1 right-1 h-2 w-2 rounded-full bg-accent"
+                                :class="cn('absolute top-1 right-1 h-2 w-2 rounded-full bg-accent badge-pulse')"
                             />
                             <span
                                 v-if="isActive(item.route)"
-                                class="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 bg-primary rounded-full"
+                                :class="cn(
+                                    'absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-full',
+                                    'bg-primary shadow-[0_0_8px_rgba(10,58,47,0.6)]'
+                                )"
                             ></span>
                         </Link>
                     </li>
@@ -157,30 +169,36 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
         </nav>
 
         <!-- Footer / User -->
-        <div class="shrink-0 border-t border-border bg-gradient-to-r from-muted/30 to-transparent p-2">
+        <div
+            :class="cn(
+                'shrink-0 border-t p-2 transition-all duration-300',
+                'border-border bg-gradient-to-r from-muted/30 to-transparent'
+            )"
+        >
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                     <button
                         :class="cn(
-                            'flex w-full items-center rounded-lg text-left transition-all duration-200 hover:bg-muted/50',
+                            'flex w-full items-center rounded-lg text-left transition-all duration-200 interactive-item',
                             collapsed ? 'h-10 w-10 justify-center mx-auto' : 'gap-3 px-2 py-1.5',
+                            'hover:bg-muted/50'
                         )"
                     >
                         <div class="relative">
                             <Avatar :class="cn('shrink-0', collapsed ? 'h-8 w-8' : 'h-9 w-9')">
                                 <AvatarFallback
                                     :class="cn(
-                                        'rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold',
+                                        'rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg',
                                         collapsed ? 'text-xs' : 'text-sm',
                                     )"
                                 >
                                     {{ (user?.name || 'U').charAt(0).toUpperCase() }}
                                 </AvatarFallback>
                             </Avatar>
-                            <span class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-green-500"></span>
+                            <span :class="cn('absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 bg-green-500 badge-pulse', 'border-card')"></span>
                         </div>
                         <div v-if="!collapsed" class="grid min-w-0 flex-1 text-left text-sm leading-tight">
-                            <span class="truncate font-semibold">
+                            <span class="truncate font-semibold text-foreground">
                                 {{ user?.name || 'Usuario' }}
                             </span>
                             <span class="truncate text-xs text-muted-foreground">
@@ -196,16 +214,21 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                     :side-offset="6"
                 >
                     <DropdownMenuLabel class="p-0 font-normal">
-                        <div class="flex items-center gap-3 px-2 py-2.5 text-left text-sm">
+                        <div
+                            :class="cn(
+                                'flex items-center gap-3 px-2 py-2.5 text-left text-sm',
+                                'hover:bg-muted/50'
+                            )"
+                        >
                             <Avatar class="h-10 w-10 rounded-lg">
                                 <AvatarFallback
-                                    class="rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold"
+                                    class="rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg"
                                 >
                                     {{ (user?.name || 'U').charAt(0).toUpperCase() }}
                                 </AvatarFallback>
                             </Avatar>
                             <div class="grid min-w-0 flex-1 text-left text-sm leading-tight">
-                                <span class="truncate font-semibold">
+                                <span class="truncate font-semibold text-foreground">
                                     {{ user?.name || 'Usuario' }}
                                 </span>
                                 <span class="truncate text-xs text-muted-foreground">
@@ -218,7 +241,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                     <DropdownMenuItem as-child>
                         <Link
                             :href="route('profile.edit')"
-                            class="flex cursor-pointer items-center gap-2"
+                            class="flex cursor-pointer items-center gap-2 transition-colors hover:bg-muted/50"
                         >
                             <User class="h-4 w-4" />
                             <span>Perfil</span>
@@ -230,7 +253,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                             :href="route('logout')"
                             method="post"
                             as="button"
-                            class="flex w-full cursor-pointer items-center gap-2 text-destructive focus:text-destructive"
+                            class="flex w-full cursor-pointer items-center gap-2 transition-colors text-destructive hover:bg-destructive/10 focus:text-destructive"
                         >
                             <LogOut class="h-4 w-4" />
                             <span>Cerrar sesión</span>

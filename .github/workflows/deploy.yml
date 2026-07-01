@@ -5,7 +5,34 @@ on:
     branches: [main]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql, zip
+
+      - name: Install Composer
+        run: composer install --prefer-dist --no-interaction --optimize-autoloader
+
+      - name: Run Pint (lint)
+        run: ./vendor/bin/pint --test
+
+      - name: Run Larastan (static analysis)
+        run: ./vendor/bin/larastan analyse --memory-limit=2G
+
+      - name: Run Tests
+        run: php artisan test --parallel
+
+      - name: Security Audit
+        run: composer audit --no-interaction
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

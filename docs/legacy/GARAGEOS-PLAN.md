@@ -19,6 +19,10 @@
 9. [Testing strategy](#testing-strategy)
 10. [Primeros comandos](#primeros-comandos)
 11. [MVP mínimo viable — mañana mismo](#mvp-mínimo-viable--mañana-mismo)
+12. [DevOps & CI/CD](#devops--cicd)
+13. [Seguridad & Monitoreo](#seguridad--monitoreo)
+14. [Internacionalización & UX](#internacionalización--ux)
+15. [Documentación & API](#documentación--api)
 
 ---
 
@@ -530,6 +534,8 @@ Alerts
 
 ## Paquetes y dependencias
 
+## Paquetes y dependencias
+
 ### PHP / Composer — Producción
 
 | Paquete | Versión | Razón |
@@ -554,6 +560,7 @@ Alerts
 | `mews/purifier` | ^3.4 | Sanitizar HTML |
 | `predis/predis` | ^2.3 | Cliente Redis |
 | `pestphp/pest` | ^3.0 | Test runner moderno |
+| `spatie/laravel-scribe` | ^4.0 | Generación de documentación API (Swagger) |
 
 ### PHP / Composer — Desarrollo
 
@@ -567,6 +574,7 @@ Alerts
 | `spatie/laravel-ignition` | ^2.9 | Páginas de error |
 | `nunomaduro/collision` | ^8.5 | Error output bonito en CLI |
 | `pestphp/pest-plugin-laravel` | ^3.0 | Pest + Laravel integration |
+| `github/gh` | — | CLI para GitHub Actions/Workflows |
 
 ### NPM — Frontend
 
@@ -588,6 +596,9 @@ Alerts
 | `pinia` | ^3.0 | State management |
 | `@vueuse/core` | ^13.0 | Composables utilitarios |
 | `vue-sonner` | ^1.3 | Toast notifications |
+| `i18next` | ^23.0 | Internacionalización |
+| `vue-i18n` | ^10.0 | i18n para Vue |
+| `sentry` | — | Monitoreo de errores frontend |
 
 ### NPM — Desarrollo
 
@@ -601,6 +612,7 @@ Alerts
 | `@typescript-eslint/parser` | ^8.30 | TS parser para ESLint |
 | `@typescript-eslint/eslint-plugin` | ^8.30 | Reglas TS |
 | `vue-tsc` | ^2.2 | Type-checking Vue SFC |
+| `playwright` | — | E2E Testing |
 
 ### Capacitor — Mobile
 

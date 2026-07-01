@@ -80,6 +80,8 @@ class ParseDocumentJob implements ShouldQueue
         return [
             'dates_found' => $this->findDates($text),
             'document_type' => $this->detectType($text),
+            'amount' => $this->extractAmount($text),
+            'km' => $this->extractKm($text),
         ];
     }
 
@@ -103,6 +105,37 @@ class ParseDocumentJob implements ShouldQueue
 
         if (str_contains($text, 'ficha') || str_contains($text, 'técnica')) {
             return 'ficha';
+        }
+
+        if (str_contains($text, 'factura') || str_contains($text, 'invoice')) {
+            return 'factura';
+        }
+
+        return null;
+    }
+
+    private function extractAmount(string $text): ?float
+    {
+        // Buscar cantidades como "123,45 €" o "123.45 EUR"
+        preg_match('/(\d{1,3}(?:\.\d{3})*,\d{2})\s*(?:€|EUR)/i', $text, $matches);
+        if (isset($matches[1])) {
+            return floatval(str_replace(',', '.', $matches[1]));
+        }
+
+        preg_match('/(\d{1,3}(?:\.\d{3})*)\.\d{2}\s*(?:€|EUR)/i', $text, $matches);
+        if (isset($matches[1])) {
+            return floatval($matches[1]);
+        }
+
+        return null;
+    }
+
+    private function extractKm(string $text): ?int
+    {
+        // Buscar "km: 12345" o "12345 km"
+        preg_match('/(?:km|kilómetros?)[:\s]*(\d{1,6})/i', $text, $matches);
+        if (isset($matches[1])) {
+            return (int) $matches[1];
         }
 
         return null;

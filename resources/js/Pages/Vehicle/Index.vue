@@ -31,7 +31,7 @@ defineProps<{
       Mis Vehículos
     </template>
 
-    <Card class="border-0 shadow-lg">
+    <Card class="border-0 shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
       <CardHeader class="flex flex-row items-center justify-between pb-3">
         <CardTitle class="text-lg font-semibold">Lista de vehículos</CardTitle>
         <Button as-child variant="outline" size="sm" class="rounded-lg">
@@ -58,7 +58,7 @@ defineProps<{
             v-for="vehicle in vehicles"
             :key="vehicle.id"
             :href="route('vehicles.show', vehicle.id)"
-            class="flex flex-col p-4 rounded-xl border border-border hover:bg-accent transition-colors group"
+            class="flex flex-col p-4 rounded-xl border border-border/50 bg-card hover:bg-accent/5 hover:border-primary/20 hover:shadow-md hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 group"
           >
             <div class="flex justify-between items-start mb-3">
               <div>

@@ -1,0 +1,65 @@
+{
+  "name": "GarageOS",
+  "version": "1.0.0",
+  "description": "Integración entre OpenDesigner y GarageOS para diseño visual con generación de código Vue 3 + Tailwind 4",
+  "integration": {
+    "type": "local-workspace",
+    "workspacePath": "c:\\laragon\\www\\app_garage",
+    "openDesignUrl": "http://127.0.0.1:56517",
+    "agent": {
+      "name": "GitHub Copilot CLI",
+      "executable": "copilot",
+      "version": "1.0.0"
+    }
+  },
+  "workflow": [
+    {
+      "step": 1,
+      "action": "generate-design",
+      "description": "OpenDesigner genera UI con GarageOS design system",
+      "input": "Prompt del usuario",
+      "output": "HTML/JSX con clases Tailwind"
+    },
+    {
+      "step": 2,
+      "action": "review-design",
+      "description": "Copilot revisa el diseño generado",
+      "tools": ["opendesigner", "garageos-frontend"]
+    },
+    {
+      "step": 3,
+      "action": "convert-to-vue",
+      "description": "Copilot convierte a Vue 3 + Inertia + shadcn-vue",
+      "input": "HTML/JSX generado",
+      "output": "Componente .vue con TypeScript"
+    },
+    {
+      "step": 4,
+      "action": "integrate-codebase",
+      "description": "Integrar con componentes existentes de GarageOS",
+      "components": ["shadcn-vue", "lucide-vue-next"],
+      "files": ["resources/js/Pages/", "resources/js/Components/"]
+    }
+  ],
+  "designSystem": {
+    "file": "DESIGN_SYSTEM.md",
+    "colors": {
+      "primary": "#0A3A2F",
+      "secondary": "#FF8000",
+      "destructive": "#CC0000",
+      "background": "#F8FAFC",
+      "foreground": "#0F172A"
+    },
+    "tokens": {
+      "radius": "0.625rem",
+      "font": "Figtree, Inter, sans-serif"
+    }
+  },
+  "quickstart": {
+    "1_describe": "Describe lo que quieres diseñar en OpenDesigner",
+    "2_select": "Selecciona 'GarageOS' como design system",
+    "3_generate": "Genera el diseño con GitHub Copilot CLI",
+    "4_copy": "Copia el código HTML generado",
+    "5_convert": "Pide a Copilot: 'Convierte este HTML a Vue 3 con Inertia y shadcn-vue para GarageOS'"
+  }
+}

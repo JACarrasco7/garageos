@@ -18,12 +18,18 @@ class Workshop extends Model
         'phone',
         'email',
         'is_verified',
+        'rating',
+        'description',
+        'logo',
+        'services',
     ];
 
     protected $casts = [
         'lat' => 'decimal:7',
         'lng' => 'decimal:7',
         'is_verified' => 'boolean',
+        'rating' => 'integer',
+        'services' => 'json',
     ];
 
     public function user(): BelongsTo
@@ -34,5 +40,10 @@ class Workshop extends Model
     public function maintenanceEntries(): HasMany
     {
         return $this->hasMany(MaintenanceEntry::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(WorkshopReview::class);
     }
 }

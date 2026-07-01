@@ -29,6 +29,8 @@ class WorkshopController extends Controller
             'city' => ['nullable', 'string', 'max:100'],
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:150'],
+            'description' => ['nullable', 'string'],
+            'services' => ['nullable', 'array'],
         ]);
 
         Workshop::create([

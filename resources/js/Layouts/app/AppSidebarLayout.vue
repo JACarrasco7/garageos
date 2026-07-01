@@ -6,6 +6,7 @@ import { Toaster } from 'vue-sonner';
 import { PanelLeftClose, PanelLeftOpen, Menu } from 'lucide-vue-next';
 
 import AppSidebar from '@/Components/AppSidebar.vue';
+import ThemeToggle from '@/Components/ThemeToggle.vue';
 
 import {
     Breadcrumb,
@@ -45,18 +46,19 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex h-dvh w-full overflow-hidden bg-muted/30">
+    <div class="flex h-dvh w-full overflow-hidden bg-background relative transition-colors duration-500">
         <!-- Sidebar (desktop) -->
         <aside
             :class="[
-                'hidden md:flex shrink-0 h-full border-r border-border bg-card transition-[width] duration-300 ease-in-out',
+                'hidden md:flex shrink-0 h-full m-3 rounded-2xl border backdrop-blur-2xl transition-all duration-500 ease-in-out',
                 sidebarOpen ? 'w-64' : 'w-16',
+                'bg-card border-border shadow-lg'
             ]"
         >
-            <AppSidebar :collapsed="!sidebarOpen" @navigate="toggleSidebar" />
+            <AppSidebar :collapsed="!sidebarOpen" />
         </aside>
 
-        <!-- Sidebar (mobile drawer) -->
+        <!-- Sidebar (mobile overlay) -->
         <transition
             enter-active-class="transition-opacity duration-200"
             leave-active-class="transition-opacity duration-200"
@@ -65,10 +67,12 @@ onMounted(() => {
         >
             <div
                 v-if="mobileOpen"
-                class="fixed inset-0 z-40 bg-black/50 md:hidden"
+                class="fixed inset-0 z-40 md:hidden backdrop-blur-sm bg-black/50"
                 @click="closeMobile"
             />
         </transition>
+
+        <!-- Sidebar (mobile drawer) -->
         <transition
             enter-active-class="transition-transform duration-300 ease-out"
             leave-active-class="transition-transform duration-300 ease-in"
@@ -77,17 +81,23 @@ onMounted(() => {
         >
             <aside
                 v-if="mobileOpen"
-                class="fixed inset-y-0 left-0 z-50 flex h-full w-72 flex-col border-r border-border bg-card md:hidden shadow-xl"
+                :class="[
+                    'fixed inset-y-0 left-0 z-50 flex h-full w-72 flex-col m-3 rounded-2xl border backdrop-blur-2xl md:hidden',
+                    'bg-card border-border shadow-lg'
+                ]"
             >
                 <AppSidebar :collapsed="false" @navigate="closeMobile" />
             </aside>
         </transition>
 
         <!-- Main content -->
-        <div class="flex min-w-0 flex-1 flex-col">
+        <div class="flex min-w-0 flex-1 flex-col gap-3 p-3">
             <!-- Header -->
             <header
-                class="flex h-16 shrink-0 items-center gap-3 border-b border-border bg-card/80 backdrop-blur-xl px-4 md:px-6 shadow-sm"
+                :class="[
+                    'sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 rounded-2xl border backdrop-blur-2xl px-4 md:px-6',
+                    'bg-card/80 border-border shadow-sm supports-backdrop-filter:bg-card/60'
+                ]"
             >
                 <Button
                     variant="ghost"
@@ -110,7 +120,10 @@ onMounted(() => {
                     <PanelLeftOpen v-else class="h-5 w-5" />
                 </Button>
 
-                <Separator orientation="vertical" class="h-6" />
+                <Separator
+                    orientation="vertical"
+                    class="h-6 bg-border"
+                />
 
                 <Breadcrumb class="min-w-0 flex-1">
                     <BreadcrumbList>
@@ -132,22 +145,32 @@ onMounted(() => {
                     </BreadcrumbList>
                 </Breadcrumb>
 
+                <ThemeToggle />
                 <slot name="header-actions" />
             </header>
 
             <!-- Content -->
-            <main class="flex-1 overflow-auto">
-                <div class="mx-auto w-full max-w-7xl p-4 md:p-6 lg:p-8">
+            <main
+                :class="[
+                    'flex-1 overflow-auto rounded-2xl border backdrop-blur-2xl flex flex-col',
+                    'bg-card border-border shadow-sm'
+                ]"
+            >
+                <div class="mx-auto w-full max-w-7xl flex-1 p-6 md:p-8 lg:p-10">
                     <slot />
                 </div>
+                <!-- Footer -->
+                <footer
+                    :class="[
+                        'shrink-0 border-t px-4 py-3 text-center text-sm text-muted-foreground',
+                        'border-border bg-muted/30'
+                    ]"
+                >
+                    <p>
+                        © {{ new Date().getFullYear() }} GarageOS. Gestión inteligente de vehículos.
+                    </p>
+                </footer>
             </main>
-
-            <!-- Footer -->
-            <footer class="shrink-0 border-t border-border bg-card px-4 py-3 text-center text-sm text-muted-foreground">
-                <p>
-                    © {{ new Date().getFullYear() }} GarageOS. Gestión inteligente de vehículos.
-                </p>
-            </footer>
         </div>
 
         <Toaster position="top-right" rich-colors />
