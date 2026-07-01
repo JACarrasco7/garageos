@@ -10,6 +10,7 @@
         "barryvdh/laravel-dompdf": "^3.1",
         "chillerlan/php-qrcode": "^6.0",
         "inertiajs/inertia-laravel": "^2.0",
+        "knuckleswtf/scribe": "^5.11",
         "kreait/firebase-php": "^7.0",
         "laravel/cashier": "^15.0",
         "laravel/framework": "^13.8",
@@ -57,6 +58,9 @@
             "@php artisan migrate --force",
             "npm install --ignore-scripts",
             "npm run build"
+        ],
+        "docs": [
+            "@php artisan scribe:generate"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
