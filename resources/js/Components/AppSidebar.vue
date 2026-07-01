@@ -77,7 +77,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
         <!-- Header / Logo -->
         <div
             :class="[
-                'flex shrink-0 items-center border-b border-border bg-muted/30 h-16',
+                'flex shrink-0 items-center border-b border-border bg-gradient-to-r from-primary/5 to-accent/5 h-16 backdrop-blur-xl',
                 collapsed ? 'justify-center px-2' : 'gap-3 px-4',
             ]"
         >
@@ -121,31 +121,35 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                             :href="route(item.route)"
                             @click="emit('navigate')"
                             :class="cn(
-                                'group relative flex items-center rounded-lg text-sm font-medium transition-colors',
+                                'group relative flex items-center rounded-lg text-sm font-medium transition-all duration-200',
                                 collapsed ? 'h-10 w-10 justify-center mx-auto' : 'h-10 gap-3 px-3',
                                 isActive(item.route)
-                                    ? 'bg-primary/10 text-primary'
-                                    : 'text-foreground/70 hover:bg-muted hover:text-foreground',
+                                    ? 'bg-primary/10 text-primary shadow-inner'
+                                    : 'text-foreground/70 hover:bg-muted hover:text-foreground hover:translate-x-1',
                             )"
                             :title="collapsed ? item.title : undefined"
                         >
                             <component
                                 :is="item.icon"
-                                :class="cn('h-4 w-4 shrink-0', isActive(item.route) && 'text-primary')"
+                                :class="cn('h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110', isActive(item.route) && 'text-primary')"
                             />
                             <span v-if="!collapsed" class="truncate flex-1">
                                 {{ item.title }}
                             </span>
                             <span
                                 v-if="item.badge && !collapsed"
-                                class="flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-semibold text-destructive-foreground"
+                                class="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent text-accent-foreground px-1.5 text-[10px] font-semibold"
                             >
                                 {{ item.badge }}
                             </span>
                             <span
                                 v-if="item.badge && collapsed"
-                                class="absolute top-1 right-1 h-2 w-2 rounded-full bg-destructive"
+                                class="absolute top-1 right-1 h-2 w-2 rounded-full bg-accent"
                             />
+                            <span
+                                v-if="isActive(item.route)"
+                                class="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 bg-primary rounded-full"
+                            ></span>
                         </Link>
                     </li>
                 </ul>
@@ -153,25 +157,28 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
         </nav>
 
         <!-- Footer / User -->
-        <div class="shrink-0 border-t border-border bg-muted/30 p-2">
+        <div class="shrink-0 border-t border-border bg-gradient-to-r from-muted/30 to-transparent p-2">
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                     <button
                         :class="cn(
-                            'flex w-full items-center rounded-lg text-left transition-colors hover:bg-muted',
+                            'flex w-full items-center rounded-lg text-left transition-all duration-200 hover:bg-muted/50',
                             collapsed ? 'h-10 w-10 justify-center mx-auto' : 'gap-3 px-2 py-1.5',
                         )"
                     >
-                        <Avatar :class="cn('shrink-0', collapsed ? 'h-8 w-8' : 'h-9 w-9')">
-                            <AvatarFallback
-                                :class="cn(
-                                    'rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold',
-                                    collapsed ? 'text-xs' : 'text-sm',
-                                )"
-                            >
-                                {{ (user?.name || 'U').charAt(0).toUpperCase() }}
-                            </AvatarFallback>
-                        </Avatar>
+                        <div class="relative">
+                            <Avatar :class="cn('shrink-0', collapsed ? 'h-8 w-8' : 'h-9 w-9')">
+                                <AvatarFallback
+                                    :class="cn(
+                                        'rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold',
+                                        collapsed ? 'text-xs' : 'text-sm',
+                                    )"
+                                >
+                                    {{ (user?.name || 'U').charAt(0).toUpperCase() }}
+                                </AvatarFallback>
+                            </Avatar>
+                            <span class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-green-500"></span>
+                        </div>
                         <div v-if="!collapsed" class="grid min-w-0 flex-1 text-left text-sm leading-tight">
                             <span class="truncate font-semibold">
                                 {{ user?.name || 'Usuario' }}

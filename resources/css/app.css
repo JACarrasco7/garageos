@@ -52,71 +52,94 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  
+  /* Neutrals - Foundation */
+  --background: #F8FAFC; /* Slate 50 - Light Clean Background */
+  --foreground: #0F172A; /* Slate 900 - Carbon Fiber/Asphalt */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --card-foreground: #0F172A;
+  
+  /* Identity Colors - Motor Heritage */
+  --primary: #0A3A2F; /* Nürburgring Green */
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --sidebar-primary: #0A3A2F;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  
+  /* Action Colors */
+  --accent: #FF8000; /* McLaren Papaya Orange */
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: #CC0000; /* Ferrari Rosso Corsa */
+  
+  /* Supporting Colors */
+  --secondary: #CBD5E1; /* McLaren Silver 300 */
+  --secondary-foreground: #0F172A;
+  --muted: #CBD5E1;
+  --muted-foreground: #64748B; /* Slate 500 */
+  
+  /* Structure */
+  --border: #CBD5E1;
+  --input: #CBD5E1;
+  --ring: #0A3A2F;
+  
+  /* Charts */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Sidebar */
+  --sidebar: #F8FAFC;
+  --sidebar-foreground: #0F172A;
+  --sidebar-accent: #CBD5E1;
+  --sidebar-accent-foreground: #0F172A;
+  --sidebar-border: #CBD5E1;
+  --sidebar-ring: #0A3A2F;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  /* Neutrals - Dark Mode */
+  --background: #020617; /* Slate 950 - Carbon Fiber/Asphalt Dark */
+  --foreground: #F8FAFC; /* Slate 50 */
+  --card: #0F172A; /* Slate 900 */
+  --card-foreground: #F8FAFC;
+  
+  /* Identity Colors */
+  --primary: #14532D; /* Nürburgring Green Light Variant */
+  --primary-foreground: #F8FAFC;
+  --sidebar-primary: #14532D;
+  --sidebar-primary-foreground: #F8FAFC;
+  
+  /* Action Colors */
+  --accent: #FF8000; /* McLaren Papaya Orange */
+  --accent-foreground: #F8FAFC;
+  --destructive: #CC0000;
+  
+  /* Supporting Colors */
+  --secondary: #0F172A;
+  --secondary-foreground: #CBD5E1;
+  --muted: #0F172A;
+  --muted-foreground: #CBD5E1;
+  
+  /* Structure */
+  --border: #0F172A;
+  --input: #0F172A;
+  --ring: #14532D;
+  
+  /* Charts */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  
+  /* Sidebar */
+  --sidebar: #020617;
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-accent: #0F172A;
+  --sidebar-accent-foreground: #CBD5E1;
+  --sidebar-border: #0F172A;
+  --sidebar-ring: #14532D;
 }
 
 @layer base {

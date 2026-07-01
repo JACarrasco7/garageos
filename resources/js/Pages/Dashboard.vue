@@ -52,48 +52,48 @@ defineProps<{
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <Card class="border-0 shadow-lg bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30">
+      <Card class="group border-0 shadow-lg bg-linear-to-br from-primary/5 to-accent/5 hover:shadow-lg transition-all duration-300">
         <CardContent class="pt-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-muted-foreground">Vehículos</p>
               <p class="text-3xl font-bold text-foreground">{{ stats?.total_vehicles ?? 0 }}</p>
             </div>
-            <div class="p-3 bg-blue-500 rounded-xl">
-              <Car class="h-6 w-6 text-white" />
+            <div class="p-3 bg-gradient-to-br from-primary to-primary/90 rounded-xl group-hover:scale-110 transition-transform duration-200">
+              <Car class="h-6 w-6 text-primary-foreground" />
             </div>
           </div>
-          <Button as-child variant="link" size="sm" class="mt-4 px-0">
+          <Button as-child variant="link" size="sm" class="mt-4 px-0 group-hover:translate-x-1 transition-transform">
             <Link :href="route('vehicles.index')">Ver todos <ArrowRight class="ml-1 h-3 w-3" /></Link>
           </Button>
         </CardContent>
       </Card>
 
-      <Card class="border-0 shadow-lg bg-linear-to-br from-green-50 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30">
+      <Card class="group border-0 shadow-lg bg-linear-to-br from-accent/5 to-primary/5 hover:shadow-lg transition-all duration-300">
         <CardContent class="pt-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-muted-foreground">Documentos</p>
               <p class="text-3xl font-bold text-foreground">{{ stats?.total_documents ?? 0 }}</p>
             </div>
-            <div class="p-3 bg-green-500 rounded-xl">
-              <FileText class="h-6 w-6 text-white" />
+            <div class="p-3 bg-gradient-to-br from-accent to-accent/90 rounded-xl group-hover:scale-110 transition-transform duration-200">
+              <FileText class="h-6 w-6 text-accent-foreground" />
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card class="border-0 shadow-lg bg-linear-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/50 dark:to-amber-900/30">
+      <Card class="group border-0 shadow-lg bg-linear-to-br from-destructive/5 to-accent/5 hover:shadow-lg transition-all duration-300">
         <CardContent class="pt-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-muted-foreground">Alertas pendientes</p>
-              <p class="text-3xl font-bold" :class="stats?.pending_alerts ? 'text-amber-600 dark:text-amber-400' : 'text-foreground'">
+              <p class="text-3xl font-bold" :class="stats?.pending_alerts ? 'text-destructive' : 'text-foreground'">
                 {{ stats?.pending_alerts ?? 0 }}
               </p>
             </div>
-            <div class="p-3 bg-amber-500 rounded-xl">
-              <Bell class="h-6 w-6 text-white" />
+            <div class="p-3 bg-gradient-to-br from-destructive to-destructive/90 rounded-xl group-hover:scale-110 transition-transform duration-200">
+              <Bell class="h-6 w-6 text-destructive-foreground" />
             </div>
           </div>
         </CardContent>
