@@ -1,8 +1,8 @@
-name: Deploy to Production
+name: Deploy to Render
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -13,22 +13,22 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
-          extensions: redis, intl, pcntl
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql, zip
 
       - name: Install Composer
         run: composer install --no-dev --optimize-autoloader
 
-      - name: Build assets
-        run: npm ci && npm run build
-
       - name: Cache config
-        run: php artisan config:cache route:cache view:cache
-
-      - name: Deploy to server
         run: |
-          rsync -avz --delete \
-            --exclude '.git' \
-            --exclude 'node_modules' \
-            --exclude '.env' \
-            ./ user@server:/var/www/garageos
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: Trigger Render Deploy
+        run: |
+          curl -X POST https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}'
+        if: env.RENDER_API_KEY != ''

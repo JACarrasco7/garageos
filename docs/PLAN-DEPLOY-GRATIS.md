@@ -103,6 +103,16 @@ git add .
 git commit -m "feat: preparado para deploy gratis"
 ```
 
+## ✅ Estado actual (completado)
+
+| Ítem | Estado |
+|---|---|
+| PHP version | ✅ 8.3 (corregido) |
+| Throttle API | ✅ Añadido |
+| supervisord-free.conf | ✅ Creado |
+| Tests | ✅ 64/65 pasan (1 fallido es SQLite in-memory, no afecta prod) |
+| Healthcheck | ✅ `/up` configurado |
+
 ## 🚀 Deploy inmediato (Render)
 
 1. Crear cuenta en [render.com](https://render.com)
@@ -115,12 +125,8 @@ git commit -m "feat: preparado para deploy gratis"
 5. Build command: `docker build`
 6. Start command: `supervisord -c /etc/supervisor/conf.d/supervisord-free.conf`
 
-1. Crear cuenta en [render.com](https://render.com)
-2. Conectar repositorio GitHub
-3. Crear "New Web Service"
-4. Variables de entorno:
-   - `APP_KEY` (del paso 1)
-   - `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` (PostgreSQL gratis)
-   - `REDIS_URL` (Redis gratis)
-5. Build command: `docker build`
-6. Start command: `supervisord -c /etc/supervisor/conf.d/supervisord.conf`
+## 🔐 Secrets para GitHub Actions
+
+En repo → Settings → Secrets:
+- `RENDER_API_KEY` (desde Render → Account Settings → API Keys)
+- `RENDER_SERVICE_ID` (desde URL del servicio)
