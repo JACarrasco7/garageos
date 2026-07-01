@@ -1,14 +1,12 @@
 const CACHE_NAME = 'garageos-v1'
 const urlsToCache = [
   '/',
-  '/dashboard',
-  '/vehicles',
 ]
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
+      .then((cache) => cache.addAll(urlsToCache).catch(() => {}))
   )
 })
 

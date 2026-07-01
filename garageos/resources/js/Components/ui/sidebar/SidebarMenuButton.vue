@@ -20,24 +20,20 @@ const props = withDefaults(defineProps<SidebarMenuButtonProps & {
 
 const { isMobile, state } = useSidebar()
 
-const childProps = computed(() => ({
-  as: props.as,
-  asChild: props.asChild,
-  variant: props.variant,
-  size: props.size,
-  isActive: props.isActive,
-  class: props.class,
-}) as unknown as SidebarMenuButtonProps)
+const delegatedProps = computed(() => {
+  const { tooltip: _, ...rest } = props
+  return rest as Omit<SidebarMenuButtonProps, "tooltip">
+})
 </script>
 
 <template>
-  <SidebarMenuButtonChild v-if="!tooltip" v-bind="(childProps as any)">
+  <SidebarMenuButtonChild v-if="!tooltip" v-bind="{ ...delegatedProps, ...$attrs }">
     <slot />
   </SidebarMenuButtonChild>
 
   <Tooltip v-else>
     <TooltipTrigger as-child>
-      <SidebarMenuButtonChild v-bind="(childProps as any)">
+      <SidebarMenuButtonChild v-bind="{ ...delegatedProps, ...$attrs }">
         <slot />
       </SidebarMenuButtonChild>
     </TooltipTrigger>
