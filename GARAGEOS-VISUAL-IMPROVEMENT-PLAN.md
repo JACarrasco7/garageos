@@ -123,11 +123,11 @@
 - [ ] Vehicles: cards de vehículo mejoradas
 - [ ] Forms: inputs con focus rings animados
 
-### Fase 5: Detalles finales (1h)
-- [ ] Loading states con skeleton
-- [ ] Empty states ilustrados
-- [ ] Toasts personalizados
-- [ ] Dark mode polish
+### Fase 5: Detalles finales (✅ 1h)
+- [x] Loading states con skeleton
+- [x] Empty states ilustrados (EmptyState.vue creado)
+- [x] Toasts personalizados (vue-sonner ya integrado)
+- [x] Dark mode polish (variables actualizadas)
 
 ---
 

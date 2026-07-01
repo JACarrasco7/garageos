@@ -87,7 +87,7 @@ onMounted(() => {
         <div class="flex min-w-0 flex-1 flex-col">
             <!-- Header -->
             <header
-                class="flex h-16 shrink-0 items-center gap-3 border-b border-border bg-card px-4 md:px-6 shadow-sm"
+                class="flex h-16 shrink-0 items-center gap-3 border-b border-border bg-card/80 backdrop-blur-xl px-4 md:px-6 shadow-sm"
             >
                 <Button
                     variant="ghost"
