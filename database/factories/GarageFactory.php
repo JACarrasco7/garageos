@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Modules\Identity\Models\Garage;
 use App\Models\User;
+use App\Modules\Identity\Models\Garage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GarageFactory extends Factory

@@ -28,8 +28,6 @@ return new class extends Migration
 
             $table->index(['plate']);
             $table->index(['vin']);
-            $table->index(['qr_token']);
-            $table->index(['garage_id', 'is_active']);
         });
     }
 

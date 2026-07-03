@@ -33,7 +33,7 @@
             <tr><th>Modelo</th><td>{{ $vehicle->model }}</td></tr>
             <tr><th>Año</th><td>{{ $vehicle->year }}</td></tr>
             <tr><th>Kilómetros</th><td>{{ number_format($vehicle->current_km) }} km</td></tr>
-            <tr><th>Combustible</th><td>{{ ucfirst($vehicle->fuel_type) }}</td></tr>
+            <tr><th>Combustible</th><td>{{ ucfirst($vehicle->fuel_type->value) }}</td></tr>
             @if($vehicle->specs)
                 <tr><th>Cilindrada</th><td>{{ $vehicle->specs->engine_cc }} cc</td></tr>
                 <tr><th>Potencia</th><td>{{ $vehicle->specs->power_hp }} CV</td></tr>

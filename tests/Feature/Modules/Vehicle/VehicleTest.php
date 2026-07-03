@@ -1,8 +1,8 @@
 <?php
 
-use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
 use App\Models\User;
+use App\Modules\Identity\Models\Garage;
+use App\Modules\Vehicle\Models\Vehicle;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -16,7 +16,7 @@ test('user can view vehicles list', function () {
         ->get(route('vehicles.index'));
 
     $response->assertStatus(200);
-    $response->assertInertia(fn($page) => $page->has('vehicles'));
+    $response->assertInertia(fn ($page) => $page->has('vehicles'));
 });
 
 test('user can create a vehicle', function () {
@@ -46,7 +46,7 @@ test('user can view a vehicle', function () {
         ->get(route('vehicles.show', $vehicle));
 
     $response->assertStatus(200);
-    $response->assertInertia(fn($page) => $page->has('vehicle'));
+    $response->assertInertia(fn ($page) => $page->has('vehicle'));
 });
 
 test('vehicle generates qr_token automatically', function () {

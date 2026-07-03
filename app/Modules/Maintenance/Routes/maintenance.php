@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Modules\Maintenance\Http\Controllers\MaintenanceController;
-use App\Modules\Maintenance\Http\Controllers\WorkshopController;
 use App\Modules\Maintenance\Http\Controllers\PublicWorkshopController;
+use App\Modules\Maintenance\Http\Controllers\WorkshopController;
+use Illuminate\Support\Facades\Route;
 
 // User workshop management (auth required)
 Route::middleware(['web', 'auth'])->group(function () {

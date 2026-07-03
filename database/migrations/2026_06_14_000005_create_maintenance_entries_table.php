@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('type', [
                 'aceite', 'filtros', 'neumaticos', 'frenos',
                 'distribucion', 'embrague', 'bateria', 'itv',
-                'revision_general', 'otro'
+                'revision_general', 'otro',
             ]);
             $table->string('title', 150);
             $table->text('description')->nullable();

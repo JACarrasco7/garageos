@@ -11,7 +11,7 @@ class PublicVehicleController extends Controller
 {
     public function showByQr(string $token): Response
     {
-        $vehicle = Vehicle::with(['specs', 'documents' => fn($q) => $q->where('type', 'itv')])
+        $vehicle = Vehicle::with(['specs', 'documents' => fn ($q) => $q->where('type', 'itv')])
             ->where('qr_token', $token)
             ->firstOrFail();
 

@@ -2,8 +2,8 @@
 
 namespace Database\Factories\Modules\Vehicle\Models;
 
-use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Identity\Models\Garage;
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

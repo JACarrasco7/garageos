@@ -8,6 +8,17 @@ return [
             'disks' => ['local'],
         ],
         'source' => [
+            'files' => [
+                'include' => [
+                    'storage/app',
+                ],
+                'exclude' => [
+                    'storage/app/public/backups',
+                ],
+                'follow_links' => false,
+                'ignore_unreadable_directories' => true,
+                'relative_path' => '',
+            ],
             'databases' => ['mysql'],
         ],
     ],

@@ -1,8 +1,8 @@
 <?php
 
-use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
 use App\Models\User;
+use App\Modules\Identity\Models\Garage;
+use App\Modules\Vehicle\Models\Vehicle;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -21,7 +21,7 @@ test('public vehicle view by qr token works without auth', function () {
     $response = $this->get(route('public.vehicles.show', $vehicle->qr_token));
 
     $response->assertStatus(200);
-    $response->assertInertia(fn($page) => $page->has('vehicle'));
+    $response->assertInertia(fn ($page) => $page->has('vehicle'));
 });
 
 test('public vehicle view returns 404 for invalid token', function () {

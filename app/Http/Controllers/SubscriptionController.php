@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
 class SubscriptionController extends Controller
 {
     public function index(Request $request)
@@ -24,7 +25,7 @@ class SubscriptionController extends Controller
     {
         $planConfig = config("subscription.plans.{$plan}");
 
-        if (!$planConfig) {
+        if (! $planConfig) {
             abort(404, 'Plan no encontrado');
         }
 
@@ -35,9 +36,16 @@ class SubscriptionController extends Controller
                 ->with('info', 'Ya tienes una suscripción activa.');
         }
 
-        return $user->newSubscription('default', $plan)
+        $stripePriceId = $planConfig['stripe_price_id'] ?? null;
+
+        if (! $stripePriceId || $stripePriceId === 'price_basic_placeholder' || $stripePriceId === 'price_pro_placeholder') {
+            return redirect()->route('subscription.index')
+                ->with('error', 'Las suscripciones no están configuradas aún. Contacta al administrador.');
+        }
+
+        return $user->newSubscription('default', $stripePriceId)
             ->checkout([
-                'success_url' => route('subscription.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'success_url' => route('subscription.success').'?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => route('subscription.index'),
             ]);
     }

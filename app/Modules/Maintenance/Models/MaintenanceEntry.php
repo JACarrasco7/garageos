@@ -2,11 +2,16 @@
 
 namespace App\Modules\Maintenance\Models;
 
+use App\Modules\Documents\Models\Document;
+use App\Modules\Vehicle\Models\Vehicle;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MaintenanceEntry extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'vehicle_id',
         'document_id',
@@ -28,16 +33,25 @@ class MaintenanceEntry extends Model
         'is_verified' => 'boolean',
     ];
 
+    /**
+     * Get the vehicle that owns this maintenance entry.
+     */
     public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
 
+    /**
+     * Get the document associated with this maintenance entry.
+     */
     public function document(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Documents\Models\Document::class);
+        return $this->belongsTo(Document::class);
     }
 
+    /**
+     * Get the workshop where this maintenance was performed.
+     */
     public function workshop(): BelongsTo
     {
         return $this->belongsTo(Workshop::class);

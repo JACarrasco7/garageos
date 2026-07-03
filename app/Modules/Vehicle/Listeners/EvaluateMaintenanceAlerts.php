@@ -2,8 +2,8 @@
 
 namespace App\Modules\Vehicle\Listeners;
 
-use App\Modules\Vehicle\Events\KmUpdated;
 use App\Modules\Alerts\Jobs\EvaluateAlertsJob;
+use App\Modules\Vehicle\Events\KmUpdated;
 
 class EvaluateMaintenanceAlerts
 {

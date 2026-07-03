@@ -2,18 +2,20 @@
 
 namespace App\Modules\Marketplace\Providers;
 
+use App\Modules\Alerts\Listeners\SendNotification;
+use App\Modules\Marketplace\Events\ReportGenerated;
 use Illuminate\Support\ServiceProvider;
 
 class MarketplaceServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/marketplace.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/marketplace.php');
 
         // Listeners
         $this->app['events']->listen(
-            \App\Modules\Marketplace\Events\ReportGenerated::class,
-            \App\Modules\Alerts\Listeners\SendNotification::class
+            ReportGenerated::class,
+            SendNotification::class
         );
     }
 }

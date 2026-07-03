@@ -2,6 +2,8 @@
 
 namespace App\Modules\Alerts\Models;
 
+use App\Models\User;
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -27,12 +29,12 @@ class Notification extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
 
     public function markAsRead(): void

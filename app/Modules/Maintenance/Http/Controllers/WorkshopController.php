@@ -4,6 +4,7 @@ namespace App\Modules\Maintenance\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Maintenance\Models\Workshop;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,7 +22,7 @@ class WorkshopController extends Controller
         ]);
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],

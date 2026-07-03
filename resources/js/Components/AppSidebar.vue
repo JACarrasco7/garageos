@@ -39,6 +39,7 @@ type NavItem = {
     route: string;
     icon: typeof Car;
     badge?: string | null;
+    tour?: string;
 };
 
 const navGroups = computed<{ label: string; items: NavItem[] }[]>(() => [
@@ -46,9 +47,10 @@ const navGroups = computed<{ label: string; items: NavItem[] }[]>(() => [
         label: 'Principal',
         items: [
             { title: 'Dashboard', route: 'dashboard', icon: LayoutDashboard },
-            { title: 'Vehículos', route: 'vehicles.index', icon: Car },
-            { title: 'Talleres', route: 'workshops.index', icon: Wrench },
-            { title: 'Planes', route: 'subscription.index', icon: Shield, badge: 'new' },
+            { title: 'Vehículos', route: 'vehicles.index', icon: Car, tour: 'vehicles' },
+            { title: 'Documentos', route: 'documents.index', icon: Upload, tour: 'documents' },
+            { title: 'Mantenimiento', route: 'maintenance.index', icon: Wrench, tour: 'maintenance' },
+            { title: 'Alertas', route: 'alerts.index', icon: Shield, tour: 'alerts' },
         ],
     },
     {
@@ -80,7 +82,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
         <div
             :class="[
                 'flex shrink-0 items-center border-b h-16 backdrop-blur-xl shadow-sm transition-all duration-300',
-                'border-border bg-gradient-to-r from-primary/15 to-accent/8',
+                'border-border bg-linear-to-r from-primary/15 to-accent/8',
                 collapsed ? 'justify-center px-2' : 'gap-3 px-4',
             ]"
         >
@@ -93,7 +95,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                 )"
             >
                 <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg interactive-item"
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-primary to-primary/80 text-primary-foreground shadow-lg interactive-item"
                 >
                     <Car class="h-4 w-4" />
                 </div>
@@ -126,6 +128,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                     <li v-for="item in group.items" :key="item.route">
                         <Link
                             :href="route(item.route)"
+                            :data-tour="item.tour"
                             :class="cn(
                                 'group relative flex items-center rounded-lg text-sm font-medium transition-all duration-200 interactive-item',
                                 collapsed ? 'h-10 w-10 justify-center mx-auto' : 'h-10 gap-3 px-3',
@@ -172,7 +175,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
         <div
             :class="cn(
                 'shrink-0 border-t p-2 transition-all duration-300',
-                'border-border bg-gradient-to-r from-muted/30 to-transparent'
+                'border-border bg-linear-to-r from-muted/30 to-transparent'
             )"
         >
             <DropdownMenu>
@@ -188,7 +191,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                             <Avatar :class="cn('shrink-0', collapsed ? 'h-8 w-8' : 'h-9 w-9')">
                                 <AvatarFallback
                                     :class="cn(
-                                        'rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg',
+                                        'rounded-lg bg-linear-to-br from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg',
                                         collapsed ? 'text-xs' : 'text-sm',
                                     )"
                                 >
@@ -222,7 +225,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                         >
                             <Avatar class="h-10 w-10 rounded-lg">
                                 <AvatarFallback
-                                    class="rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg"
+                                    class="rounded-lg bg-linear-to-br from-primary to-primary/80 text-primary-foreground font-semibold shadow-lg"
                                 >
                                     {{ (user?.name || 'U').charAt(0).toUpperCase() }}
                                 </AvatarFallback>

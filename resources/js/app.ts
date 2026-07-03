@@ -9,18 +9,24 @@ import Toaster from 'vue-sonner';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-// Sentry error monitoring
-if (import.meta.env.VITE_SENTRY_DSN) {
-    import('@sentry/vue').then(({ init } => {
-        init({
-            appName,
-            dsn: import.meta.env.VITE_SENTRY_DSN,
-            tracesSampleRate: 1.0,
-            replaysSessionSampleRate: 0.1,
-            replaysErrorSampleRate: 1.0,
-        });
-    });
-}
+// Sentry error monitoring (opcional)
+// if (import.meta.env.VITE_SENTRY_DSN && typeof import.meta.env.VITE_SENTRY_DSN === 'string') {
+//     try {
+//         import('@sentry/vue').then(({ init: initSentry }) => {
+//             initSentry({
+//                 appName,
+//                 dsn: import.meta.env.VITE_SENTRY_DSN,
+//                 tracesSampleRate: 1.0,
+//                 replaysSessionSampleRate: 0.1,
+//                 replaysErrorSampleRate: 1.0,
+//             });
+//         }).catch(error => {
+//             console.error('Failed to initialize Sentry:', error);
+//         });
+//     } catch (error) {
+//         console.error('Sentry module not available:', error);
+//     }
+// }
 
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {

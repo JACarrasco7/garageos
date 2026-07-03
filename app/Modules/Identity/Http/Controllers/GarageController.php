@@ -4,7 +4,6 @@ namespace App\Modules\Identity\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Identity\Models\Garage;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 

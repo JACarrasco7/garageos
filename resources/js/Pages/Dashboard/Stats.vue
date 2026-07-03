@@ -2,8 +2,31 @@
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { Line } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from 'chart.js'
 import { TrendingUp } from 'lucide-vue-next'
+import { computed } from 'vue'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+)
 
 interface Stats {
   total_vehicles: number
@@ -14,9 +37,34 @@ interface Stats {
   monthly_spending?: Array<{ month: string; amount: number }>
 }
 
-defineProps<{
+const props = defineProps<{
   stats: Stats
 }>()
+
+const chartData = computed(() => ({
+  labels: props.stats.monthly_spending?.map(m => m.month) ?? [],
+  datasets: [
+    {
+      label: 'Gasto (€)',
+      data: props.stats.monthly_spending?.map(m => m.amount) ?? [],
+      borderColor: '#3b82f6',
+      backgroundColor: 'rgba(59, 130, 246, 0.1)',
+      fill: true,
+      tension: 0.4,
+    },
+  ],
+}))
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+  },
+  scales: {
+    y: { beginAtZero: true },
+  },
+}
 </script>
 
 <template>
@@ -84,14 +132,7 @@ defineProps<{
         </CardHeader>
         <CardContent>
           <div class="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart :data="stats.monthly_spending">
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="amount" stroke="#3b82f6" />
-              </LineChart>
-            </ResponsiveContainer>
+            <Line :data="chartData" :options="chartOptions" />
           </div>
         </CardContent>
       </Card>

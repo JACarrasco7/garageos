@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
             $table->enum('type', [
                 'itv', 'seguro', 'aceite', 'neumaticos',
-                'revision', 'impuesto', 'bateria', 'custom'
+                'revision', 'impuesto', 'bateria', 'custom',
             ]);
             $table->unsignedInteger('trigger_km')->nullable();
             $table->date('trigger_date')->nullable();

@@ -2,17 +2,27 @@
 
 namespace App\Modules\Vehicle\Models;
 
+use App\Enums\FuelType;
+use App\Modules\Alerts\Models\AlertRule;
+use App\Modules\Documents\Models\Document;
+use App\Modules\Identity\Models\Garage;
+use App\Modules\Maintenance\Models\MaintenanceEntry;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Vehicle extends Model
+class Vehicle extends Model implements HasMedia
 {
     use HasFactory;
-    use \Laravel\Scout\Searchable;
+    use InteractsWithMedia;
+    use Searchable;
 
     protected $fillable = [
         'garage_id',
@@ -22,7 +32,11 @@ class Vehicle extends Model
         'brand',
         'model',
         'year',
+        'registration_date',
         'fuel_type',
+        'eco_label',
+        'emissions_co2',
+        'official_consumption',
         'color',
         'current_km',
         'purchase_date',
@@ -32,10 +46,15 @@ class Vehicle extends Model
     ];
 
     protected $casts = [
+        'fuel_type' => FuelType::class,
+        'eco_label' => 'string',
         'year' => 'integer',
+        'emissions_co2' => 'integer',
         'current_km' => 'integer',
+        'registration_date' => 'date',
         'purchase_date' => 'date',
         'purchase_price' => 'decimal:2',
+        'official_consumption' => 'decimal:1',
         'is_active' => 'boolean',
     ];
 
@@ -52,7 +71,12 @@ class Vehicle extends Model
 
     public function garage(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Identity\Models\Garage::class);
+        return $this->belongsTo(Garage::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(VehiclePhoto::class)->orderBy('sort_order');
     }
 
     public function specs(): HasOne
@@ -67,17 +91,56 @@ class Vehicle extends Model
 
     public function documents(): HasMany
     {
-        return $this->hasMany(\App\Modules\Documents\Models\Document::class);
+        return $this->hasMany(Document::class);
     }
 
     public function maintenanceEntries(): HasMany
     {
-        return $this->hasMany(\App\Modules\Maintenance\Models\MaintenanceEntry::class);
+        return $this->hasMany(MaintenanceEntry::class);
     }
 
     public function alertRules(): HasMany
     {
-        return $this->hasMany(\App\Modules\Alerts\Models\AlertRule::class);
+        return $this->hasMany(AlertRule::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('photo')
+            ->singleFile()
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp'])
+            ->useDisk('public');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(200)
+            ->height(200)
+            ->sharpen(10)
+            ->performOnCollections('photo');
+
+        $this->addMediaConversion('medium')
+            ->width(600)
+            ->height(400)
+            ->sharpen(10)
+            ->performOnCollections('photo');
+
+        $this->addMediaConversion('large')
+            ->width(1200)
+            ->height(800)
+            ->sharpen(10)
+            ->performOnCollections('photo');
+    }
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('photo');
+    }
+
+    public function getPhotoThumbnailUrlAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('photo', 'thumb');
     }
 
     public function toSearchableArray(): array

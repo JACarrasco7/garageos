@@ -3,16 +3,16 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Modules\Alerts\Models\AlertRule;
+use App\Modules\Documents\Models\Document;
 use App\Modules\Identity\Models\Garage;
+use App\Modules\Maintenance\Models\MaintenanceEntry;
+use App\Modules\Maintenance\Models\Workshop;
+use App\Modules\Marketplace\Models\MarketValue;
+use App\Modules\Marketplace\Models\SaleReport;
+use App\Modules\Vehicle\Models\KmHistory;
 use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Vehicle\Models\VehicleSpec;
-use App\Modules\Vehicle\Models\KmHistory;
-use App\Modules\Documents\Models\Document;
-use App\Modules\Maintenance\Models\Workshop;
-use App\Modules\Maintenance\Models\MaintenanceEntry;
-use App\Modules\Alerts\Models\AlertRule;
-use App\Modules\Marketplace\Models\SaleReport;
-use App\Modules\Marketplace\Models\MarketValue;
 use App\Modules\VehicleImport\Models\VehicleImport;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -236,7 +236,7 @@ class GarageFullSeeder extends Seeder
             'vehicle_id' => $vehicle->id,
             'token' => Str::random(64),
             'score' => 85,
-            'pdf_path' => 'reports/sale-report-' . $vehicle->id . '.pdf',
+            'pdf_path' => 'reports/sale-report-'.$vehicle->id.'.pdf',
             'expires_at' => now()->addDays(30),
         ]);
 

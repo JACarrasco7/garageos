@@ -1,9 +1,9 @@
 <?php
 
-use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
-use App\Modules\Alerts\Models\AlertRule;
 use App\Models\User;
+use App\Modules\Alerts\Models\AlertRule;
+use App\Modules\Identity\Models\Garage;
+use App\Modules\Vehicle\Models\Vehicle;
 
 beforeEach(function () {
     $this->user = User::factory()->create();

@@ -3,12 +3,15 @@
 namespace App\Modules\VehicleImport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\VehicleImport\Models\VehicleImport;
-use App\Modules\VehicleImport\Models\ImportDocument;
-use App\Modules\VehicleImport\Models\TemporaryPlate;
-use App\Modules\VehicleImport\Enums\ImportStep;
 use App\Modules\VehicleImport\Actions\AdvanceImportStepAction;
+use App\Modules\VehicleImport\Actions\ImportCertificateAction;
+use App\Modules\VehicleImport\Actions\ImportValuationAction;
 use App\Modules\VehicleImport\Actions\UploadImportDocumentAction;
+use App\Modules\VehicleImport\Enums\ImportStep;
+use App\Modules\VehicleImport\Models\ImportDocument;
+use App\Modules\VehicleImport\Models\VehicleImport;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -32,13 +35,13 @@ class VehicleImportController extends Controller
         return Inertia::render('Import/Create');
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'plate_original' => ['nullable', 'string', 'max:20'],
             'brand' => ['required', 'string', 'max:50'],
             'model' => ['required', 'string', 'max:80'],
-            'year' => ['required', 'integer', 'min:1900', 'max:' . (now()->year + 1)],
+            'year' => ['required', 'integer', 'min:1900', 'max:'.(now()->year + 1)],
             'engine_cc' => ['nullable', 'integer', 'min:0', 'max:10000'],
             'power_kw' => ['nullable', 'integer', 'min:0', 'max:2000'],
             'co2_emissions' => ['nullable', 'integer', 'min:0', 'max:500'],
@@ -62,8 +65,8 @@ class VehicleImportController extends Controller
         return Inertia::render('Import/Wizard', [
             'import' => VehicleImportResource::make($import),
             'steps' => collect(ImportStep::cases())
-                ->filter(fn($step) => $step !== ImportStep::COMPLETED)
-                ->map(fn($step) => [
+                ->filter(fn ($step) => $step !== ImportStep::COMPLETED)
+                ->map(fn ($step) => [
                     'id' => $step->value,
                     'label' => $step->getLabel(),
                     'order' => $step->getOrder(),
@@ -73,17 +76,17 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function updateStep(Request $request, VehicleImport $import): \Illuminate\Http\JsonResponse
+    public function updateStep(Request $request, VehicleImport $import): JsonResponse
     {
         $this->authorize('update', $import);
 
         $validated = $request->validate([
-            'step' => ['required', 'string', 'in:' . collect(ImportStep::cases())->pluck('value')->join(',')],
+            'step' => ['required', 'string', 'in:'.collect(ImportStep::cases())->pluck('value')->join(',')],
         ]);
 
         $targetStep = ImportStep::from($validated['step']);
 
-        $action = new AdvanceImportStepAction();
+        $action = new AdvanceImportStepAction;
         $import = $action->execute($import, $targetStep);
 
         return response()->json([
@@ -91,7 +94,7 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function uploadDocument(Request $request, VehicleImport $import): \Illuminate\Http\JsonResponse
+    public function uploadDocument(Request $request, VehicleImport $import): JsonResponse
     {
         $this->authorize('update', $import);
 
@@ -103,7 +106,7 @@ class VehicleImportController extends Controller
 
         $step = ImportStep::from($validated['step']);
 
-        $action = new UploadImportDocumentAction();
+        $action = new UploadImportDocumentAction;
         $document = $action->execute(
             $import,
             $step,
@@ -123,11 +126,11 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function verifyDocument(ImportDocument $document): \Illuminate\Http\JsonResponse
+    public function verifyDocument(ImportDocument $document): JsonResponse
     {
         $this->authorize('update', $document->vehicleImport);
 
-        $action = new UploadImportDocumentAction();
+        $action = new UploadImportDocumentAction;
         $document = $action->verifyDocument($document);
 
         return response()->json([
@@ -139,7 +142,7 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function updatePurchase(Request $request, VehicleImport $import): \Illuminate\Http\JsonResponse
+    public function updatePurchase(Request $request, VehicleImport $import): JsonResponse
     {
         $this->authorize('update', $import);
 
@@ -155,7 +158,7 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function updateTransport(Request $request, VehicleImport $import): \Illuminate\Http\JsonResponse
+    public function updateTransport(Request $request, VehicleImport $import): JsonResponse
     {
         $this->authorize('update', $import);
 
@@ -174,7 +177,7 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function addTemporaryPlate(Request $request, VehicleImport $import): \Illuminate\Http\JsonResponse
+    public function addTemporaryPlate(Request $request, VehicleImport $import): JsonResponse
     {
         $this->authorize('update', $import);
 
@@ -198,11 +201,11 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function completeImport(VehicleImport $import): \Illuminate\Http\JsonResponse
+    public function completeImport(VehicleImport $import): JsonResponse
     {
         $this->authorize('update', $import);
 
-        $action = new AdvanceImportStepAction();
+        $action = new AdvanceImportStepAction;
         $import = $action->completeImport($import);
 
         return response()->json([
@@ -210,7 +213,7 @@ class VehicleImportController extends Controller
         ]);
     }
 
-    public function destroy(VehicleImport $import): \Illuminate\Http\RedirectResponse
+    public function destroy(VehicleImport $import): RedirectResponse
     {
         $this->authorize('delete', $import);
 
@@ -222,6 +225,33 @@ class VehicleImportController extends Controller
 
         $import->delete();
 
-        return redirect()->route('import.index');
+        return redirect()->route('imports.index');
+    }
+
+    public function valuation(VehicleImport $import): JsonResponse
+    {
+        $this->authorize('view', $import);
+
+        $action = new ImportValuationAction;
+        $result = $action->execute($import);
+
+        return response()->json([
+            'valuation' => $result['valuation'],
+            'taxes' => $result['taxes'],
+            'total_cost' => $result['total_cost'],
+        ]);
+    }
+
+    public function generateCertificate(VehicleImport $import): JsonResponse
+    {
+        $this->authorize('update', $import);
+
+        $action = new ImportCertificateAction;
+        $path = $action->execute($import);
+
+        return response()->json([
+            'certificate_path' => $path,
+            'certificate_url' => Storage::url($path),
+        ]);
     }
 }

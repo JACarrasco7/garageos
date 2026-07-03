@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging;
-use Illuminate\Support\ServiceProvider;
 
 class FirebaseServiceProvider extends ServiceProvider
 {
@@ -14,6 +14,7 @@ class FirebaseServiceProvider extends ServiceProvider
             $factory = (new Factory)->withServiceAccount(
                 storage_path('app/firebase-credentials.json')
             );
+
             return $factory->createMessaging();
         });
 

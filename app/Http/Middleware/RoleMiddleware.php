@@ -9,7 +9,7 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, string $role): mixed
     {
-        if (!auth()->check() || auth()->user()->role !== $role) {
+        if (! auth()->check() || auth()->user()->role !== $role) {
             abort(403, 'Acceso denegado');
         }
 

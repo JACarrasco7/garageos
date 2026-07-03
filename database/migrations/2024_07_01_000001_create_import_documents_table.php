@@ -17,7 +17,7 @@ return new class extends Migration
                 'itv_inspection',
                 'taxes',
                 'dgt_registration',
-                'plates'
+                'plates',
             ]);
             $table->enum('type', [
                 'compraventa',
@@ -31,7 +31,7 @@ return new class extends Migration
                 'modelo_itp',
                 'justificante_ivtm',
                 'permiso_circulacion',
-                'otro'
+                'otro',
             ]);
             $table->string('file_path');
             $table->boolean('is_verified')->default(false);

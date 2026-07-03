@@ -2,13 +2,18 @@
 
 namespace App\Modules\VehicleImport\Models;
 
+use App\Models\User;
+use App\Modules\Vehicle\Models\Vehicle;
+use App\Modules\VehicleImport\Enums\ImportStep;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Modules\VehicleImport\Enums\ImportStep;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class VehicleImport extends Model
 {
+    use HasFactory;
+
     protected $table = 'vehicle_imports';
 
     protected $fillable = [
@@ -56,12 +61,12 @@ class VehicleImport extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
 
     public function importDocuments(): HasMany
@@ -91,7 +96,7 @@ class VehicleImport extends Model
         $requiredDocs = $step->getRequiredDocuments();
 
         foreach ($requiredDocs as $docType) {
-            if (!$documents->contains('type', $docType)) {
+            if (! $documents->contains('type', $docType)) {
                 return false;
             }
         }
@@ -103,7 +108,7 @@ class VehicleImport extends Model
     {
         $previous = $step->getPrevious();
 
-        if (!$previous) {
+        if (! $previous) {
             return true;
         }
 
@@ -144,43 +149,44 @@ class VehicleImport extends Model
     {
         return $query->where('current_step', ImportStep::COMPLETED);
     }
-}
 
-namespace App\Modules\VehicleImport\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-class VehicleImport extends Model
-{
-    protected $fillable = [
-        'user_id',
-        'plate_original',
-        'plate_new',
-        'brand',
-        'model',
-        'year',
-        'engine_cc',
-        'power_kw',
-        'status',
-        'documents',
-        'rejection_reason',
-    ];
-
-    protected $casts = [
-        'documents' => 'array',
-        'year' => 'integer',
-        'engine_cc' => 'integer',
-        'power_kw' => 'integer',
-    ];
-
-    public function user(): BelongsTo
+    public function calculateImportTaxes(float $purchasePrice): array
     {
-        return $this->belongsTo(\App\Models\User::class);
-    }
+        $co2 = $this->co2_emissions ?? 120;
+        $age = now()->year - $this->year;
 
-    public function vehicle(): BelongsTo
-    {
-        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+        $depreciationCoeff = match (true) {
+            $age < 1 => 0.84,
+            $age < 2 => 0.67,
+            $age < 3 => 0.56,
+            $age < 4 => 0.47,
+            $age < 5 => 0.39,
+            $age < 6 => 0.33,
+            $age < 7 => 0.28,
+            $age < 8 => 0.24,
+            $age < 9 => 0.18,
+            $age < 10 => 0.14,
+            default => 0.10,
+        };
+
+        $taxRate = match (true) {
+            $co2 <= 120 => 0.00,
+            $co2 <= 159 => 0.0475,
+            $co2 <= 199 => 0.0975,
+            default => 0.1475,
+        };
+
+        $catalogPrice = $purchasePrice / $depreciationCoeff;
+        $iedmt = $catalogPrice * $taxRate;
+        $itpRate = 0.10;
+        $itp = $purchasePrice * $itpRate;
+
+        return [
+            'catalog_value' => round($catalogPrice, 2),
+            'iedmt' => round($iedmt, 2),
+            'itp_estimate' => round($itp, 2),
+            'co2_rate' => $taxRate,
+            'depreciation_coefficient' => $depreciationCoeff,
+        ];
     }
 }

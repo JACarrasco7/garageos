@@ -2,9 +2,10 @@
 
 namespace App\Modules\VehicleImport\Actions;
 
-use App\Modules\VehicleImport\Models\VehicleImport;
-use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Identity\Models\Garage;
+use App\Modules\Vehicle\Events\VehicleRegistered;
+use App\Modules\Vehicle\Models\Vehicle;
+use App\Modules\VehicleImport\Models\VehicleImport;
 
 class ProcessImportAction
 {
@@ -32,7 +33,7 @@ class ProcessImportAction
         $import->update(['status' => 'approved', 'vehicle_id' => $vehicle->id]);
 
         // Disparar evento para crear alertas por defecto
-        event(new \App\Modules\Vehicle\Events\VehicleRegistered($vehicle));
+        event(new VehicleRegistered($vehicle));
 
         return $vehicle;
     }

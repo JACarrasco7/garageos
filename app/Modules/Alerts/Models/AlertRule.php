@@ -2,6 +2,7 @@
 
 namespace App\Modules\Alerts\Models;
 
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,7 +33,7 @@ class AlertRule extends Model
 
     public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
 
     public function scopeActive($query)

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class ApiController extends Controller
 {
-    protected function success($data = [], string $message = 'Success'): \Illuminate\Http\JsonResponse
+    protected function success($data = [], string $message = 'Success'): JsonResponse
     {
         return response()->json([
             'success' => true,
@@ -15,7 +16,7 @@ class ApiController extends Controller
         ]);
     }
 
-    protected function error(string $message = 'Error', int $code = 400): \Illuminate\Http\JsonResponse
+    protected function error(string $message = 'Error', int $code = 400): JsonResponse
     {
         return response()->json([
             'success' => false,

@@ -5,6 +5,7 @@ namespace App\Modules\Maintenance\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Maintenance\Models\Workshop;
 use App\Modules\Maintenance\Models\WorkshopReview;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -25,8 +26,8 @@ class PublicWorkshopController extends Controller
     public function show(Workshop $workshop): Response
     {
         $workshop->load([
-            'reviews' => fn($q) => $q->latest()->limit(10),
-            'maintenanceEntries' => fn($q) => $q->limit(5),
+            'reviews' => fn ($q) => $q->latest()->limit(10),
+            'maintenanceEntries' => fn ($q) => $q->limit(5),
         ]);
 
         return Inertia::render('Workshop/Show', [
@@ -35,7 +36,7 @@ class PublicWorkshopController extends Controller
         ]);
     }
 
-    public function review(Workshop $workshop): \Illuminate\Http\RedirectResponse
+    public function review(Workshop $workshop): RedirectResponse
     {
         $validated = request()->validate([
             'rating' => ['required', 'integer', 'min:1', 'max:5'],

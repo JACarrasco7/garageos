@@ -2,11 +2,15 @@
 
 namespace App\Modules\Maintenance\Models;
 
+use App\Modules\Marketplace\Models\AffiliateLink;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class ServicePack extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'maintenance_type',
         'name',
@@ -15,7 +19,7 @@ class ServicePack extends Model
     ];
 
     protected $casts = [
-        'items' => 'json',
+        'items' => 'array',
         'affiliate_link_ids' => 'array',
     ];
 
@@ -28,7 +32,7 @@ class ServicePack extends Model
             return collect();
         }
 
-        return \App\Modules\Marketplace\Models\AffiliateLink::whereIn('id', $this->affiliate_link_ids)
+        return AffiliateLink::whereIn('id', $this->affiliate_link_ids)
             ->active()
             ->get();
     }

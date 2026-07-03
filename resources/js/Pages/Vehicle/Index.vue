@@ -31,11 +31,11 @@ defineProps<{
       Mis Vehículos
     </template>
 
-    <Card class="border-0 shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
+    <Card class="border-0 shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" data-tour="vehicles">
       <CardHeader class="flex flex-row items-center justify-between pb-3">
         <CardTitle class="text-lg font-semibold">Lista de vehículos</CardTitle>
         <Button as-child variant="outline" size="sm" class="rounded-lg">
-          <Link :href="route('vehicles.create')">
+          <Link :href="route('vehicles.wizard')">
             <Plus class="mr-2 h-4 w-4" />
             Añadir vehículo
           </Link>
@@ -49,7 +49,7 @@ defineProps<{
           <h3 class="font-medium text-foreground mb-1">No tienes vehículos registrados</h3>
           <p class="text-sm text-muted-foreground mb-4">Comienza añadiendo tu primer vehículo</p>
           <Button as-child>
-            <Link :href="route('vehicles.create')">Añadir primer vehículo</Link>
+            <Link :href="route('vehicles.wizard')">Añadir primer vehículo</Link>
           </Button>
         </div>
 

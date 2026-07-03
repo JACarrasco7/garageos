@@ -2,8 +2,8 @@
 
 namespace App\Modules\Alerts\Listeners;
 
-use App\Modules\Vehicle\Events\VehicleRegistered;
 use App\Modules\Alerts\Models\AlertRule;
+use App\Modules\Vehicle\Events\VehicleRegistered;
 
 class CreateDefaultAlertRules
 {

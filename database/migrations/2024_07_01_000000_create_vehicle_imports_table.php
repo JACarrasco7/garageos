@@ -32,7 +32,7 @@ return new class extends Migration
                 'taxes',
                 'dgt_registration',
                 'plates',
-                'completed'
+                'completed',
             ])->default('purchase');
             $table->boolean('needs_homologation')->default(false);
             $table->enum('status', ['pending', 'processing', 'approved', 'rejected'])->default('pending');

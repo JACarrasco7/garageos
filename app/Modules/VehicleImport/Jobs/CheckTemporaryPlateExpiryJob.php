@@ -4,6 +4,7 @@ namespace App\Modules\VehicleImport\Jobs;
 
 use App\Modules\VehicleImport\Events\TemporaryPlateExpiringSoon;
 use App\Modules\VehicleImport\Models\TemporaryPlate;
+use App\Notifications\TemporaryPlateExpiringNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -25,7 +26,7 @@ class CheckTemporaryPlateExpiryJob implements ShouldQueue
         if ($this->plate->isExpiringSoon(7)) {
             event(new TemporaryPlateExpiringSoon($this->plate));
 
-            \App\Notifications\TemporaryPlateExpiringNotification::send(
+            TemporaryPlateExpiringNotification::send(
                 $this->plate->vehicleImport->user,
                 $this->plate
             );

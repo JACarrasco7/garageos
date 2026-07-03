@@ -8,7 +8,7 @@ class SubscriptionHelper
 {
     public static function getPlan(User $user): ?array
     {
-        if (!$user->subscribed('default')) {
+        if (! $user->subscribed('default')) {
             return [
                 'id' => 'free',
                 'name' => 'Gratuito',
@@ -32,6 +32,7 @@ class SubscriptionHelper
         }
 
         $currentCount = $user->garages()->withCount('vehicles')->get()->sum('vehicles_count');
+
         return $currentCount < $plan['vehicle_limit'];
     }
 
@@ -44,6 +45,7 @@ class SubscriptionHelper
         }
 
         $currentCount = $user->garages()->withCount('vehicles')->get()->sum('vehicles_count');
+
         return max(0, $plan['vehicle_limit'] - $currentCount);
     }
 }

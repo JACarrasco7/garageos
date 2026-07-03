@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Modules\VehicleImport\Models\VehicleImport;
 use App\Models\User;
+use App\Modules\VehicleImport\Models\VehicleImport;
 use Illuminate\Database\Seeder;
 
 class VehicleImportSeeder extends Seeder
@@ -11,8 +11,8 @@ class VehicleImportSeeder extends Seeder
     public function run(): void
     {
         $user = User::first();
-        
-        if (!$user) {
+
+        if (! $user) {
             $user = User::factory()->create(['role' => 'owner']);
         }
 

@@ -1,9 +1,9 @@
 <?php
 
-use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
 use App\Models\User;
+use App\Modules\Identity\Models\Garage;
 use App\Modules\Marketplace\Models\SaleReport;
+use App\Modules\Vehicle\Models\Vehicle;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -29,11 +29,11 @@ test('public sale report is accessible via token', function () {
         'token' => 'test-token-123',
         'score' => 85,
         'is_active' => true,
-        'expires_at' => now()->addDays(30),
+        'expires_at' => now()->addDays(30)->toDateTimeString(),
     ]);
 
     $response = $this->get(route('marketplace.public', 'test-token-123'));
 
     $response->assertStatus(200);
-    $response->assertInertia(fn($page) => $page->has('report'));
+    $response->assertInertia(fn ($page) => $page->has('report'));
 });

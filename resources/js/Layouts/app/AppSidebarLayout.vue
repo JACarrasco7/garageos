@@ -7,6 +7,7 @@ import { PanelLeftClose, PanelLeftOpen, Menu } from 'lucide-vue-next';
 
 import AppSidebar from '@/Components/AppSidebar.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
+import OnboardingTour from '@/Components/OnboardingTour.vue';
 
 import {
     Breadcrumb,
@@ -23,6 +24,7 @@ const { registerFcm, addListeners } = useFcm();
 
 const sidebarOpen = ref(true);
 const mobileOpen = ref(false);
+const onboardingTour = ref<InstanceType<typeof OnboardingTour> | null>(null);
 
 const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value;
@@ -174,5 +176,6 @@ onMounted(() => {
         </div>
 
         <Toaster position="top-right" rich-colors />
+        <OnboardingTour ref="onboardingTour" />
     </div>
 </template>

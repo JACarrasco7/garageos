@@ -2,8 +2,8 @@
 
 namespace App\Modules\Alerts\Jobs;
 
-use App\Modules\Alerts\Models\AlertRule;
 use App\Modules\Alerts\Events\AlertTriggered;
+use App\Modules\Alerts\Models\AlertRule;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -36,7 +36,7 @@ class EvaluateAlertsJob implements ShouldQueue
                 $shouldTrigger = true;
             }
 
-            if ($shouldTrigger && !$rule->last_triggered) {
+            if ($shouldTrigger && ! $rule->last_triggered) {
                 $rule->update(['last_triggered' => now()]);
                 event(new AlertTriggered($rule));
             }

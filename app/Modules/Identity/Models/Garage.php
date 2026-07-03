@@ -2,6 +2,8 @@
 
 namespace App\Modules\Identity\Models;
 
+use App\Models\User;
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,11 +17,11 @@ class Garage extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function vehicles(): HasMany
     {
-        return $this->hasMany(\App\Modules\Vehicle\Models\Vehicle::class);
+        return $this->hasMany(Vehicle::class);
     }
 }

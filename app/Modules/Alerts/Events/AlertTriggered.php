@@ -10,7 +10,5 @@ class AlertTriggered
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public AlertRule $rule)
-    {
-    }
+    public function __construct(public AlertRule $rule) {}
 }

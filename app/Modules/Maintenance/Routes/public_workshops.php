@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Modules\Maintenance\Http\Controllers\PublicWorkshopController;
+use Illuminate\Support\Facades\Route;
 
 // Public workshop marketplace
 Route::get('/workshops', [PublicWorkshopController::class, 'index'])->name('workshops.public');

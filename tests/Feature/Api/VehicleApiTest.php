@@ -1,9 +1,10 @@
 <?php
 
-use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
 use App\Models\User;
+use App\Modules\Identity\Models\Garage;
 use App\Modules\Maintenance\Models\ServicePack;
+use App\Modules\Vehicle\Models\Vehicle;
+
 use function Pest\Laravel\getJson;
 
 beforeEach(function () {
@@ -37,5 +38,5 @@ test('api returns service pack with affiliate links', function () {
 
     $response->assertStatus(200)
         ->assertJsonPath('pack.name', 'Cambio de aceite básico')
-        ->assertJsonPath('affiliate_links.0.affiliate_url', fn($url) => str_contains($url, 'autodoc.es'));
+        ->assertJsonPath('affiliate_links.0.affiliate_url', fn ($url) => str_contains($url, 'autodoc.es'));
 });

@@ -70,7 +70,7 @@ defineProps<{
           'bg-gradient-to-r from-primary to-primary/85 text-primary-foreground shadow-primary/30',
         )"
       >
-        <Link :href="route('vehicles.create')">
+        <Link :href="route('vehicles.wizard')">
           <Plus class="h-4 w-4" />
           Añadir vehículo
         </Link>

@@ -2,8 +2,8 @@
 
 namespace App\Modules\Maintenance\Actions;
 
-use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Maintenance\Models\ServicePack;
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Support\Collection;
 
 class RecommendServicePackAction
@@ -33,7 +33,7 @@ class RecommendServicePackAction
     {
         $pack = $this->execute($vehicle);
 
-        if (!$pack) {
+        if (! $pack) {
             return collect();
         }
 

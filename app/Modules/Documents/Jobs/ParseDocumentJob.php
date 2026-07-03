@@ -2,6 +2,7 @@
 
 namespace App\Modules\Documents\Jobs;
 
+use App\Modules\Documents\Events\DocumentProcessed;
 use App\Modules\Documents\Models\Document;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +22,7 @@ class ParseDocumentJob implements ShouldQueue
     {
         $path = Storage::path($this->document->file_path);
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             return;
         }
 
@@ -35,7 +36,7 @@ class ParseDocumentJob implements ShouldQueue
         ]);
 
         // Disparar evento de documento procesado
-        event(new \App\Modules\Documents\Events\DocumentProcessed($this->document));
+        event(new DocumentProcessed($this->document));
     }
 
     private function extractText(string $path): string
@@ -55,23 +56,25 @@ class ParseDocumentJob implements ShouldQueue
 
     private function extractFromPdf(string $path): string
     {
-        $parser = new \Smalot\PdfParser\Parser();
+        $parser = new Parser;
         $pdf = $parser->parseFile($path);
+
         return $pdf->getText();
     }
 
     private function extractFromImage(string $path): string
     {
-        $outputFile = sys_get_temp_dir() . '/ocr_' . uniqid();
+        $outputFile = sys_get_temp_dir().'/ocr_'.uniqid();
         $command = sprintf('tesseract %s %s -l spa+eng --psm 1 2>&1', escapeshellarg($path), escapeshellarg($outputFile));
         exec($command, $output, $returnCode);
-        
-        if ($returnCode === 0 && file_exists($outputFile . '.txt')) {
-            $text = file_get_contents($outputFile . '.txt');
-            unlink($outputFile . '.txt');
+
+        if ($returnCode === 0 && file_exists($outputFile.'.txt')) {
+            $text = file_get_contents($outputFile.'.txt');
+            unlink($outputFile.'.txt');
+
             return $text;
         }
-        
+
         return '';
     }
 
@@ -88,6 +91,7 @@ class ParseDocumentJob implements ShouldQueue
     private function findDates(string $text): array
     {
         preg_match_all('/\b\d{2}[\/\-]\d{2}[\/\-]\d{4}\b/', $text, $matches);
+
         return $matches[0] ?? [];
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Modules\Alerts\Jobs;
 
-use App\Modules\Alerts\Models\AlertRule;
 use App\Models\User;
+use App\Modules\Alerts\Models\AlertRule;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,7 +21,7 @@ class SendPushJob implements ShouldQueue
 
     public function handle(): void
     {
-        if (!$this->user->fcm_token) {
+        if (! $this->user->fcm_token) {
             return;
         }
 
@@ -30,9 +30,9 @@ class SendPushJob implements ShouldQueue
             $messaging->send([
                 'token' => $this->user->fcm_token,
                 'notification' => [
-                    'title' => 'Alerta: ' . ucfirst($this->rule->type),
+                    'title' => 'Alerta: '.ucfirst($this->rule->type),
                     'body' => $this->rule->trigger_date
-                        ? 'Vence: ' . $this->rule->trigger_date->format('d/m/Y')
+                        ? 'Vence: '.$this->rule->trigger_date->format('d/m/Y')
                         : 'Próximo mantenimiento',
                 ],
                 'data' => [

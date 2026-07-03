@@ -18,7 +18,7 @@ class WorkshopDashboardController extends Controller
             ->with('garage.user')
             ->latest('updated_at')
             ->get()
-            ->map(fn($v) => [
+            ->map(fn ($v) => [
                 'id' => $v->id,
                 'plate' => $v->plate,
                 'brand' => $v->brand,

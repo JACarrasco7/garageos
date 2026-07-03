@@ -1,7 +1,7 @@
 # GarageOS — Plan de Implementación
 
 > **Stack:** Laravel 12 + Vue 3.5 + Inertia.js 2 + TypeScript 5.8 + Tailwind CSS 4 + MySQL 8.4 + Redis 7 + PHP 8.4
-> **Última actualización:** 29 de Junio de 2026
+> **Última actualización:** 1 de Julio de 2026
 
 ---
 
@@ -23,6 +23,7 @@
 13. [Seguridad & Monitoreo](#seguridad--monitoreo)
 14. [Internacionalización & UX](#internacionalización--ux)
 15. [Documentación & API](#documentación--api)
+16. [Backup & Rollback](#backup--rollback)
 
 ---
 
@@ -820,56 +821,56 @@ memory_limit=512M
 
 **Semana 1: Identity + Vehicle**
 
-- [x] Migrations: `users`, `garages`, `vehicles`, `vehicle_specs`, `km_history`
-- [x] Service Providers por módulo
-- [x] Models con relationships, casts, factories, Enums PHP 8.4
-- [x] CRUD de vehículos (placa, VIN, marca, modelo, año)
-- [x] Generación de QR único por vehículo
-- [x] Dashboard con listado del garaje virtual
-- [x] Vista pública por QR (sin login)
-- [x] Tests: Pest Unit + Feature de Vehicle
+- [ ] Migrations: `users`, `garages`, `vehicles`, `vehicle_specs`, `km_history`
+- [ ] Service Providers por módulo
+- [ ] Models con relationships, casts, factories, Enums PHP 8.4
+- [ ] CRUD de vehículos (placa, VIN, marca, modelo, año)
+- [ ] Generación de QR único por vehículo
+- [ ] Dashboard con listado del garaje virtual
+- [ ] Vista pública por QR (sin login)
+- [ ] Tests: Pest Unit + Feature de Vehicle
 
 **Semana 2: Documents**
 
-- [x] Migration de `documents`
-- [x] Upload de ficheros con Spatie MediaLibrary (S3 o local)
-- [x] Visor de documentos en frontend (PDF/image preview)
-- [x] Alertas básicas de caducidad (ITV, seguro) — rules manuales
-- [x] Listado de docs por vehículo con filtro por tipo
+- [ ] Migration de `documents`
+- [ ] Upload de ficheros con Spatie MediaLibrary (S3 o local)
+- [ ] Visor de documentos en frontend (PDF/image preview)
+- [ ] Alertas básicas de caducidad (ITV, seguro) — rules manuales
+- [ ] Listado de docs por vehículo con filtro por tipo
 
 **Semana 3: Maintenance**
 
-- [x] Migrations: `workshops`, `maintenance_entries`, `maintenance_intervals`, `service_packs`
-- [x] Timeline de vida del coche (ordenado por fecha/km desc)
-- [x] Formulario para añadir entrada manual
-- [x] Cálculo de próximo mantenimiento basado en `maintenance_intervals`
-- [x] Sello "Verificado" cuando lo añade un taller
+- [ ] Migrations: `workshops`, `maintenance_entries`, `maintenance_intervals`, `service_packs`
+- [ ] Timeline de vida del coche (ordenado por fecha/km desc)
+- [ ] Formulario para añadir entrada manual
+- [ ] Cálculo de próximo mantenimiento basado en `maintenance_intervals`
+- [ ] Sello "Verificado" cuando lo añade un taller
 
 **Semana 4: Alerts + Notificaciones**
 
-- [x] Migrations: `alert_rules`, `notifications`
-- [x] Job programado: `EvaluateAlertsCommand` en `php artisan schedule:run`
-- [x] Notificaciones in-app (badge en navbar)
-- [x] Email de recordatorio con Laravel Mail
-- [x] Push notifications con Capacitor + Firebase
+- [ ] Migrations: `alert_rules`, `notifications`
+- [ ] Job programado: `EvaluateAlertsCommand` en `php artisan schedule:run`
+- [ ] Notificaciones in-app (badge en navbar)
+- [ ] Email de recordatorio con Laravel Mail
+- [ ] Push notifications con Capacitor + Firebase
 
 ### Fase 2 — Features de valor (3-4 semanas)
 
 **Semana 5-6: Marketplace**
 
-- [x] Migrations: `sale_reports`, `market_values`
-- [x] Generación de informe PDF con DomPDF
-- [x] Score de salud del vehículo (algoritmo basado en historial)
-- [x] Link público temporal con token (expira en 30 días)
-- [x] Vista pública del informe (sin login, para compradores)
+- [ ] Migrations: `sale_reports`, `market_values`
+- [ ] Generación de informe PDF con DomPDF
+- [ ] Score de salud del vehículo (algoritmo basado en historial)
+- [ ] Link público temporal con token (expira en 30 días)
+- [ ] Vista pública del informe (sin login, para compradores)
 
 **Semana 7-8: Stats + UX avanzada**
 
-- [x] Calculadora de coste por km (suma de facturas / km recorridos)
-- [x] Gráfica de gastos mensual (Recharts)
-- [x] Historial de valor de mercado (scraper API Autocasión / coches.net)
-- [x] OCR básico para facturas (Tesseract via shell o AWS Textract)
-- [x] Notificaciones push funcionales en iOS + Android
+- [ ] Calculadora de coste por km (suma de facturas / km recorridos)
+- [ ] Gráfica de gastos mensual (Recharts)
+- [ ] Historial de valor de mercado (scraper API Autocasión / coches.net)
+- [ ] OCR básico para facturas (Tesseract via shell o AWS Textract)
+- [ ] Notificaciones push funcionales en iOS + Android
 
 ### Fase 3 — Escala y monetización (continuo)
 
@@ -881,9 +882,28 @@ memory_limit=512M
 - [ ] Laravel Octane con FrankenPHP para máximo rendimiento
 - [ ] Migración de módulos de alta carga a servicios independientes
 
+### Fase 4 — Importación y Onboarding (NUEVA)
+
+- [ ] **Import Wizard:** Herramienta para importar vehículos y clientes desde CSV/Excel.
+- [ ] **Onboarding Guiado:** Tutorial interactivo para nuevos usuarios y talleres.
+- [ ] **Sincronización Offline:** Estrategia de datos para Capacitor (uso en zonas sin cobertura).
+
+### Fase 5 — Cumplimiento y Legal (NUEVA)
+
+- [ ] **Gestión de Privacidad (GDPR):** Consentimiento, exportación de datos y borrado.
+- [ ] **Auditoría de Seguridad:** Implementación de logs de actividad y auditoría de cambios.
+
+### Fase 6 — Marketplace de Importación (V2)
+
+- [x] Onboarding Express de profesionales (`StripeConnectController`)
+- [x] `application_fee_amount` (8% comisión por defecto)
+- [x] Webhook `payment_intent.succeeded` (`PaymentController`)
+- [x] Facturación B2B de comisiones (`GenerateInvoiceAction` + `invoice.blade.php`)
+
 ---
 
 ## Testing strategy
+...
 
 ```
 tests/
@@ -930,7 +950,7 @@ tests/
         └── VehicleBrowserTest.php
 ```
 
-**Estado actual: 50 tests pasando** (12 VehicleTest + 9 AlertTest + 4 unitarios nuevos)
+**Estado actual: 54 tests pasando** (12 VehicleTest + 9 AlertTest + 4 unitarios nuevos + 2 ServicePack + 2 API pública + 12 Import)
 
 Comandos base:
 
@@ -1091,7 +1111,7 @@ Con eso tienes un producto que ya resuelve un dolor real y puedes enseñárselo 
 
 ---
 
-## Estado actual (Junio 2026)
+## Estado actual (Julio 2026)
 
 | Componente | Estado | Tests |
 |------------|--------|-------|
@@ -1108,14 +1128,58 @@ Con eso tienes un producto que ya resuelve un dolor real y puedes enseñárselo 
 | Panel Taller | ✅ Implementado | - |
 | Service Pack Recommendations | ✅ Implementado | 2 tests |
 | OpenAPI Docs | ✅ Implementado | - |
+| Facturación B2B | ✅ Implementado | - |
 
-**Total: 54 tests pasando**
+**Total: 89 tests pasando** (25 Unit + 64 Feature)
 
 ### Próximos pasos
 
-- [ ] `composer require laravel/cashier`
-- [ ] Configurar `STRIPE_KEY/STRIPE_SECRET` en `.env`
-- [ ] `php artisan migrate` para nuevas tablas
-- [ ] Configurar Firebase credentials en `storage/app/firebase-credentials.json`
-- [ ] Ejecutar `npx cap add android` para generar proyecto móvil
+- [ ] Tests Unit para `GenerateInvoiceAction`
+- [ ] Fase 5: GDPR (exportación/borrado datos)
+- [ ] Fase 6: Marketplace de Importación (ver `plan_import.md`)
+
+> **Nota:** Tests Feature con Inertia necesitan `npm run build` para Vite manifest.
 - [ ] Deploy con `docker-compose up -d`
+
+---
+
+## DevOps & CI/CD
+
+- **CI/CD Pipeline**: GitHub Actions para lint, tests, build y deploy automático.
+- **Infrastructure as Code**: Docker Compose para entornos locales y producción.
+- **Environment Management**: `.env.example` centralizado con scripts de configuración.
+
+## Seguridad & Monitoreo
+
+- **Seguridad**: CSP, headers seguros, auditoría de dependencias integrada en CI.
+- **Monitoreo**: Laravel Pulse (backend), Sentry (frontend), Horizon para colas.
+
+## Internacionalización & UX
+
+- **i18n**: `laravel-lang` (backend) y `vue-i18n` (frontend) para soporte multi-idioma.
+- **Accesibilidad**: Componentes accesibles (Headless UI), auditorías WCAG.
+
+## Documentación & API
+
+- **API Documentation**: Generada automáticamente con `laravel-scribe` (Swagger/OpenAPI).
+- **Developer Docs**: Wiki interna para arquitectura y procesos.
+- **User Docs**: Guías integradas en la aplicación.
+
+## Backup & Rollback
+
+- **Backup Strategy**: `spatie/laravel-backup` con backups diarios y pruebas de restauración.
+- **Rollback Plan**: Estrategia "Blue-Green" para despliegues seguros.
+
+
+
+## Nombre
+
+Drivv: Modificación de Drive. Simple, tecnológico, directo al grano.
+
+Zump: Suena a velocidad, a saltarse la burocracia de un plumazo. Muy estilo startup moderna.
+
+Revv: De revoluciones (del motor). Visualmente es brutal con la doble 'v' (como Drivv), es cortísimo, y transmite la adrenalina de conseguir el coche que buscas. Suena a plataforma premium.
+
+Shiftto: Juega con Shift (cambiar de marcha) y el movimiento de traer el coche. Tiene esa terminación en -o que buscabas al principio, pero sin sonar infantil. Suena a proceso automatizado.
+
+Torqq: De Torque (par motor, la fuerza empuje). Si vuestro software es el que empuja todo el trámite burocrático y calcula la fuerza fiscal, este nombre transmite potencia bruta y tecnología.

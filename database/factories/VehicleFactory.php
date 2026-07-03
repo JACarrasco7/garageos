@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Modules\Identity\Models\Garage;
 use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -13,7 +14,7 @@ class VehicleFactory extends Factory
     public function definition(): array
     {
         return [
-            'garage_id' => \App\Modules\Identity\Models\Garage::factory(),
+            'garage_id' => Garage::factory(),
             'plate' => strtoupper($this->faker->regexify('[0-9]{4}[A-Z]{3}')),
             'vin' => $this->faker->regexify('[A-HJ-NPR-Z0-9]{17}'),
             'qr_token' => Str::random(64),

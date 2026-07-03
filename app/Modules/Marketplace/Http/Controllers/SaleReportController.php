@@ -3,9 +3,10 @@
 namespace App\Modules\Marketplace\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Marketplace\Actions\GenerateCertificateAction;
 use App\Modules\Marketplace\Models\SaleReport;
+use App\Modules\Vehicle\Models\Vehicle;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,7 +25,7 @@ class SaleReportController extends Controller
         ]);
     }
 
-    public function store(Vehicle $vehicle): \Illuminate\Http\RedirectResponse
+    public function store(Vehicle $vehicle): RedirectResponse
     {
         $this->authorize('view', $vehicle->garage);
 
@@ -56,9 +57,9 @@ class SaleReportController extends Controller
     {
         $this->authorize('view', $report->vehicle->garage);
 
-        $path = storage_path('app/public/' . $report->pdf_path);
+        $path = storage_path('app/public/'.$report->pdf_path);
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             abort(404);
         }
 

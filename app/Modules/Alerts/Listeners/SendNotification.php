@@ -3,8 +3,8 @@
 namespace App\Modules\Alerts\Listeners;
 
 use App\Modules\Alerts\Events\AlertTriggered;
-use App\Modules\Alerts\Models\Notification;
 use App\Modules\Alerts\Jobs\SendPushJob;
+use App\Modules\Alerts\Models\Notification;
 
 class SendNotification
 {
@@ -19,7 +19,7 @@ class SendNotification
             'user_id' => $user->id,
             'vehicle_id' => $vehicle->id,
             'type' => $rule->type,
-            'title' => ucfirst($rule->type) . ' - ' . $vehicle->brand . ' ' . $vehicle->model,
+            'title' => ucfirst($rule->type).' - '.$vehicle->brand.' '.$vehicle->model,
             'body' => $this->getMessage($rule, $vehicle),
             'channel' => 'in_app',
         ]);
@@ -32,11 +32,13 @@ class SendNotification
     {
         if ($rule->trigger_date) {
             $days = now()->diffInDays($rule->trigger_date, false);
+
             return "El {$rule->type} del {$vehicle->brand} {$vehicle->model} vence en {$days} días";
         }
 
         if ($rule->trigger_km) {
             $remaining = $rule->trigger_km - $vehicle->current_km;
+
             return "El {$vehicle->brand} {$vehicle->model} necesita {$rule->type} en {$remaining} km";
         }
 

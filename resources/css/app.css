@@ -58,6 +58,8 @@
   --foreground: #0F172A; /* Slate 900 - Carbon Fiber/Asphalt */
   --card: oklch(1 0 0);
   --card-foreground: #0F172A;
+  --popover: oklch(1 0 0);
+  --popover-foreground: #0F172A;
 
   /* Identity Colors - Motor Heritage */
   --primary: #0A3A2F; /* Nürburgring Green */
@@ -101,8 +103,10 @@
   /* Neutrals - Dark Mode */
   --background: #020617; /* Slate 950 - Carbon Fiber/Asphalt Dark */
   --foreground: #F8FAFC; /* Slate 50 */
-  --card: #0F172A; /* Slate 900 */
+  --card: #1E293B; /* Slate 800 */
   --card-foreground: #F8FAFC;
+  --popover: #1E293B;
+  --popover-foreground: #F8FAFC;
 
   /* Identity Colors */
   --primary: #14532D; /* Nürburgring Green Light Variant */
@@ -122,8 +126,8 @@
   --muted-foreground: #CBD5E1;
 
   /* Structure */
-  --border: #0F172A;
-  --input: #0F172A;
+  --border: #334155; /* Slate 700 */
+  --input: #334155;
   --ring: #14532D;
 
   /* Charts */

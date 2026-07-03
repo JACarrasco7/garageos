@@ -1,21 +1,25 @@
 <?php
 
-use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
+use App\Models\User;
+use App\Modules\Alerts\Jobs\EvaluateAlertsJob;
 use App\Modules\Alerts\Models\AlertRule;
 use App\Modules\Alerts\Models\Notification;
-use App\Modules\Alerts\Jobs\EvaluateAlertsJob;
+use App\Modules\Identity\Models\Garage;
+use App\Modules\Marketplace\Actions\CalculateScoreAction;
+use App\Modules\Vehicle\Events\VehicleRegistered;
+use App\Modules\Vehicle\Models\Vehicle;
+
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\travelTo;
 
 beforeEach(function () {
-    $this->user = \App\Models\User::factory()->create();
+    $this->user = User::factory()->create();
     $this->garage = Garage::factory()->create(['user_id' => $this->user->id]);
     $this->vehicle = Vehicle::factory()->create(['garage_id' => $this->garage->id, 'current_km' => 50000]);
 });
 
 it('crea regla de alerta por defecto al registrar vehículo', function () {
-    event(new \App\Modules\Vehicle\Events\VehicleRegistered($this->vehicle));
+    event(new VehicleRegistered($this->vehicle));
 
     assertDatabaseHas('alert_rules', [
         'vehicle_id' => $this->vehicle->id,
@@ -46,7 +50,7 @@ it('detecta alerta por kilometraje', function () {
 
     $vehicle->update(['current_km' => 50500]);
 
-    $job = new EvaluateAlertsJob();
+    $job = new EvaluateAlertsJob;
     $job->handle();
 
     expect(Notification::where('vehicle_id', $vehicle->id)->count())->toBe(1);
@@ -65,7 +69,7 @@ it('detecta alerta por fecha', function () {
         'is_active' => true,
     ]);
 
-    $job = new EvaluateAlertsJob();
+    $job = new EvaluateAlertsJob;
     $job->handle();
 
     expect(Notification::where('vehicle_id', $vehicle->id)->count())->toBe(1);
@@ -97,14 +101,14 @@ it('marca regla como disparada', function () {
         'is_active' => true,
     ]);
 
-    $job = new EvaluateAlertsJob();
+    $job = new EvaluateAlertsJob;
     $job->handle();
 
     expect($rule->fresh()->last_triggered)->not->toBeNull();
 });
 
 it('calcula puntuación del vehículo', function () {
-    $score = app(\App\Modules\Marketplace\Actions\CalculateScoreAction::class)->execute($this->vehicle);
+    $score = app(CalculateScoreAction::class)->execute($this->vehicle);
 
     expect($score)->toBeInt()->toBeBetween(0, 100);
 });

@@ -47,6 +47,6 @@ class AffiliateLink extends Model
 
     public function getFormattedPrice(): string
     {
-        return $this->price ? number_format($this->price, 2) . ' ' . $this->currency : 'Precio no disponible';
+        return $this->price ? number_format($this->price, 2).' '.$this->currency : 'Precio no disponible';
     }
 }

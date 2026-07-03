@@ -12,13 +12,13 @@ class EnforceVehicleLimit
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             return $next($request);
         }
 
         // If user has an active subscription, check plan limits
         if ($user->subscribed('default')) {
-            $plan = config('subscription.plans.' . $user->subscription('default')->stripe_price);
+            $plan = config('subscription.plans.'.$user->subscription('default')->stripe_price);
 
             if ($plan && $plan['vehicle_limit'] !== null) {
                 $vehicleCount = $user->garages()->withCount('vehicles')->get()->sum('vehicles_count');
@@ -31,7 +31,7 @@ class EnforceVehicleLimit
                     }
 
                     return redirect()->route('subscription.index')
-                        ->with('error', 'Has alcanzado el límite de vehículos de tu plan (' . $plan['vehicle_limit'] . '). Actualiza tu suscripción para añadir más.');
+                        ->with('error', 'Has alcanzado el límite de vehículos de tu plan ('.$plan['vehicle_limit'].'). Actualiza tu suscripción para añadir más.');
                 }
             }
         }

@@ -7,6 +7,7 @@ use App\Http\Controllers\WorkshopDashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Cashier\Http\Controllers\WebhookController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -40,10 +41,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
 });
 
-Route::post('/stripe/webhook', [\Laravel\Cashier\Http\Controllers\WebhookController::class, 'handleWebhook']);
+Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook']);
 
 Route::middleware(['auth', 'role:workshop'])->group(function () {
     Route::get('/workshop/dashboard', [WorkshopDashboardController::class, 'index'])->name('workshop.dashboard');
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/../app/Modules/Providers/Routes/providers.php';
+require base_path('app/Modules/Vehicle/Routes/vehicle.php');
+require base_path('app/Modules/Maintenance/Routes/mobile_maintenance.php');
+require __DIR__.'/mobile.php';

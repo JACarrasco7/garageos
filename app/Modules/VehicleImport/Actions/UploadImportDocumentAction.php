@@ -2,9 +2,9 @@
 
 namespace App\Modules\VehicleImport\Actions;
 
-use App\Modules\VehicleImport\Models\VehicleImport;
-use App\Modules\VehicleImport\Models\ImportDocument;
 use App\Modules\VehicleImport\Enums\ImportStep;
+use App\Modules\VehicleImport\Models\ImportDocument;
+use App\Modules\VehicleImport\Models\VehicleImport;
 use Illuminate\Support\Facades\Storage;
 
 class UploadImportDocumentAction
@@ -29,7 +29,8 @@ class UploadImportDocumentAction
 
     protected function storeFile(UploadedFile $file, int $importId): string
     {
-        $filename = time() . '_' . $file->getClientOriginalName();
+        $filename = time().'_'.$file->getClientOriginalName();
+
         return $file->storeAs("import-documents/{$importId}", $filename, 'public');
     }
 
@@ -46,7 +47,7 @@ class UploadImportDocumentAction
 
     protected function checkAutoAdvance(VehicleImport $import): void
     {
-        $action = new AdvanceImportStepAction();
+        $action = new AdvanceImportStepAction;
         $action->autoAdvanceIfReady($import);
     }
 

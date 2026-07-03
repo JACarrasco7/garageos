@@ -5,10 +5,12 @@ namespace App\Modules\Vehicle\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Identity\Models\Garage;
 use App\Modules\Vehicle\Models\Vehicle;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use League\Csv\Reader;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class VehicleImportController extends Controller
 {
@@ -17,7 +19,7 @@ class VehicleImportController extends Controller
         return Inertia::render('Vehicle/Import');
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'file' => ['required', 'file', 'mimes:csv,txt'],
@@ -44,9 +46,9 @@ class VehicleImportController extends Controller
             ->with('success', 'Vehículos importados correctamente');
     }
 
-    public function export(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function export(): StreamedResponse
     {
-        $vehicles = Vehicle::whereHas('garage', fn($q) => $q->where('user_id', auth()->id()))
+        $vehicles = Vehicle::whereHas('garage', fn ($q) => $q->where('user_id', auth()->id()))
             ->get(['plate', 'brand', 'model', 'year', 'fuel_type', 'current_km']);
 
         $headers = ['plate', 'brand', 'model', 'year', 'fuel_type', 'current_km'];

@@ -2,9 +2,9 @@
 
 namespace App\Modules\VehicleImport\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Carbon\Carbon;
 
 class TemporaryPlate extends Model
 {
@@ -41,7 +41,7 @@ class TemporaryPlate extends Model
     public function isExpiringSoon(int $days = 7): bool
     {
         return $this->expires_at->subDays($days)->isPast()
-            && !$this->isExpired();
+            && ! $this->isExpired();
     }
 
     public function getDaysUntilExpiry(): int
@@ -51,7 +51,7 @@ class TemporaryPlate extends Model
 
     public function canBeExtended(): bool
     {
-        return !$this->is_extended && !$this->isExpired();
+        return ! $this->is_extended && ! $this->isExpired();
     }
 
     public function extend(int $days = 30): self

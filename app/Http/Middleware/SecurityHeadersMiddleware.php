@@ -18,12 +18,12 @@ class SecurityHeadersMiddleware
         $response->headers->set('Permissions-Policy', 'camera=(), geolocation=(), microphone=()');
 
         $csp = "default-src 'self'; "
-            . "script-src 'self' 'unsafe-inline' https://js.sentry-cdn.com; "
-            . "style-src 'self' 'unsafe-inline'; "
-            . "img-src 'self' data: https: http:; "
-            . "font-src 'self' https:; "
-            . "connect-src 'self' https://sentry.io wss://; "
-            . "frame-ancestors 'none';";
+            ."script-src 'self' 'unsafe-inline' https://js.sentry-cdn.com; "
+            ."style-src 'self' 'unsafe-inline'; "
+            ."img-src 'self' data: https: http:; "
+            ."font-src 'self' https:; "
+            ."connect-src 'self' https://sentry.io wss:; "
+            ."frame-ancestors 'none';";
 
         $response->headers->set('Content-Security-Policy', $csp);
 

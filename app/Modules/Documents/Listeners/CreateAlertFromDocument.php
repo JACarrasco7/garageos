@@ -2,8 +2,8 @@
 
 namespace App\Modules\Documents\Listeners;
 
-use App\Modules\Documents\Events\DocumentProcessed;
 use App\Modules\Alerts\Models\AlertRule;
+use App\Modules\Documents\Events\DocumentProcessed;
 
 class CreateAlertFromDocument
 {

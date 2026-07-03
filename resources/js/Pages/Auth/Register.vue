@@ -3,6 +3,7 @@ import AuthCardLayout from '@/layouts/auth/AuthCardLayout.vue';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
+import { Checkbox } from '@/Components/ui/checkbox';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -10,6 +11,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    gdpr_consent: false,
 });
 
 const submit = () => {
@@ -83,6 +85,18 @@ const submit = () => {
                         placeholder="••••••••"
                     />
                     <p v-if="form.errors.password_confirmation" class="text-sm text-destructive">{{ form.errors.password_confirmation }}</p>
+                </div>
+
+                <div class="flex items-start space-x-2">
+                    <Checkbox id="gdpr_consent" v-model:checked="form.gdpr_consent" required />
+                    <div class="grid gap-1.5 leading-none">
+                        <Label for="gdpr_consent" class="text-sm font-normal">
+                            Acepto la política de privacidad y el tratamiento de mis datos
+                        </Label>
+                        <p class="text-xs text-muted-foreground">
+                            Consulta nuestra <a href="/privacy" class="text-primary hover:underline">política de privacidad</a>
+                        </p>
+                    </div>
                 </div>
 
                 <Button

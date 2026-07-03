@@ -2,8 +2,8 @@
 
 namespace App\Modules\Marketplace\Actions;
 
-use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Marketplace\Models\MarketValue;
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Support\Facades\Http;
 
 class ScrapeMarketValueAction
@@ -23,6 +23,7 @@ class ScrapeMarketValueAction
 
             if ($response->successful() && $response->json('price')) {
                 $price = $response->json('price');
+
                 return MarketValue::create([
                     'vehicle_id' => $vehicle->id,
                     'estimated_value' => $price,
@@ -36,7 +37,7 @@ class ScrapeMarketValueAction
         // Fallback: estimación
         $estimatedValue = $this->estimateValue($vehicle);
 
-        if (!$estimatedValue) {
+        if (! $estimatedValue) {
             return null;
         }
 
@@ -51,7 +52,7 @@ class ScrapeMarketValueAction
 
     private function estimateValue(Vehicle $vehicle): float
     {
-        $basePrice = match($vehicle->brand) {
+        $basePrice = match ($vehicle->brand) {
             'Seat', 'Volkswagen', 'Renault', 'Peugeot', 'Citroën' => 15000,
             'BMW', 'Audi' => 25000,
             'Toyota', 'Honda' => 20000,

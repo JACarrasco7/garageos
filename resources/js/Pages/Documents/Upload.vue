@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
 import { Head, router } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/Components/ui/select'
-import { ArrowLeft, Upload, FileText } from 'lucide-vue-next'
+import { ArrowLeft, Upload, FileText, Camera, X } from 'lucide-vue-next'
 
 interface Vehicle {
   id: number
@@ -39,6 +39,12 @@ const form = useForm({
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const dragOver = ref(false)
+const cameraPreview = ref<string | null>(null)
+const isMobile = ref(false)
+
+onMounted(() => {
+  isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+})
 
 const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement
@@ -54,11 +60,42 @@ const handleDrop = (e: DragEvent) => {
   }
 }
 
+const handleCameraCapture = async () => {
+  try {
+    if (isMobile.value) {
+      const { Camera, CameraResultType } = await import('@capacitor/camera')
+
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+      })
+
+      cameraPreview.value = image.base64String || null
+
+      const response = await fetch(`data:image/jpeg;base64,${image.base64String}`)
+      const blob = await response.blob()
+      form.file = new File([blob], `camera-${Date.now()}.jpg`, { type: 'image/jpeg' })
+    } else {
+      fileInput.value?.click()
+    }
+  } catch (error) {
+    console.error('Camera capture error:', error)
+    alert('No se pudo acceder a la cámara. Intenta subir el archivo directamente.')
+  }
+}
+
+const removeCameraPhoto = () => {
+  cameraPreview.value = null
+  form.file = null
+}
+
 const submit = () => {
   form.post(route('documents.store', props.vehicle.id), {
     preserveScroll: true,
     onSuccess: () => {
       form.reset()
+      cameraPreview.value = null
       router.visit(route('documents.index', props.vehicle.id))
     },
   })
@@ -118,7 +155,56 @@ const typeOptions = [
             <!-- File upload -->
             <div class="space-y-2">
               <Label>Archivo</Label>
+
+              <div class="flex gap-2 mb-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  @click="handleCameraCapture"
+                  class="flex-1"
+                >
+                  <Camera class="w-4 h-4 mr-1" />
+                  Escanear con cámara
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  @click="fileInput?.click()"
+                  class="flex-1"
+                >
+                  <Upload class="w-4 h-4 mr-1" />
+                  Subir archivo
+                </Button>
+              </div>
+
+              <!-- Camera preview -->
+              <div v-if="cameraPreview" class="relative rounded-lg overflow-hidden border">
+                <img :src="cameraPreview" alt="Vista previa de cámara" class="w-full h-auto" />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  class="absolute top-2 right-2"
+                  @click="removeCameraPhoto"
+                >
+                  <X class="w-4 h-4" />
+                </Button>
+              </div>
+
+              <!-- File input hidden -->
+              <input
+                ref="fileInput"
+                type="file"
+                class="hidden"
+                @change="handleFileChange"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
+
+              <!-- Drag & drop zone (solo si no hay preview) -->
               <div
+                v-if="!cameraPreview"
                 @dragover.prevent="dragOver = true"
                 @dragleave="dragOver = false"
                 @drop.prevent="handleDrop"
@@ -126,13 +212,6 @@ const typeOptions = [
                 :class="dragOver ? 'border-primary bg-primary/10' : 'border-border'"
                 @click="fileInput?.click()"
               >
-                <input
-                  ref="fileInput"
-                  type="file"
-                  class="hidden"
-                  @change="handleFileChange"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                />
                 <div v-if="form.file">
                   <p class="font-medium">{{ form.file.name }}</p>
                   <p class="text-sm text-muted-foreground">{{ (form.file.size / 1024).toFixed(0) }} KB</p>

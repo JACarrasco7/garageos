@@ -1,13 +1,9 @@
 <?php
 
+use App\Models\User;
+use App\Modules\Identity\Models\Garage;
 use App\Modules\Marketplace\Actions\ScrapeMarketValueAction;
 use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
-use App\Models\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(TestCase::class, RefreshDatabase::class);
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -23,7 +19,7 @@ test('estimates value for Seat', function () {
         'current_km' => 50000,
     ]);
 
-    $action = new ScrapeMarketValueAction();
+    $action = new ScrapeMarketValueAction;
     $value = $action->execute($vehicle);
 
     expect($value)->not->toBeNull();
@@ -46,7 +42,7 @@ test('estimates value decreases with age', function () {
         'current_km' => 10000,
     ]);
 
-    $action = new ScrapeMarketValueAction();
+    $action = new ScrapeMarketValueAction;
     $valueNew = $action->execute($vehicleNew);
     $valueOld = $action->execute($vehicleOld);
 

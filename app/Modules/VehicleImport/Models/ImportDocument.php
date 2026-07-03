@@ -2,9 +2,9 @@
 
 namespace App\Modules\VehicleImport\Models;
 
+use App\Modules\VehicleImport\Enums\ImportStep;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Modules\VehicleImport\Enums\ImportStep;
 
 class ImportDocument extends Model
 {

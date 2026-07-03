@@ -3,8 +3,12 @@
 namespace App\Modules\Documents\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Documents\Actions\UploadDocumentAction;
+use App\Modules\Documents\Events\DocumentUploaded;
+use App\Modules\Documents\Http\Requests\StoreDocumentRequest;
 use App\Modules\Documents\Models\Document;
 use App\Modules\Vehicle\Models\Vehicle;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -29,40 +33,22 @@ class DocumentController extends Controller
     public function create(Vehicle $vehicle): Response
     {
         $this->authorize('update', $vehicle->garage);
+
         return Inertia::render('Documents/Upload', ['vehicle' => $vehicle]);
     }
 
-    public function store(Request $request, Vehicle $vehicle): \Illuminate\Http\RedirectResponse
+    public function store(StoreDocumentRequest $request, UploadDocumentAction $action): RedirectResponse
     {
-        $this->authorize('update', $vehicle->garage);
+        $this->authorize('update', $request->vehicle->garage);
 
-        $validated = $request->validate([
-            'type' => ['required', 'in:factura,itv,seguro,impuesto,otro'],
-            'title' => ['nullable', 'string', 'max:150'],
-            'file' => ['required', 'file', 'max:20480'],
-            'document_date' => ['nullable', 'date'],
-            'expiry_date' => ['nullable', 'date'],
-            'amount' => ['nullable', 'numeric', 'min:0'],
-        ]);
+        $document = $action->execute(
+            $request->vehicle,
+            $request->validated(),
+            $request->file('file')
+        );
 
-        $path = $request->file('file')->store('documents', 'public');
-
-        $document = $vehicle->documents()->create([
-            'type' => $validated['type'],
-            'title' => $validated['title'] ?? $request->file('file')->getClientOriginalName(),
-            'file_path' => $path,
-            'file_size' => $request->file('file')->getSize(),
-            'mime_type' => $request->file('file')->getMimeType(),
-            'document_date' => $validated['document_date'],
-            'expiry_date' => $validated['expiry_date'],
-            'amount' => $validated['amount'],
-            'km_at_time' => $vehicle->current_km,
-        ]);
-
-        // Disparar evento para que los listeners procesen
-        event(new \App\Modules\Documents\Events\DocumentUploaded($document));
-
-        return back()->with('success', 'Documento subido correctamente');
+        return redirect()->route('vehicles.show', $request->vehicle->id)
+            ->with('success', 'Documento subido correctamente.');
     }
 
     public function show(Document $document): Response
@@ -72,5 +58,61 @@ class DocumentController extends Controller
         return Inertia::render('Documents/Show', [
             'document' => $document,
         ]);
+    }
+
+    public function mobileIndex(Vehicle $vehicle): Response
+    {
+        $this->authorize('view', $vehicle->garage);
+
+        $documents = $vehicle->documents()
+            ->latest()
+            ->get();
+
+        return Inertia::render('Mobile/Documents/Index', [
+            'vehicle' => $vehicle,
+            'documents' => $documents,
+        ]);
+    }
+
+    public function mobileCreate(Vehicle $vehicle): Response
+    {
+        $this->authorize('update', $vehicle->garage);
+
+        return Inertia::render('Mobile/Documents/Upload', ['vehicle' => $vehicle]);
+    }
+
+    public function mobileStore(Request $request, Vehicle $vehicle): RedirectResponse
+    {
+        $this->authorize('update', $vehicle->garage);
+
+        $validated = $request->validate([
+            'type' => ['required', 'in:factura,itv,seguro,impuesto,otro'],
+            'title' => ['nullable', 'string', 'max:255'],
+            'file' => ['required', 'file', 'max:10240'],
+            'document_date' => ['nullable', 'date'],
+            'expiry_date' => ['nullable', 'date'],
+            'amount' => ['nullable', 'numeric'],
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->store('documents/'.$vehicle->id, 'private');
+
+        $document = Document::create([
+            'vehicle_id' => $vehicle->id,
+            'type' => $validated['type'],
+            'title' => $validated['title'] ?? $file->getClientOriginalName(),
+            'file_path' => $path,
+            'file_size' => $file->getSize(),
+            'mime_type' => $file->getMimeType(),
+            'document_date' => $validated['document_date'],
+            'expiry_date' => $validated['expiry_date'],
+            'amount' => $validated['amount'],
+            'km_at_time' => $vehicle->current_km,
+        ]);
+
+        event(new DocumentUploaded($document));
+
+        return redirect()->route('mobile.vehicles.show', $vehicle->id)
+            ->with('success', 'Documento subido correctamente.');
     }
 }

@@ -1,13 +1,16 @@
 <?php
 
-use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
+use App\Models\User;
 use App\Modules\Alerts\Models\AlertRule;
+use App\Modules\Identity\Models\Garage;
+use App\Modules\Vehicle\Events\VehicleRegistered;
+use App\Modules\Vehicle\Models\Vehicle;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 
 beforeEach(function () {
-    $this->user = \App\Models\User::factory()->create();
+    $this->user = User::factory()->create();
     $this->garage = Garage::factory()->create(['user_id' => $this->user->id]);
 });
 
@@ -49,7 +52,7 @@ it('permite crear un vehículo nuevo', function () {
 it('crea alertas por defecto al registrar vehículo', function () {
     $vehicle = Vehicle::factory()->create(['garage_id' => $this->garage->id]);
 
-    event(new \App\Modules\Vehicle\Events\VehicleRegistered($vehicle));
+    event(new VehicleRegistered($vehicle));
 
     expect(AlertRule::where('vehicle_id', $vehicle->id)->count())->toBeGreaterThan(0);
 });

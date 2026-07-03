@@ -23,8 +23,12 @@ class KmHistory extends Model
     protected $casts = [
         'km' => 'integer',
         'recorded_at' => 'date',
+        'source' => 'string',
     ];
 
+    /**
+     * Get the vehicle that owns this history entry.
+     */
     public function vehicle(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class);

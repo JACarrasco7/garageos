@@ -35,12 +35,15 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'gdpr_consent' => 'required|accepted',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'gdpr_consent' => true,
+            'gdpr_consent_at' => now(),
         ]);
 
         event(new Registered($user));

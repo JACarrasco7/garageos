@@ -2,28 +2,29 @@
 
 namespace App\Modules\Maintenance\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Maintenance\Events\RevisionCompleted;
+use App\Modules\Maintenance\Listeners\UpdateVehicleScore;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
 
 class MaintenanceServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-
+        // Migrations are in the root database/migrations directory
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/maintenance.php');
+            $this->loadRoutesFrom(__DIR__.'/../Routes/maintenance.php');
         });
 
         // Public routes (no auth)
         Route::group($this->publicRouteConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/public_workshops.php');
+            $this->loadRoutesFrom(__DIR__.'/../Routes/public_workshops.php');
         });
 
         // Listeners
         $this->app['events']->listen(
-            \App\Modules\Maintenance\Events\RevisionCompleted::class,
-            \App\Modules\Maintenance\Listeners\UpdateVehicleScore::class
+            RevisionCompleted::class,
+            UpdateVehicleScore::class
         );
     }
 

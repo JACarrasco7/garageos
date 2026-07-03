@@ -1,10 +1,10 @@
 <?php
 
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use App\Models\User;
 use App\Modules\Identity\Models\Garage;
 use App\Modules\Vehicle\Models\Vehicle;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 uses(DuskTestCase::class);
 
@@ -12,7 +12,7 @@ test('user can create vehicle via browser', function () {
     $user = User::factory()->create();
     $garage = Garage::factory()->create(['user_id' => $user->id]);
 
-    $this->browse(function (Browser $browser) use ($user, $garage) {
+    $this->browse(function (Browser $browser) use ($user) {
         $browser->loginAs($user)
             ->visit(route('vehicles.create'))
             ->type('#plate', 'TEST123')

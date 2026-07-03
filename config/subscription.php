@@ -5,6 +5,7 @@ return [
         'basic' => [
             'name' => 'Básico',
             'price' => 499, // €4.99 in cents
+            'stripe_price_id' => env('STRIPE_PRICE_BASIC', 'price_basic_placeholder'),
             'features' => [
                 'Hasta 3 vehículos',
                 'Alertas básicas de caducidad',
@@ -15,6 +16,7 @@ return [
         'pro' => [
             'name' => 'Pro',
             'price' => 999, // €9.99 in cents
+            'stripe_price_id' => env('STRIPE_PRICE_PRO', 'price_pro_placeholder'),
             'features' => [
                 'Vehículos ilimitados',
                 'Alertas + OCR de facturas',

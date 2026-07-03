@@ -17,7 +17,7 @@ class RateLimitApiMiddleware
             function () {}
         );
 
-        if (!$executed) {
+        if (! $executed) {
             return response()->json([
                 'error' => 'Too many requests',
             ], Response::HTTP_TOO_MANY_REQUESTS);

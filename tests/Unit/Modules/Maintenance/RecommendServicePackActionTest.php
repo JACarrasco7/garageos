@@ -1,14 +1,10 @@
 <?php
 
+use App\Models\User;
+use App\Modules\Identity\Models\Garage;
 use App\Modules\Maintenance\Actions\RecommendServicePackAction;
 use App\Modules\Maintenance\Models\ServicePack;
 use App\Modules\Vehicle\Models\Vehicle;
-use App\Modules\Identity\Models\Garage;
-use App\Models\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(TestCase::class, RefreshDatabase::class);
 
 beforeEach(function () {
     $user = User::factory()->create();
@@ -28,7 +24,7 @@ test('recommends oil change when due', function () {
         'items' => [['name' => 'Aceite', 'reference' => 'OIL', 'price' => 50]],
     ]);
 
-    $action = new RecommendServicePackAction();
+    $action = new RecommendServicePackAction;
     $recommendation = $action->execute($vehicle);
 
     expect($recommendation)->not->toBeNull();
@@ -41,7 +37,7 @@ test('returns null when no service needed', function () {
         'current_km' => 5000,
     ]);
 
-    $action = new RecommendServicePackAction();
+    $action = new RecommendServicePackAction;
     $recommendation = $action->execute($vehicle);
 
     expect($recommendation)->toBeNull();

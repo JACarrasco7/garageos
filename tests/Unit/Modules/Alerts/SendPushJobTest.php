@@ -1,14 +1,10 @@
 <?php
 
+use App\Models\User;
 use App\Modules\Alerts\Jobs\SendPushJob;
 use App\Modules\Alerts\Models\AlertRule;
-use App\Models\User;
-use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Identity\Models\Garage;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(TestCase::class, RefreshDatabase::class);
+use App\Modules\Vehicle\Models\Vehicle;
 
 test('job does nothing without fcm token', function () {
     $user = User::factory()->create(['fcm_token' => null]);

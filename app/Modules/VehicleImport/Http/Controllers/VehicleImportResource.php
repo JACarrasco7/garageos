@@ -2,6 +2,7 @@
 
 namespace App\Modules\VehicleImport\Http\Controllers;
 
+use App\Modules\VehicleImport\Enums\ImportStep;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class VehicleImportResource extends JsonResource
@@ -35,7 +36,7 @@ class VehicleImportResource extends JsonResource
             'progress_percentage' => $this->getProgressPercentage(),
             'documents_count' => $this->importDocuments()->count(),
             'verified_documents_count' => $this->importDocuments()->where('is_verified', true)->count(),
-            'temporary_plates' => $this->temporaryPlates->map(fn($plate) => [
+            'temporary_plates' => $this->temporaryPlates->map(fn ($plate) => [
                 'id' => $plate->id,
                 'plate_number' => $plate->plate_number,
                 'issued_at' => $plate->issued_at->toDateString(),
@@ -46,8 +47,8 @@ class VehicleImportResource extends JsonResource
                 'can_be_extended' => $plate->canBeExtended(),
             ]),
             'can_advance_to' => collect($this->current_step->getNext())
-                ->filter(fn($step) => $this->canAdvanceToStep($step))
-                ->map(fn($step) => [
+                ->filter(fn ($step) => $this->canAdvanceToStep($step))
+                ->map(fn ($step) => [
                     'value' => $step->value,
                     'label' => $step->getLabel(),
                 ])
@@ -60,8 +61,8 @@ class VehicleImportResource extends JsonResource
                 'dgt_registration',
                 'plates',
             ])
-                ->mapWithKeys(fn($step) => [
-                    $step => $this->isStepCompleted(\App\Modules\VehicleImport\Enums\ImportStep::from($step)),
+                ->mapWithKeys(fn ($step) => [
+                    $step => $this->isStepCompleted(ImportStep::from($step)),
                 ]),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),

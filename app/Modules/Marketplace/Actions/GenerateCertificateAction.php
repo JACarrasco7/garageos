@@ -2,8 +2,8 @@
 
 namespace App\Modules\Marketplace\Actions;
 
-use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\Marketplace\Models\SaleReport;
+use App\Modules\Vehicle\Models\Vehicle;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 
@@ -19,8 +19,8 @@ class GenerateCertificateAction
             'score' => $score,
         ]);
 
-        $filename = 'reports/sale-report-' . $vehicle->id . '-' . time() . '.pdf';
-        $pdf->save(storage_path('app/public/' . $filename));
+        $filename = 'reports/sale-report-'.$vehicle->id.'-'.time().'.pdf';
+        $pdf->save(storage_path('app/public/'.$filename));
 
         return SaleReport::create([
             'vehicle_id' => $vehicle->id,

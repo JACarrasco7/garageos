@@ -9,4 +9,5 @@ enum FuelType: string
     case Hybrid = 'hibrido';
     case Electric = 'electrico';
     case GLP = 'glp';
+    case Other = 'otro';
 }

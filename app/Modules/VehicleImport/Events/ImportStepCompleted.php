@@ -2,8 +2,8 @@
 
 namespace App\Modules\VehicleImport\Events;
 
-use App\Modules\VehicleImport\Models\VehicleImport;
 use App\Modules\VehicleImport\Enums\ImportStep;
+use App\Modules\VehicleImport\Models\VehicleImport;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

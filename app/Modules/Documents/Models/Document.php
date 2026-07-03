@@ -2,11 +2,19 @@
 
 namespace App\Modules\Documents\Models;
 
+use App\Models\User;
+use App\Modules\Vehicle\Models\Vehicle;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Document extends Model
+class Document extends Model implements HasMedia
 {
+    use HasFactory;
+    use InteractsWithMedia;
+
     protected $fillable = [
         'vehicle_id',
         'type',
@@ -26,24 +34,34 @@ class Document extends Model
     ];
 
     protected $casts = [
+        'km_at_time' => 'integer',
         'document_date' => 'date',
         'expiry_date' => 'date',
         'amount' => 'decimal:2',
-        'parsed_data' => 'json',
         'is_verified' => 'boolean',
-        'verified_at' => 'timestamp',
+        'verified_at' => 'datetime',
+        'parsed_data' => 'array',
     ];
 
+    /**
+     * Get the vehicle that owns this document.
+     */
     public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
 
-    public function verifiedBy(): BelongsTo
+    /**
+     * Get the user that verified this document.
+     */
+    public function verifier(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Identity\Models\User::class, 'verified_by');
+        return $this->belongsTo(User::class, 'verified_by');
     }
 
+    /**
+     * Check if the document is expired.
+     */
     public function isExpired(): bool
     {
         return $this->expiry_date && $this->expiry_date->isPast();

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Marketplace\Models;
 
+use App\Modules\Vehicle\Models\Vehicle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,13 +21,13 @@ class SaleReport extends Model
     protected $casts = [
         'score' => 'integer',
         'is_active' => 'boolean',
-        'expires_at' => 'timestamp',
+        'expires_at' => 'datetime',
         'views' => 'integer',
     ];
 
     public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Vehicle\Models\Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
 
     public function isExpired(): bool

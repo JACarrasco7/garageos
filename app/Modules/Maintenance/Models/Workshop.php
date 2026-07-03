@@ -2,12 +2,16 @@
 
 namespace App\Modules\Maintenance\Models;
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Workshop extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'name',
@@ -28,22 +32,22 @@ class Workshop extends Model
         'lat' => 'decimal:7',
         'lng' => 'decimal:7',
         'is_verified' => 'boolean',
-        'rating' => 'integer',
-        'services' => 'json',
+        'services' => 'array',
     ];
 
+    /**
+     * Get the user that owns the workshop.
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the maintenance entries associated with this workshop.
+     */
     public function maintenanceEntries(): HasMany
     {
         return $this->hasMany(MaintenanceEntry::class);
-    }
-
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(WorkshopReview::class);
     }
 }

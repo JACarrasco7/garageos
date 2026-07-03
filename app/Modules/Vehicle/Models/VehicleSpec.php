@@ -2,11 +2,14 @@
 
 namespace App\Modules\Vehicle\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VehicleSpec extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'vehicle_id',
         'engine_cc',
@@ -26,6 +29,9 @@ class VehicleSpec extends Model
         'seats' => 'integer',
     ];
 
+    /**
+     * Get the vehicle that owns these specifications.
+     */
     public function vehicle(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class);

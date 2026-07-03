@@ -2,11 +2,10 @@
 
 namespace App\Modules\VehicleImport\Actions;
 
+use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\VehicleImport\Enums\ImportStep;
+use App\Modules\VehicleImport\Events\ImportStepCompleted;
 use App\Modules\VehicleImport\Models\VehicleImport;
-use App\Modules\VehicleImport\Models\ImportDocument;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
 
 class AdvanceImportStepAction
 {
@@ -19,7 +18,7 @@ class AdvanceImportStepAction
             throw new \InvalidArgumentException('No se puede retroceder pasos');
         }
 
-        if (!$import->canAdvanceToStep($targetStep)) {
+        if (! $import->canAdvanceToStep($targetStep)) {
             throw new \InvalidArgumentException('Faltan documentos requeridos para avanzar a este paso');
         }
 
@@ -27,7 +26,7 @@ class AdvanceImportStepAction
             'current_step' => $targetStep,
         ]);
 
-        event(new \App\Modules\VehicleImport\Events\ImportStepCompleted($import, $targetStep));
+        event(new ImportStepCompleted($import, $targetStep));
 
         return $import->fresh();
     }
@@ -36,7 +35,7 @@ class AdvanceImportStepAction
     {
         $nextStep = $import->current_step->getNext();
 
-        if (!$nextStep) {
+        if (! $nextStep) {
             return null;
         }
 
@@ -53,7 +52,7 @@ class AdvanceImportStepAction
             throw new \InvalidArgumentException('Solo se puede completar si el paso actual es PLATES');
         }
 
-        if (!$import->isStepCompleted(ImportStep::PLATES)) {
+        if (! $import->isStepCompleted(ImportStep::PLATES)) {
             throw new \InvalidArgumentException('Faltan documentos requeridos para completar');
         }
 
@@ -62,7 +61,7 @@ class AdvanceImportStepAction
             'status' => 'completed',
         ]);
 
-        event(new \App\Modules\VehicleImport\Events\ImportStepCompleted($import, ImportStep::COMPLETED));
+        event(new ImportStepCompleted($import, ImportStep::COMPLETED));
 
         $this->syncToGarage($import);
 
@@ -71,7 +70,7 @@ class AdvanceImportStepAction
 
     protected function syncToGarage(VehicleImport $import): void
     {
-        $vehicle = \App\Modules\Vehicle\Models\Vehicle::updateOrCreate(
+        $vehicle = Vehicle::updateOrCreate(
             [
                 'plate' => $import->plate_new,
             ],
