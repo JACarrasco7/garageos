@@ -48,4 +48,44 @@ class ListingController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Nearby listings API endpoint.
+     */
+    public function nearby(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'lat' => ['required', 'numeric', 'between:-90,90'],
+            'lng' => ['required', 'numeric', 'between:-180,180'],
+            'radius' => ['nullable', 'integer', 'min:1', 'max:500'],
+        ]);
+
+        $radius = $validated['radius'] ?? 25;
+
+        $listings = Listing::where('is_active', true)
+            ->nearby($validated['lat'], $validated['lng'], $radius)
+            ->limit(50)
+            ->get()
+            ->map(fn ($l) => [
+                'id' => $l->id,
+                'title' => $l->title,
+                'brand' => $l->brand,
+                'model' => $l->model,
+                'price_eur' => (float) $l->price_eur,
+                'lat' => (float) $l->lat,
+                'lng' => (float) $l->lng,
+                'year' => $l->year,
+                'mileage_km' => $l->mileage_km,
+            ]);
+
+        return response()->json([
+            'data' => $listings,
+            'meta' => [
+                'lat' => $validated['lat'],
+                'lng' => $validated['lng'],
+                'radius_km' => $radius,
+                'count' => $listings->count(),
+            ],
+        ]);
+    }
 }

@@ -36,6 +36,8 @@ class ListingFactory extends Factory
             'extraction_method' => 'manual',
             'extraction_status' => 'completed',
             'is_active' => true,
+            'lat' => $this->faker->latitude(38, 42),
+            'lng' => $this->faker->longitude(-8, 2),
         ];
     }
 }
