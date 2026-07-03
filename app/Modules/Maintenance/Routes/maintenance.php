@@ -11,6 +11,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/vehicles/{vehicle}/maintenance/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
     Route::post('/vehicles/{vehicle}/maintenance', [MaintenanceController::class, 'store'])->name('maintenance.store');
     Route::get('/my-workshops', [WorkshopController::class, 'index'])->name('workshops.index');
+    Route::get('/my-workshops/map', [WorkshopController::class, 'map'])->name('workshops.map');
     Route::post('/my-workshops', [WorkshopController::class, 'store'])->name('workshops.store');
 });
 

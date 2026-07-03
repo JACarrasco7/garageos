@@ -22,6 +22,19 @@ class WorkshopController extends Controller
         ]);
     }
 
+    public function map(): Response
+    {
+        $workshops = Workshop::where('is_verified', true)
+            ->withAvg('reviews', 'rating')
+            ->get([
+                'id', 'name', 'address', 'city', 'lat', 'lng', 'rating',
+            ]);
+
+        return Inertia::render('Maintenance/WorkshopsMap', [
+            'workshops' => $workshops,
+        ]);
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
