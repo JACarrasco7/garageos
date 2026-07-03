@@ -4,12 +4,13 @@ use App\Models\User;
 use App\Modules\Listings\Enums\ListingPortal;
 use App\Modules\Listings\Models\Listing;
 use App\Modules\Listings\Services\ListingService;
+use App\Modules\Listings\Services\Parsers\JsonLdParser;
 use App\Modules\Listings\Services\Parsers\OpenGraphParser;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
-    $this->service = new ListingService([new OpenGraphParser]);
+    $this->service = new ListingService([new OpenGraphParser, new JsonLdParser]);
 });
 
 test('it can create a listing', function () {
@@ -124,8 +125,72 @@ test('it fails when http request fails', function () {
         $url => Http::response([], 500),
     ]);
 
-    $listing = $this->service->extractFromUrl($url, ListingPortal::AUTOSCOUT24, $this->user->id);
+    $listing = $this->service->extractFromUrl($url, ListingPortal::AUTOSCOUT24, 1);
 
     expect($listing->extraction_status)->toBe('failed');
-    expect($listing->extraction_error)->toMatch('/Failed to fetch content/');
+    expect($listing->extraction_error)->toContain('Failed to fetch content');
+});
+
+test('it searches listings with full-text scope', function () {
+    Listing::factory()->create([
+        'title' => 'BMW Serie 3 automático diesel',
+        'description' => 'Coche en perfecto estado, poco kilómetros',
+        'brand' => 'BMW',
+        'model' => '320d',
+        'is_active' => true,
+    ]);
+    Listing::factory()->create([
+        'title' => 'Audi A4 gasolina',
+        'description' => 'Vehículo deportivo color rojo',
+        'brand' => 'Audi',
+        'model' => 'A4',
+        'is_active' => true,
+    ]);
+    Listing::factory()->create([
+        'title' => 'Mercedes Clase C',
+        'description' => 'Sin descripción relevante',
+        'is_active' => false,
+    ]);
+
+    $results = $this->service->search('BMW', 15);
+
+    expect($results->total())->toBe(1);
+    expect($results->items()[0]->brand)->toBe('BMW');
+});
+
+test('it extracts from url using json-ld parser', function () {
+    $url = 'https://example.com/car-jsonld';
+    $html = '<html><head><script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Vehicle",
+      "brand": "Honda",
+      "model": "Civic",
+      "description": "A great car",
+      "image": "https://example.com/image.jpg",
+      "offers": {
+        "@type": "Offer",
+        "price": "20000.00",
+        "priceCurrency": "EUR"
+      }
+    }
+    </script></head></html>';
+
+    Http::fake([
+        $url => Http::response($html, 200),
+    ]);
+
+    $listing = $this->service->extractFromUrl($url, ListingPortal::AUTOSCOUT24, 1);
+
+    if ($listing->extraction_status !== 'completed') {
+        dump($listing->extraction_error);
+    }
+
+    expect($listing->extraction_status)->toBe('completed');
+    expect($listing->extraction_method)->toBe('json_ld');
+    expect($listing->brand)->toBe('Honda');
+    expect($listing->model)->toBe('Civic');
+    expect($listing->description)->toBe('A great car');
+    expect($listing->image)->toBe('https://example.com/image.jpg');
+    expect($listing->price_eur)->toBeNumeric();
 });

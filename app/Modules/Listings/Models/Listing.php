@@ -61,4 +61,31 @@ class Listing extends Model
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
     }
+
+    /**
+     * Full-text search scope (PostgreSQL only).
+     * Falls back to LIKE search on SQLite for tests.
+     */
+    public function scopeFullText($query, string $search)
+    {
+        $driver = $query->getConnection()->getDriverName();
+
+        if ($driver === 'pgsql') {
+            return $query->whereRaw(
+                'search_vector @@ plainto_tsquery(\'spanish\', ?)',
+                [$search]
+            )->orderByRaw(
+                'ts_rank(search_vector, plainto_tsquery(\'spanish\', ?)) DESC',
+                [$search]
+            );
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $like = '%'.$search.'%';
+            $q->where('title', 'like', $like)
+              ->orWhere('description', 'like', $like)
+              ->orWhere('brand', 'like', $like)
+              ->orWhere('model', 'like', $like);
+        });
+    }
 }

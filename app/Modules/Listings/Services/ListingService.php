@@ -31,6 +31,20 @@ class ListingService
     }
 
     /**
+     * Full-text search across listings.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function search(string $query, int $perPage = 15)
+    {
+        return Listing::query()
+            ->with('creator')
+            ->where('is_active', true)
+            ->fullText($query)
+            ->paginate($perPage);
+    }
+
+    /**
      * Find a listing by ID.
      */
     public function find(int $id): ?Listing

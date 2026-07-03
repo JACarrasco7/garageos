@@ -4,6 +4,7 @@ namespace App\Modules\Listings\Providers;
 
 use App\Modules\Listings\Services\ListingService;
 use App\Modules\Listings\Services\Parsers\OpenGraphParser;
+use App\Modules\Listings\Services\Parsers\JsonLdParser;
 use Illuminate\Support\ServiceProvider;
 
 class ListingsServiceProvider extends ServiceProvider
@@ -15,6 +16,7 @@ class ListingsServiceProvider extends ServiceProvider
     {
         $this->app->tag([
             OpenGraphParser::class,
+            JsonLdParser::class,
         ], 'listing.parser');
 
         $this->app->bind(
