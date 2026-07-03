@@ -12,8 +12,8 @@ return new class extends Migration
         }
 
         DB::statement("
-            ALTER TABLE listings 
-            ADD COLUMN search_vector tsvector 
+            ALTER TABLE listings
+            ADD COLUMN search_vector tsvector
             GENERATED ALWAYS AS (
                 setweight(to_tsvector('spanish', coalesce(title, '')), 'A') ||
                 setweight(to_tsvector('spanish', coalesce(description, '')), 'B') ||

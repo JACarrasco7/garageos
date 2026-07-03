@@ -5,21 +5,71 @@ namespace App\Modules\Maintenance\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Maintenance\Models\Workshop;
 use App\Modules\Maintenance\Models\WorkshopReview;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PublicWorkshopController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $workshops = Workshop::where('is_verified', true)
-            ->withAvg('reviews', 'rating')
-            ->orderByDesc('rating')
-            ->paginate(12);
+        $query = Workshop::where('is_verified', true)
+            ->withAvg('reviews', 'rating');
+
+        if ($request->filled(['lat', 'lng'])) {
+            $lat = (float) $request->get('lat');
+            $lng = (float) $request->get('lng');
+            $radius = (int) $request->get('radius', 25);
+            $query->nearby($lat, $lng, $radius);
+        } else {
+            $query->orderByDesc('rating');
+        }
+
+        $workshops = $query->paginate(12)->withQueryString();
 
         return Inertia::render('Workshop/Index', [
             'workshops' => $workshops,
+            'filters' => $request->only(['lat', 'lng', 'radius']),
+        ]);
+    }
+
+    public function nearby(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'lat' => ['required', 'numeric', 'between:-90,90'],
+            'lng' => ['required', 'numeric', 'between:-180,180'],
+            'radius' => ['nullable', 'integer', 'min:1', 'max:500'],
+        ]);
+
+        $radius = $validated['radius'] ?? 25;
+
+        $workshops = Workshop::where('is_verified', true)
+            ->nearby($validated['lat'], $validated['lng'], $radius)
+            ->withAvg('reviews', 'rating')
+            ->limit(50)
+            ->get()
+            ->map(fn ($w) => [
+                'id' => $w->id,
+                'name' => $w->name,
+                'address' => $w->address,
+                'city' => $w->city,
+                'lat' => (float) $w->lat,
+                'lng' => (float) $w->lng,
+                'rating' => (float) $w->rating,
+                'reviews_avg' => $w->reviews_avg_rating,
+                'distance_km' => $w->distanceFrom($validated['lat'], $validated['lng']),
+            ]);
+
+        return response()->json([
+            'data' => $workshops,
+            'meta' => [
+                'lat' => $validated['lat'],
+                'lng' => $validated['lng'],
+                'radius_km' => $radius,
+                'count' => $workshops->count(),
+            ],
         ]);
     }
 

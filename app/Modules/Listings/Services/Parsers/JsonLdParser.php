@@ -61,7 +61,7 @@ class JsonLdParser implements ListingParserInterface
     protected function isVehicle(array $json): bool
     {
         $type = $json['@type'] ?? '';
-        
+
         if (is_array($type)) {
             $type = implode('|', $type);
         }
