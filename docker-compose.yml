@@ -9,10 +9,10 @@ services:
       - "8000:8000"
     environment:
       - APP_ENV=production
-      - DB_HOST=mysql
+      - DB_HOST=postgres
       - REDIS_HOST=redis
     depends_on:
-      - mysql
+      - postgres
       - redis
     volumes:
       - storage-data:/app/storage
@@ -36,18 +36,17 @@ services:
     ports:
       - "6379:6379"
 
-  mysql:
-    image: mysql:8.4
+  postgres:
+    image: postgres:16-alpine
     environment:
-      MYSQL_ROOT_PASSWORD: garageos
-      MYSQL_DATABASE: garageos
-      MYSQL_USER: garageos
-      MYSQL_PASSWORD: garageos
+      POSTGRES_DB: garageos
+      POSTGRES_USER: garageos
+      POSTGRES_PASSWORD: garageos
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
 
 volumes:
   storage-data:
-  mysql-data:
+  postgres-data:
