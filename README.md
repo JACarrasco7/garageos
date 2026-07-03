@@ -11,26 +11,47 @@
 ## Stack
 
 - **Laravel 12** + **Vue 3.5** + **Inertia.js 2** + **TypeScript 5.8**
-- **Tailwind CSS 4** + **shadcn-vue** + **MySQL 8.4** + **Redis 7**
+- **Tailwind CSS 4** + **shadcn-vue** + **PostgreSQL 16** + **Redis 7**
 - **FrankenPHP + Octane** para producción
 - **Capacitor 7** para móvil (iOS/Android)
 
-## Desarrollo
+## Stack DB: PostgreSQL
 
+**¿Por qué PostgreSQL?**
+- JSONB indexable para datos dinámicos (specs de vehículos, raw extraction)
+- Full-text search nativo con stemmer español (`to_tsvector`)
+- Mejor concurrencia (MVCC maduro) — escala con muchas escrituras
+- PostGIS disponible si necesitamos geolocalización (talleres)
+- Particionado nativo para escalar por fecha/tenant
+
+Ver [`docs/POSTGRESQL_SETUP.md`](docs/POSTGRESQL_SETUP.md) para setup completo.
+
+### Setup local con PostgreSQL
+
+**Opción A — Docker (recomendado):**
 ```bash
-composer install
-npm install
-npm run dev
-php artisan serve
-php artisan queue:listen
+docker-compose up -d postgres
+# en otra terminal
+php artisan migrate
+php artisan db:seed
 ```
 
-## Tests
+**Opción B — PostgreSQL local (Laragon):**
+1. Instalar PostgreSQL 16+
+2. Crear DB y usuario:
+```sql
+CREATE DATABASE garageos;
+CREATE USER garageos WITH PASSWORD 'garageos';
+GRANT ALL PRIVILEGES ON DATABASE garageos TO garageos;
+```
+3. Configurar `.env` (ver `.env.example`)
+4. `php artisan migrate`
 
+### Tests
+
+Los tests usan **SQLite en memoria** (estándar Laravel, más rápido):
 ```bash
 php artisan test --parallel
-# o con Pest
-./vendor/bin/pest --parallel
 ```
 
 ## Producción

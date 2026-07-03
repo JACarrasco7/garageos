@@ -3,7 +3,7 @@ FROM dunglas/frankenphp:php8.4-zts-alpine
 WORKDIR /app
 
 # Install extensions
-RUN install-php-extensions opcache redis pcntl intl
+RUN install-php-extensions opcache redis pcntl intl pdo_pgsql pgsql
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

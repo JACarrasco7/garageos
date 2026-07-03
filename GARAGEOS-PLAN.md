@@ -1,28 +1,30 @@
 # GarageOS — Plan de Implementación
 
-> **Stack:** Laravel 12 + Vue 3.5 + Inertia.js 2 + TypeScript 5.8 + Tailwind CSS 4 + MySQL 8.4 + Redis 7 + PHP 8.4
-> **Última actualización:** Junio 2026
+> **Stack:** Laravel 12 + Vue 3.5 + Inertia.js 2 + TypeScript 5.8 + Tailwind CSS 4 + **PostgreSQL 16** + Redis 7 + PHP 8.4
+> **Última actualización:** Julio 2026
 
 ## ✅ Implementado
 
 ### Backend
 - [x] Laravel 12 + Breeze + Vue 3 + TypeScript + Dark mode
+- [x] **PostgreSQL 16** (migrado desde MySQL — JSONB, full-text search nativo, mejor concurrencia)
 - [x] Paquetes: Sanctum, Pulse, Scout, MediaLibrary, Permission, Backup, DomPDF, QR Code, Pest
 - [x] Estructura modular en `app/Modules/`
-- [x] Migrations: `users`, `garages`, `vehicles`, `vehicle_specs`, `documents`, `maintenance_entries`, `alert_rules`, `maintenance_intervals`
-- [x] Factories: `VehicleFactory`, `VehicleSpecFactory`, `GarageFactory`
+- [x] Migrations: `users`, `garages`, `vehicles`, `vehicle_specs`, `documents`, `maintenance_entries`, `alert_rules`, `maintenance_intervals`, `valuations`, `listings`, `conversations`, `transactions`, `marketplace_*`
+- [x] Factories: `VehicleFactory`, `VehicleSpecFactory`, `GarageFactory`, `ListingFactory`, factories de Alerts/Billing/Identity/Maintenance/Marketplace/Vehicle/VehicleImport
 - [x] Seeders: `MaintenanceIntervalSeeder`
 - [x] Modelos con relationships y casts
-- [x] Resources: `VehicleResource`, `VehicleSpecResource`
-- [x] Controllers: `GarageController`, `VehicleController`, `DocumentController`, `PublicVehicleController`
-- [x] Eventos: `VehicleRegistered`, `AlertTriggered`
-- [x] Listeners: `CreateDefaultAlertRules`
+- [x] Resources: `VehicleResource`, `VehicleSpecResource`, `VehiclePhotoResource`
+- [x] Controllers: `GarageController`, `VehicleController`, `DocumentController`, `PublicVehicleController`, `VehiclePhotoController`, `ListingController`
+- [x] Eventos: `VehicleRegistered`, `AlertTriggered`, `ImportStepCompleted`, `TemporaryPlateExpiringSoon`
+- [x] Listeners: `CreateDefaultAlertRules`, `EvaluateMaintenanceAlerts`
 - [x] Jobs: `EvaluateAlertsJob`
-- [x] Schedule: `alerts:evaluate` diario
+- [x] Schedule: `alerts:evaluate`, `plates:check-expiry`, `alerts:evaluate-search`
+- [x] **Full-text search en listings** (PostgreSQL `tsvector` con stemmer español)
 - [x] Rutas API modularizadas
 
 ### Frontend
-- [x] Páginas Vue: `Vehicle/Index.vue`, `Vehicle/Create.vue`, `Vehicle/Show.vue`, `Vehicle/Public.vue`, `Documents/Index.vue`
+- [x] Páginas Vue: `Vehicle/Index.vue`, `Vehicle/Create.vue`, `Vehicle/Show.vue`, `Vehicle/Public.vue`, `Documents/Index.vue`, `Marketplace/MyListings.vue`
 - [x] TypeScript interfaces en `resources/js/types/index.ts`
 - [x] Tailwind CSS configurado
 
@@ -31,13 +33,14 @@
 
 ## Próximos pasos
 
-1. `php artisan migrate` - ejecutar migrations
-2. Configurar `.env` con MySQL + Redis
-3. `npm run dev` - desarrollo frontend
+1. `docker-compose up -d postgres` — levantar PostgreSQL
+2. `php artisan migrate` — ejecutar migrations
+3. `npm run dev` — desarrollo frontend
 4. Implementar upload de documentos con Spatie MediaLibrary
 5. Sistema de notificaciones push (Firebase)
 6. Marketplace + PDF reports
-7. Tests Pest
+7. **Geolocalización talleres con PostGIS** (futuro)
+8. **Particionado de tablas por fecha** (futuro, escala)
 
 ## Comandos para arrancar
 
