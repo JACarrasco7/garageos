@@ -5,7 +5,7 @@ import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Badge } from '@/Components/ui/badge'
-import { Check, AlertCircle, Upload, FileText, Calendar, ShieldCheck } from 'lucide-vue-next'
+import { Check, AlertCircle, Upload, FileText, Calendar, ShieldCheck, MapPin, Star } from 'lucide-vue-next'
 import { useForm } from '@inertiajs/vue3'
 
 interface ImportDocument {
@@ -110,6 +110,24 @@ const submitDocument = () => {
     onSuccess: () => {
       uploadForm.reset('file')
     }
+  })
+}
+
+const providers = ref<{
+  id: number
+  name: string
+  address: string
+  city: string
+  phone: string
+  email: string
+  rating: number
+  distance: number
+  services: string[]
+}[]>([])
+
+const loadProviders = () => {
+  router.get(route('import.providers', vehicleImport.id), (response: any) => {
+    providers.value = response.providers
   })
 }
 </script>
@@ -249,6 +267,63 @@ const submitDocument = () => {
             <div>
               <p class="text-muted-foreground">Plazo ITV</p>
               <p class="font-medium">{{ vehicleImport.itv_deadline || '-' }}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Service Providers -->
+      <Card class="border-0 shadow-lg">
+        <CardHeader>
+          <div class="flex items-center justify-between">
+            <CardTitle>Proveedores de Servicios</CardTitle>
+            <Button size="sm" variant="outline" @click="loadProviders">
+              Actualizar
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <div v-if="providers.length === 0" class="text-center py-8 text-muted-foreground">
+            <MapPin class="h-12 w-12 mx-auto mb-2 opacity-50" />
+            <p>Haz clic en "Actualizar" para ver proveedores cercanos</p>
+          </div>
+
+          <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              v-for="provider in providers"
+              :key="provider.id"
+              class="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+            >
+              <div class="flex items-start justify-between mb-2">
+                <h4 class="font-medium">{{ provider.name }}</h4>
+                <div class="flex items-center gap-1 text-xs">
+                  <Star class="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                  <span>{{ provider.rating }}</span>
+                </div>
+              </div>
+              
+              <div class="space-y-2 text-sm text-muted-foreground">
+                <p class="flex items-center gap-1">
+                  <MapPin class="h-3 w-3" />
+                  {{ provider.address }}, {{ provider.city }}
+                </p>
+                <p v-if="provider.phone">📞 {{ provider.phone }}</p>
+                <p v-if="provider.email">✉️ {{ provider.email }}</p>
+                <p class="text-xs">
+                  📍 {{ provider.distance.toFixed(1) }} km
+                </p>
+              </div>
+              
+              <div class="mt-3 flex flex-wrap gap-1">
+                <Badge
+                  v-for="service in provider.services"
+                  :key="service"
+                  variant="outline"
+                  class="text-xs"
+                >
+                  {{ service }}
+                </Badge>
+              </div>
             </div>
           </div>
         </CardContent>
