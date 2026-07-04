@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -14,13 +13,13 @@ return new class extends Migration
 
         DB::statement('CREATE EXTENSION IF NOT EXISTS postgis');
 
-        DB::statement("
+        DB::statement('
             ALTER TABLE workshops
             ADD COLUMN location geography(Point, 4326)
             GENERATED ALWAYS AS (
                 ST_SetSRID(ST_MakePoint(lng, lat), 4326)::geography
             ) STORED
-        ");
+        ');
 
         DB::statement('CREATE INDEX workshops_location_idx ON workshops USING GIST (location)');
     }

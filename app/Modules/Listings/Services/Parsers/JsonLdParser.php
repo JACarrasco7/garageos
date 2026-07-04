@@ -6,9 +6,6 @@ class JsonLdParser implements ListingParserInterface
 {
     /**
      * Determine if this parser can handle the given HTML content.
-     *
-     * @param string $html
-     * @return bool
      */
     public function canParse(string $html): bool
     {
@@ -23,7 +20,6 @@ class JsonLdParser implements ListingParserInterface
     /**
      * Parse the HTML content and return an array of extracted data.
      *
-     * @param string $html
      * @return array<string, mixed>
      */
     public function parse(string $html): array
@@ -36,14 +32,14 @@ class JsonLdParser implements ListingParserInterface
         foreach ($matches[1] as $jsonContent) {
             $json = json_decode(trim($jsonContent), true);
 
-            if (!$json) {
+            if (! $json) {
                 continue;
             }
 
             // We are looking for a @type that is a Vehicle or Product
             if ($this->isVehicle($json)) {
                 $extracted = $this->extractFromVehicle($json);
-                if (!empty($extracted)) {
+                if (! empty($extracted)) {
                     return $extracted;
                 }
             }
@@ -55,8 +51,7 @@ class JsonLdParser implements ListingParserInterface
     /**
      * Check if the JSON-LD object represents a vehicle.
      *
-     * @param array<string, mixed> $json
-     * @return bool
+     * @param  array<string, mixed>  $json
      */
     protected function isVehicle(array $json): bool
     {
@@ -72,7 +67,7 @@ class JsonLdParser implements ListingParserInterface
     /**
      * Extract data from a vehicle JSON-LD object.
      *
-     * @param array<string, mixed> $json
+     * @param  array<string, mixed>  $json
      * @return array<string, mixed>
      */
     protected function extractFromVehicle(array $json): array

@@ -5,6 +5,7 @@ namespace App\Modules\Vehicle\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Identity\Models\Garage;
 use App\Modules\Maintenance\Actions\RecommendServicePackAction;
+use App\Modules\Vehicle\Actions\GenerateVehicleReportAction;
 use App\Modules\Vehicle\Actions\RegisterVehicleAction;
 use App\Modules\Vehicle\Http\Requests\StoreVehicleRequest;
 use App\Modules\Vehicle\Models\Vehicle;
@@ -169,5 +170,15 @@ class VehicleController extends Controller
         $vehicle->update(['is_active' => false]);
 
         return redirect()->route('vehicles.index')->with('success', 'Vehículo desactivado');
+    }
+
+    public function generateReport(Vehicle $vehicle)
+    {
+        Gate::authorize('view', $vehicle->garage);
+
+        $action = new GenerateVehicleReportAction;
+        $path = $action->execute($vehicle);
+
+        return response()->download(storage_path('app/public/'.$path));
     }
 }

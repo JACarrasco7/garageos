@@ -23,3 +23,4 @@ Route::delete('/vehicles/{vehicle}/photo', [VehiclePhotoController::class, 'dest
 Route::get('/vehicles/{vehicle}/edit', [VehicleController::class, 'edit'])->name('vehicles.edit');
 Route::put('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
 Route::delete('/vehicles/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
+Route::get('/vehicles/{vehicle}/report', [VehicleController::class, 'generateReport'])->name('vehicles.report');

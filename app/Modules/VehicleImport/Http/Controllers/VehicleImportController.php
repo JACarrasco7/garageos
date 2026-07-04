@@ -62,6 +62,8 @@ class VehicleImportController extends Controller
     {
         $this->authorize('view', $import);
 
+        $import->load(['importDocuments' => fn ($q) => $q->where('is_verified', true)]);
+
         return Inertia::render('Import/Wizard', [
             'import' => VehicleImportResource::make($import),
             'steps' => collect(ImportStep::cases())

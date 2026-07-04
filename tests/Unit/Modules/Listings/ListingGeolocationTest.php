@@ -1,7 +1,6 @@
 <?php
 
 use App\Modules\Listings\Models\Listing;
-use Illuminate\Support\Facades\DB;
 
 test('distanceFrom calculates km between two points correctly', function () {
     $listing = new Listing(['lat' => 40.4168, 'lng' => -3.7038]); // Madrid

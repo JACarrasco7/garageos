@@ -3,7 +3,7 @@
 use App\Modules\Listings\Services\Parsers\JsonLdParser;
 
 test('it can parse vehicle json-ld', function () {
-    $parser = new JsonLdParser();
+    $parser = new JsonLdParser;
 
     $html = '<html><head><script type="application/ld+json">
     {
@@ -33,7 +33,7 @@ test('it can parse vehicle json-ld', function () {
 });
 
 test('it returns empty array if no json-ld found', function () {
-    $parser = new JsonLdParser();
+    $parser = new JsonLdParser;
     $html = '<html><body>No json-ld here</body></html>';
 
     $result = $parser->parse($html);
@@ -42,7 +42,7 @@ test('it returns empty array if no json-ld found', function () {
 });
 
 test('it returns empty array if json-ld is not a vehicle', function () {
-    $parser = new JsonLdParser();
+    $parser = new JsonLdParser;
     $html = '<html><head><script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -57,7 +57,7 @@ test('it returns empty array if json-ld is not a vehicle', function () {
 });
 
 test('it can parse multiple json-ld blocks and pick the first vehicle', function () {
-    $parser = new JsonLdParser();
+    $parser = new JsonLdParser;
     $html = '<html><head>
     <script type="application/ld+json">
     {

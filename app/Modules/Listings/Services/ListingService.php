@@ -6,6 +6,7 @@ use App\Modules\Listings\Enums\ListingPortal;
 use App\Modules\Listings\Models\Listing;
 use App\Modules\Listings\Services\Parsers\ListingParserInterface;
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -33,7 +34,7 @@ class ListingService
     /**
      * Full-text search across listings.
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
     public function search(string $query, int $perPage = 15)
     {

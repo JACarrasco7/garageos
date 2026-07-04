@@ -85,9 +85,9 @@ class Listing extends Model
         return $query->where(function ($q) use ($search) {
             $like = '%'.$search.'%';
             $q->where('title', 'like', $like)
-              ->orWhere('description', 'like', $like)
-              ->orWhere('brand', 'like', $like)
-              ->orWhere('model', 'like', $like);
+                ->orWhere('description', 'like', $like)
+                ->orWhere('brand', 'like', $like)
+                ->orWhere('model', 'like', $like);
         });
     }
 
