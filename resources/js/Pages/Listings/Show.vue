@@ -96,6 +96,24 @@ const shareListing = () => {
   }
 }
 
+const createPayment = async () => {
+  const response = await fetch(`/marketplace/listings/${props.listing.id}/payment`, {
+    method: 'POST',
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+      'Accept': 'application/json',
+    },
+  })
+
+  const data = await response.json()
+
+  if (data.client_secret) {
+    router.visit(`/marketplace/listings/${props.listing.id}/checkout`, {
+      data: { client_secret: data.client_secret },
+    })
+  }
+}
+
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('es-ES', {
     year: 'numeric',
@@ -255,12 +273,12 @@ const timeAgo = (date: string) => {
 
               <div class="flex gap-2">
                 <Button
-                  variant="outline"
+                  variant="default"
                   class="flex-1"
-                  @click="showContactModal = true"
+                  @click="createPayment"
                 >
-                  <MessageCircle class="h-4 w-4 mr-2" />
-                  Contactar
+                  <DollarSign class="h-4 w-4 mr-2" />
+                  Comprar
                 </Button>
                 <Button
                   variant="outline"

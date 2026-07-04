@@ -218,4 +218,26 @@ class MarketplaceController extends Controller
             'currency' => $intent->currency,
         ]);
     }
+
+    public function checkout(MarketplaceListing $listing)
+    {
+        $this->authorize('purchase', $listing);
+
+        $action = new \App\Modules\Billing\Actions\CreatePaymentIntentAction(
+            app(\Stripe\StripeClient::class)
+        );
+
+        $intent = $action->execute(
+            (float) $listing->price,
+            $listing->currency,
+            "Compra {$listing->title}",
+            $listing->user_id,
+            ['listing_id' => $listing->id]
+        );
+
+        return inertia('Listings/Checkout', [
+            'listing' => $listing,
+            'client_secret' => $intent->stripe_payment_intent_id,
+        ]);
+    }
 }

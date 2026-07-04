@@ -1,7 +1,7 @@
 # GarageOS — Plan de Implementación
 
-> **Stack:** Laravel 12 + Vue 3.5 + Inertia.js 2 + TypeScript 5.8 + Tailwind CSS 4 + MySQL 8.4 + Redis 7 + PHP 8.4
-> **Última actualización:** 1 de Julio de 2026
+> **Stack:** Laravel 13 + Vue 3.5 + Inertia.js 3 + TypeScript 5.8 + Tailwind CSS 4 + MySQL 8.4 + Redis 7 + PHP 8.4
+> **Última actualización:** 4 de Julio de 2026
 
 ---
 
@@ -45,10 +45,10 @@
 | Capa | Tecnología | Versión | Propósito |
 |---|---|---|---|
 | Runtime | PHP | 8.4 | Fibers, lazy objects, property hooks, JIT mejorado |
-| Backend | Laravel | 12.x | Monolito modular, ORM, colas, eventos, schedule |
+| Backend | Laravel | 13.x | Monolito modular, ORM, colas, eventos, schedule |
 | Frontend | Vue | 3.5 | Composition API, Vapor mode, mejor TypeScript |
-| Bridge | Inertia.js | 2.x | SPA sin API boilerplate, SSR nativo |
-| Tipado | TypeScript | 5.8 | Tipado estricto, decorators, mejor inferencia |
+| Bridge | Inertia.js | 3.x | SPA sin API boilerplate, SSR nativo |
+| Tipado | TypeScript | 5.8 | Tipado estricto, erasableSyntaxOnly |
 | Estilos | Tailwind CSS | 4.x | Oxide engine (Rust), 5x más rápido, CSS-first config |
 | BD | MySQL | 8.4 | JSON mejorado, InnoDB optimizado |
 | Cache / Queues | Redis | 7.x + Laravel Queues | Colas de alertas, OCR, notificaciones |
@@ -69,9 +69,9 @@
 ### Por qué estas versiones específicas
 
 - **PHP 8.4**: Property hooks (menos boilerplate en modelos), lazy objects (mejor rendimiento con relaciones), Fibers para async nativo, JIT mejorado para cálculos pesados (score de vehículos, cálculos de coste/km)
-- **Laravel 12**: Mejor estructura de rutas, `laravel new` con Inertia nativo, mejor integración con Vite 6, `php artisan config:cache` más rápido, soporte para lazy collections mejorado
+- **Laravel 13**: Mejor rendimiento, `laravel new` con Inertia 3 nativo, `php artisan config:cache` más rápido, soporte mejorado para lazy collections
 - **Vue 3.5**: Vapor mode (mejor rendimiento), mejor soporte TypeScript, `defineModel` simplificado, Suspense nativo
-- **Inertia.js 2**: SSR nativo mejorado, partial reloads optimizados, mejor manejo de assets
+- **Inertia.js 3**: SSR nativo mejorado, partial reloads optimizados, mejor manejo de assets, TypeScript mejorado
 - **Tailwind CSS 4**: Motor Oxide escrito en Rust (5x más rápido), configuración CSS-first (sin `tailwind.config.js`), container queries nativas, `@theme` directive
 - **Capacitor 7**: Mejor rendimiento en iOS/Android, plugins actualizados, soporte para Swift 6 / Kotlin 2
 - **TypeScript 5.8**: `erasableSyntaxOnly`, mejor inferencia, decorators estandarizados
@@ -541,13 +541,13 @@ Alerts
 
 | Paquete | Versión | Razón |
 |---|---|---|
-| `laravel/framework` | ^12.0 | Framework base |
-| `inertiajs/inertia-laravel` | ^2.0 | Inertia SSR/SPA |
+| `laravel/framework` | ^13.0 | Framework base |
+| `inertiajs/inertia-laravel` | ^3.0 | Inertia SSR/SPA |
 | `laravel/sanctum` | ^4.0 | API tokens + SPA auth |
-| `laravel/breeze` | ^2.3 | Scaffolding auth + Inertia + Vue + TS |
-| `laravel/tinker` | ^2.10 | Consola interactiva |
+| `laravel/breeze` | ^2.4 | Scaffolding auth + Inertia + Vue + TS |
+| `laravel/tinker` | ^3.0 | Consola interactiva |
 | `laravel/horizon` | ^5.30 | Dashboard colas Redis |
-| `laravel/pulse` | ^1.4 | Monitorización en tiempo real |
+| `laravel/pulse` | ^1.7 | Monitorización en tiempo real |
 | `laravel/scout` | ^10.8 | Búsqueda full-text |
 | `laravel/cashier` | ^15.6 | Stripe suscripciones (fase 3) |
 | `chillerlan/php-qrcode` | ^5.0 | QR por vehículo |
@@ -582,10 +582,10 @@ Alerts
 | Paquete | Versión | Razón |
 |---|---|---|
 | `vue` | ^3.5 | Composition API, Vapor mode |
-| `@inertiajs/vue3` | ^2.0 | Inertia adapter |
-| `@vitejs/plugin-vue` | ^5.2 | Vite + Vue |
-| `vite` | ^6.3 | Build tool (Laravel 12 usa Vite 6) |
-| `typescript` | ^5.8 | Tipado estricto |
+| `@inertiajs/vue3` | ^3.0 | Inertia adapter |
+| `@vitejs/plugin-vue` | ^6.0 | Vite + Vue |
+| `vite` | ^8.0 | Build tool (Laravel 13 usa Vite 8) |
+| `typescript` | ^5.8 | Tipado estricto, erasableSyntaxOnly |
 | `tailwindcss` | ^4.1 | Oxide engine (Rust), 5x más rápido |
 | `@tailwindcss/forms` | ^0.5 | Reset de formularios |
 | `@tailwindcss/typography` | ^0.5 | Prose styles |
@@ -595,8 +595,8 @@ Alerts
 | `dayjs` | ^1.11 | Fechas ligeras |
 | `axios` | ^1.8 | HTTP client |
 | `pinia` | ^3.0 | State management |
-| `@vueuse/core` | ^13.0 | Composables utilitarios |
-| `vue-sonner` | ^1.3 | Toast notifications |
+| `@vueuse/core` | ^14.0 | Composables utilitarios |
+| `vue-sonner` | ^2.0 | Toast notifications |
 | `i18next` | ^23.0 | Internacionalización |
 | `vue-i18n` | ^10.0 | i18n para Vue |
 | `sentry` | — | Monitoreo de errores frontend |
@@ -605,8 +605,8 @@ Alerts
 
 | Paquete | Versión | Razón |
 |---|---|---|
-| `laravel-vite-plugin` | ^1.2 | Integración Laravel + Vite |
-| `autoprefixer` | ^10.4 | CSS vendor prefixes |
+| `laravel-vite-plugin` | ^3.1 | Integración Laravel + Vite |
+| `autoprefixer` | ^10.5 | CSS vendor prefixes |
 | `postcss` | ^8.5 | Procesador CSS |
 | `prettier` | ^3.5 | Formateo |
 | `eslint` | ^9.25 | Linter flat config |
@@ -807,7 +807,7 @@ memory_limit=512M
 
 ### Fase 0 — Setup (2-3 días)
 
-- [x] `laravel new garageos --using=laravel-presets/inertia` (Inertia nativo en Laravel 12)
+- [x] `laravel new garageos --using=laravel-presets/inertia` (Inertia 3 nativo en Laravel 13)
 - [x] Instalar paquetes Composer + NPM
 - [x] Configurar estructura modular en `app/Modules/`
 - [x] Configurar MySQL + Redis en `.env`
@@ -979,41 +979,41 @@ npx vue-tsc --noEmit
 ## Primeros comandos para arrancar
 
 ```bash
-# 1. Crear proyecto (Laravel 12 con Inertia)
+# 1. Crear proyecto (Laravel 13 con Inertia 3)
 laravel new garageos --using=laravel-presets/inertia
 cd garageos
 
 # 2. Instalar paquetes producción
-composer require inertiajs/inertia-laravel:^2.0
+composer require inertiajs/inertia-laravel:^3.0
 composer require laravel/sanctum:^4.0
-composer require laravel/breeze:^2.3 --dev
+composer require laravel/breeze:^2.4 --dev
 composer require laravel/horizon:^5.30
-composer require laravel/pulse:^1.4
-composer require laravel/scout:^10.8
-composer require spatie/laravel-medialibrary:^11.12
-composer require spatie/laravel-permission:^6.15
+composer require laravel/pulse:^1.7
+composer require laravel/scout:^11.2
+composer require spatie/laravel-medialibrary:^11.23
+composer require spatie/laravel-permission:^8.0
 composer require spatie/laravel-activitylog:^4.11
-composer require spatie/laravel-backup:^9.3
-composer require chillerlan/php-qrcode:^5.0
+composer require spatie/laravel-backup:^10.3
+composer require chillerlan/php-qrcode:^6.0
 composer require barryvdh/laravel-dompdf:^3.1
 composer require maatwebsite/laravel-excel:^3.1
-composer require predis/predis:^2.3
+composer require predis/predis:^3.5
 
 # 3. Paquetes desarrollo
-composer require --dev barryvdh/laravel-debugbar:^3.14
+composer require --dev barryvdh/laravel-debugbar:^4.3
 composer require --dev barryvdh/laravel-ide-helper:^3.5
-composer require --dev laravel/pint:^1.21
-composer require --dev larastan/larastan:^3.0
-composer require --dev pestphp/pest:^3.0 --with-all-dependencies
-composer require --dev pestphp/pest-plugin-laravel:^3.0
-composer require --dev nunomaduro/collision:^8.5
+composer require --dev laravel/pint:^1.29
+composer require --dev larastan/larastan:^3.10
+composer require --dev pestphp/pest:^4.7 --with-all-dependencies
+composer require --dev pestphp/pest-plugin-laravel:^4.1
+composer require --dev nunomaduro/collision:^8.6
 
-# 4. Frontend (Tailwind 4 + Vue 3.5)
-npm install vue@^3.5 @inertiajs/vue3@^2.0
+# 4. Frontend (Tailwind 4 + Vue 3.5 + Inertia 3)
+npm install vue@^3.5 @inertiajs/vue3@^3.0
 npm install tailwindcss@^4.1 @tailwindcss/forms @tailwindcss/typography
 npm install @headlessui/vue @heroicons/vue@^2.2
 npm install recharts dayjs axios pinia@^3.0
-npm install @vueuse/core@^13.0 vue-sonner@^1.3
+npm install @vueuse/core@^14.0 vue-sonner@^2.0
 npm install --save-dev typescript@^5.8 vue-tsc@^2.2
 npm install --save-dev eslint@^9.25 @typescript-eslint/parser@^8.30 @typescript-eslint/eslint-plugin@^8.30
 npm install --save-dev prettier@^3.5
@@ -1095,6 +1095,16 @@ vendor/bin/phpstan analyse
 ./vendor/bin/pint --test
 npx vue-tsc --noEmit
 ```
+
+---
+
+## Actualización a Laravel 13 / Inertia 3 (Julio 2026)
+
+- Laravel 13: Mejor rendimiento, Inertia 3 integrado
+- Inertia 3: SSR mejorado, TypeScript más estricto
+- Vue 3.5: Vapor mode, defineModel simplificado
+- Pest 4: Test runner actualizado
+- Tailwind 4: Oxide engine (Rust)
 
 ---
 
