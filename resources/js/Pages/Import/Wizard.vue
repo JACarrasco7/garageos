@@ -121,6 +121,16 @@ const handleImportFinished = () => {
   router.visit(route('imports.show', props.vehicleImport.id))
 }
 
+const generateCertificate = () => {
+  router.post(route('import.certificate', props.vehicleImport.id), {}, {
+    onSuccess: (response: any) => {
+      if (response?.props?.certificate_url) {
+        window.open(response.props.certificate_url, '_blank')
+      }
+    }
+  })
+}
+
 const getStepIcon = (step: any) => {
   return step.icon
 }
@@ -269,5 +279,16 @@ const getStepStatusBadge = (step: any) => {
         />
       </TabsContent>
     </Tabs>
+
+    <!-- Certificate Generation -->
+    <div v-if="vehicleImport.current_step_order >= 6" class="flex justify-center pt-4">
+      <Button
+        variant="outline"
+        @click="generateCertificate"
+      >
+        <Trophy class="h-4 w-4 mr-2" />
+        Generar Certificado de Importación
+      </Button>
+    </div>
   </div>
 </template>
