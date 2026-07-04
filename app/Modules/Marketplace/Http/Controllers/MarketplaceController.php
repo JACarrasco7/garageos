@@ -137,7 +137,7 @@ class MarketplaceController extends Controller
     {
         $this->authorize('update', $listing);
 
-        $validated = $Request->validate([
+        $validated = $request->validate([
             'title' => ['sometimes', 'string', 'max:150'],
             'description' => ['sometimes', 'string', 'min:50'],
             'price' => ['sometimes', 'numeric', 'min:0'],
@@ -223,21 +223,11 @@ class MarketplaceController extends Controller
     {
         $this->authorize('purchase', $listing);
 
-        $action = new \App\Modules\Billing\Actions\CreatePaymentIntentAction(
-            app(\Stripe\StripeClient::class)
-        );
-
-        $intent = $action->execute(
-            (float) $listing->price,
-            $listing->currency,
-            "Compra {$listing->title}",
-            $listing->user_id,
-            ['listing_id' => $listing->id]
-        );
+        $clientSecret = request('client_secret');
 
         return inertia('Listings/Checkout', [
             'listing' => $listing,
-            'client_secret' => $intent->stripe_payment_intent_id,
+            'client_secret' => $clientSecret,
         ]);
     }
 }

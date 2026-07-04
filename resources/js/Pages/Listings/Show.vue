@@ -108,9 +108,7 @@ const createPayment = async () => {
   const data = await response.json()
 
   if (data.client_secret) {
-    router.visit(`/marketplace/listings/${props.listing.id}/checkout`, {
-      data: { client_secret: data.client_secret },
-    })
+    router.visit(`/marketplace/listings/${props.listing.id}/checkout?client_secret=${data.client_secret}`)
   }
 }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { usePage } from '@inertiajs/vue3'
 import { loadStripe } from '@stripe/stripe-js'
 import { Button } from '@/Components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
@@ -14,11 +14,12 @@ interface Listing {
 
 interface Props {
   listing: Listing
-  client_secret: string
 }
 
 const props = defineProps<Props>()
+const page = usePage()
 
+const clientSecret = (page.props.client_secret as string) || ''
 const stripe = ref<any>(null)
 const elements = ref<any>(null)
 const cardElement = ref<HTMLElement | null>(null)
@@ -38,7 +39,7 @@ const handleSubmit = async () => {
   loading.value = true
   error.value = ''
 
-  const { error: stripeError } = await stripe.value.confirmCardPayment(props.client_secret, {
+  const { error: stripeError } = await stripe.value.confirmCardPayment(clientSecret, {
     payment_method: {
       card: elements.value.getElement('card'),
     },
@@ -47,7 +48,7 @@ const handleSubmit = async () => {
   if (stripeError) {
     error.value = stripeError.message
   } else {
-    router.visit(`/marketplace/listings/${props.listing.id}`)
+    window.location.href = `/marketplace/listings/${props.listing.id}`
   }
 
   loading.value = false
