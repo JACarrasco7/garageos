@@ -104,7 +104,7 @@ const handleUpload = (step: string, type: string) => {
 
 const submitDocument = () => {
   if (!uploadForm.file || !uploadForm.step || !uploadForm.type) return
-  
+
   uploadForm.post(route('import.upload', vehicleImport.id), {
     forceFormData: true,
     onSuccess: () => {
@@ -166,14 +166,14 @@ const loadProviders = () => {
             >
               <div
                 class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mb-2"
-                :class="step.order <= vehicleImport.current_step?.order 
-                  ? 'bg-primary text-primary-foreground' 
+                :class="step.order <= vehicleImport.current_step?.order
+                  ? 'bg-primary text-primary-foreground'
                   : 'bg-muted text-muted-foreground'"
               >
                 {{ step.order }}
               </div>
               <span class="text-xs text-center max-w-[120px]">{{ step.label }}</span>
-              
+
               <div
                 v-if="index < steps.length - 1"
                 class="absolute top-5 left-full w-full h-0.5 bg-border"
@@ -199,7 +199,7 @@ const loadProviders = () => {
                 <component :is="getStepIcon(step.id)" class="h-5 w-5 text-primary" />
                 <h3 class="font-medium">{{ step.label }}</h3>
               </div>
-              
+
               <div class="flex items-center gap-2">
                 <Badge variant="outline">
                   {{ step.required_docs.length }} documentos
@@ -301,7 +301,7 @@ const loadProviders = () => {
                   <span>{{ provider.rating }}</span>
                 </div>
               </div>
-              
+
               <div class="space-y-2 text-sm text-muted-foreground">
                 <p class="flex items-center gap-1">
                   <MapPin class="h-3 w-3" />
@@ -313,7 +313,7 @@ const loadProviders = () => {
                   📍 {{ provider.distance.toFixed(1) }} km
                 </p>
               </div>
-              
+
               <div class="mt-3 flex flex-wrap gap-1">
                 <Badge
                   v-for="service in provider.services"

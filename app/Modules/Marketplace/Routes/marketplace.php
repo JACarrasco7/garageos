@@ -32,6 +32,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::patch('/', [MarketplaceController::class, 'update'])->name('marketplace.update');
             Route::delete('/', [MarketplaceController::class, 'destroy'])->name('marketplace.destroy');
             Route::post('/favorite', [MarketplaceController::class, 'toggleFavorite'])->name('marketplace.favorite');
+            Route::post('/payment', [MarketplaceController::class, 'createPayment'])->name('marketplace.payment');
         });
     });
 });

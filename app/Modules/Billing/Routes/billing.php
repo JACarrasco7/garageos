@@ -3,6 +3,7 @@
 use App\Modules\Billing\Http\Controllers\DashboardController;
 use App\Modules\Billing\Http\Controllers\PaymentController;
 use App\Modules\Billing\Http\Controllers\StripeConnectController;
+use App\Modules\Billing\Http\Controllers\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web', 'auth'])->group(function () {
@@ -28,3 +29,8 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::get('/invoices', [DashboardController::class, 'invoices'])->name('invoices');
     });
 });
+
+// Stripe Webhooks (no auth)
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])
+    ->name('stripe.webhook')
+    ->withoutMiddleware(['web', 'auth']);

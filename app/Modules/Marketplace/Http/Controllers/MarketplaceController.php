@@ -195,4 +195,27 @@ class MarketplaceController extends Controller
             'listings' => $listings,
         ]);
     }
+
+    public function createPayment(MarketplaceListing $listing)
+    {
+        $this->authorize('purchase', $listing);
+
+        $action = new \App\Modules\Billing\Actions\CreatePaymentIntentAction(
+            app(\Stripe\StripeClient::class)
+        );
+
+        $intent = $action->execute(
+            (float) $listing->price,
+            $listing->currency,
+            "Compra {$listing->title}",
+            $listing->user_id,
+            ['listing_id' => $listing->id]
+        );
+
+        return response()->json([
+            'client_secret' => $intent->stripe_payment_intent_id,
+            'amount' => $intent->amount,
+            'currency' => $intent->currency,
+        ]);
+    }
 }
