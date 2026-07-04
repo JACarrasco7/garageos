@@ -15,7 +15,7 @@ return new class extends Migration
         DB::statement('CREATE EXTENSION IF NOT EXISTS postgis');
 
         DB::statement("
-            ALTER TABLE workshops 
+            ALTER TABLE workshops
             ADD COLUMN location geography(Point, 4326)
             GENERATED ALWAYS AS (
                 ST_SetSRID(ST_MakePoint(lng, lat), 4326)::geography
