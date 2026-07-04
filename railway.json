@@ -1,0 +1,18 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "services": [
+    {
+      "name": "web",
+      "source": {
+        "type": "github"
+      },
+      "build": {
+        "command": "docker build -t garageos ."
+      },
+      "deploy": {
+        "command": "supervisord -c /etc/supervisor/conf.d/supervisord-free.conf",
+        "startCommand": "supervisord -c /etc/supervisor/conf.d/supervisord-free.conf"
+      }
+    }
+  ]
+}

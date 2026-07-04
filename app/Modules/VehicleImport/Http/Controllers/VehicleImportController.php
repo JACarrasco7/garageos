@@ -256,4 +256,16 @@ class VehicleImportController extends Controller
             'certificate_url' => Storage::url($path),
         ]);
     }
+
+    public function suggestProviders(VehicleImport $import): JsonResponse
+    {
+        $this->authorize('view', $import);
+
+        $action = new SuggestProvidersAction;
+        $providers = $action->getImportServiceProviders(41.3851, 2.1734);
+
+        return response()->json([
+            'providers' => $providers,
+        ]);
+    }
 }

@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     supervisor \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    libpq-dev \
+    && docker-php-ext-install pdo_pgsql pdo_mysql mbstring exif pcntl bcmath gd zip
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -21,6 +22,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 COPY . .
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord-free.conf /etc/supervisor/conf.d/supervisord-free.conf
 
 RUN php artisan config:cache
 RUN php artisan route:cache
@@ -28,4 +30,4 @@ RUN php artisan view:cache
 
 EXPOSE 8000
 
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord-free.conf"]

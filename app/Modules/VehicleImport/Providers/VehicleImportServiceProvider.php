@@ -23,6 +23,7 @@ class VehicleImportServiceProvider extends ServiceProvider
             Route::delete('/imports/documents/{document}', [ImportDocumentController::class, 'destroy'])->name('import.documents.destroy');
             Route::get('/imports/{import}/valuation', [VehicleImportController::class, 'valuation'])->name('import.valuation');
             Route::post('/imports/{import}/certificate', [VehicleImportController::class, 'generateCertificate'])->name('import.certificate');
+            Route::get('/imports/{import}/providers', [VehicleImportController::class, 'suggestProviders'])->name('import.providers');
         });
     }
 }
