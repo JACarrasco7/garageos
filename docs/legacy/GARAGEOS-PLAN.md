@@ -1,6 +1,6 @@
 # GarageOS — Plan de Implementación
 
-> **Stack:** Laravel 13 + Vue 3.5 + Inertia.js 3 + TypeScript 5.8 + Tailwind CSS 4 + MySQL 8.4 + Redis 7 + PHP 8.4
+> **Stack:** Laravel 13 + Vue 3.5 + Inertia.js 3 + TypeScript 5.8 + Tailwind CSS 4 + MySQL 8.4 + Redis 7 + PHP 8.5
 > **Última actualización:** 4 de Julio de 2026
 
 ---
@@ -44,10 +44,10 @@
 
 | Capa | Tecnología | Versión | Propósito |
 |---|---|---|---|
-| Runtime | PHP | 8.4 | Fibers, lazy objects, property hooks, JIT mejorado |
+| Runtime | PHP | 8.5 | Fibers, JIT mejorado, deprecated warnings limpios |
 | Backend | Laravel | 13.x | Monolito modular, ORM, colas, eventos, schedule |
 | Frontend | Vue | 3.5 | Composition API, Vapor mode, mejor TypeScript |
-| Bridge | Inertia.js | 3.x | SPA sin API boilerplate, SSR nativo |
+| Bridge | Inertia.js | 3.x | SPA sin API boilerplate, SSR nativo, TypeScript mejorado |
 | Tipado | TypeScript | 5.8 | Tipado estricto, erasableSyntaxOnly |
 | Estilos | Tailwind CSS | 4.x | Oxide engine (Rust), 5x más rápido, CSS-first config |
 | BD | MySQL | 8.4 | JSON mejorado, InnoDB optimizado |
@@ -68,10 +68,10 @@
 
 ### Por qué estas versiones específicas
 
-- **PHP 8.4**: Property hooks (menos boilerplate en modelos), lazy objects (mejor rendimiento con relaciones), Fibers para async nativo, JIT mejorado para cálculos pesados (score de vehículos, cálculos de coste/km)
-- **Laravel 13**: Mejor rendimiento, `laravel new` con Inertia 3 nativo, `php artisan config:cache` más rápido, soporte mejorado para lazy collections
+- **PHP 8.5**: JIT mejorado, Fibers para async nativo
+- **Laravel 13**: Mejor rendimiento, Inertia 3 integrado, `php artisan config:cache` más rápido
 - **Vue 3.5**: Vapor mode (mejor rendimiento), mejor soporte TypeScript, `defineModel` simplificado, Suspense nativo
-- **Inertia.js 3**: SSR nativo mejorado, partial reloads optimizados, mejor manejo de assets, TypeScript mejorado
+- **Inertia.js 3**: SSR nativo mejorado, partial reloads optimizados, TypeScript más estricto
 - **Tailwind CSS 4**: Motor Oxide escrito en Rust (5x más rápido), configuración CSS-first (sin `tailwind.config.js`), container queries nativas, `@theme` directive
 - **Capacitor 7**: Mejor rendimiento en iOS/Android, plugins actualizados, soporte para Swift 6 / Kotlin 2
 - **TypeScript 5.8**: `erasableSyntaxOnly`, mejor inferencia, decorators estandarizados
@@ -584,7 +584,7 @@ Alerts
 | `vue` | ^3.5 | Composition API, Vapor mode |
 | `@inertiajs/vue3` | ^3.0 | Inertia adapter |
 | `@vitejs/plugin-vue` | ^6.0 | Vite + Vue |
-| `vite` | ^8.0 | Build tool (Laravel 13 usa Vite 8) |
+| `vite` | ^6.3 | Build tool (Laravel 13 usa Vite 6) |
 | `typescript` | ^5.8 | Tipado estricto, erasableSyntaxOnly |
 | `tailwindcss` | ^4.1 | Oxide engine (Rust), 5x más rápido |
 | `@tailwindcss/forms` | ^0.5 | Reset de formularios |
