@@ -47,11 +47,25 @@ const iedmtBands = [
   { co2: Infinity, rate: 16.00 },
 ]
 
+const countryRates = {
+  DE: { vat: 19, label: 'Alemania' },
+  FR: { vat: 20, label: 'Francia' },
+  IT: { vat: 22, label: 'Italia' },
+  NL: { vat: 21, label: 'Holanda' },
+  ES: { vat: 21, label: 'España' },
+}
+
 const calculateIedmt = () => {
   if (!props.vehicleData.co2_emissions) return 'N/A'
   const co2 = props.vehicleData.co2_emissions
   const band = iedmtBands.find(b => co2 <= b.co2) || iedmtBands[iedmtBands.length - 1]
   return `€${band.rate}/g CO₂`
+}
+
+const calculateVat = () => {
+  const country = props.stepData?.origin_country || 'ES'
+  const rate = countryRates[country]?.vat || 21
+  return `IVA (${rate}%)`
 }
 
 const requiredDocs = computed(() => {
@@ -117,6 +131,15 @@ const formatPrice = (value: string) => {
       </CardDescription>
     </CardHeader>
     <CardContent class="space-y-6">
+      <!-- Info país origen -->
+      <Alert>
+        <Info class="h-4 w-4" />
+        <AlertDescription>
+          <strong>País de origen:</strong> {{ countryRates[stepData?.origin_country || 'ES']?.label || 'España' }}
+          | <strong>IVA aplicable:</strong> {{ calculateVat() }}
+        </AlertDescription>
+      </Alert>
+
       <!-- Info CO2 -->
       <Alert>
         <Info class="h-4 w-4" />

@@ -253,7 +253,7 @@ const getStepStatusBadge = (step: any) => {
         <Taxes
           :import-id="vehicleImport.id"
           :documents="[]"
-          :step-data="{}"
+          :step-data="{ origin_country: vehicleImport.origin_country }"
           :vehicle-data="{ co2_emissions: vehicleImport.co2_emissions, year: vehicleImport.year }"
           @step-completed="handleStepCompleted"
         />
