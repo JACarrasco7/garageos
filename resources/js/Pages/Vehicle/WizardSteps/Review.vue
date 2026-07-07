@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import Card from '@/Components/ui/card/Card.vue';
+import PageCard from '@/Components/PageCard.vue';
 import CardHeader from '@/Components/ui/card/CardHeader.vue';
 import CardTitle from '@/Components/ui/card/CardTitle.vue';
 import CardContent from '@/Components/ui/card/CardContent.vue';
@@ -76,13 +76,15 @@ const submit = () => {
     </div>
 
     <div class="grid gap-4">
-      <Card class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="flex items-center gap-2 text-base">
-            <Car class="h-4 w-4 text-primary" />
-            Información básica
-          </CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="flex items-center gap-2 text-base">
+              <Car class="h-4 w-4 text-primary" />
+              Información básica
+            </CardTitle>
+          </CardHeader>
+        </template>
         <CardContent class="grid grid-cols-2 gap-4 text-sm">
           <div>
             <p class="text-muted-foreground">Matrícula</p>
@@ -117,15 +119,17 @@ const submit = () => {
             <p class="font-medium text-foreground">{{ form.current_km.toLocaleString() }} km</p>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
-      <Card v-if="form.engine_cc || form.power_hp || form.transmission || form.drive" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="flex items-center gap-2 text-base">
-            <Settings class="h-4 w-4 text-primary" />
-            Ficha técnica
-          </CardTitle>
-        </CardHeader>
+      <PageCard v-if="form.engine_cc || form.power_hp || form.transmission || form.drive">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="flex items-center gap-2 text-base">
+              <Settings class="h-4 w-4 text-primary" />
+              Ficha técnica
+            </CardTitle>
+          </CardHeader>
+        </template>
         <CardContent class="grid grid-cols-2 gap-4 text-sm">
           <div v-if="form.engine_cc">
             <p class="text-muted-foreground">Cilindrada</p>
@@ -156,15 +160,17 @@ const submit = () => {
             <p class="font-medium text-foreground">{{ form.seats }}</p>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
-      <Card v-if="form.purchase_date || form.purchase_price" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="flex items-center gap-2 text-base">
-            <DollarSign class="h-4 w-4 text-primary" />
-            Datos de compra
-          </CardTitle>
-        </CardHeader>
+      <PageCard v-if="form.purchase_date || form.purchase_price">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="flex items-center gap-2 text-base">
+              <DollarSign class="h-4 w-4 text-primary" />
+              Datos de compra
+            </CardTitle>
+          </CardHeader>
+        </template>
         <CardContent class="grid grid-cols-2 gap-4 text-sm">
           <div v-if="form.purchase_date">
             <p class="text-muted-foreground">Fecha de compra</p>
@@ -175,12 +181,14 @@ const submit = () => {
             <p class="font-medium text-foreground">{{ formatPrice(form.purchase_price) }}</p>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
-      <Card v-if="form.photo" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="text-base">Foto del vehículo</CardTitle>
-        </CardHeader>
+      <PageCard v-if="form.photo">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="text-base">Foto del vehículo</CardTitle>
+          </CardHeader>
+        </template>
         <CardContent>
           <img
             :src="URL.createObjectURL(form.photo as File)"
@@ -188,7 +196,7 @@ const submit = () => {
             class="h-48 w-full rounded-lg object-cover"
           />
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
 
     <div class="flex items-start gap-3 rounded-xl bg-primary/5 p-4">
