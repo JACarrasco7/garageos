@@ -2,7 +2,8 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { Car, Shield, Calendar, Wrench, FileText, Users, BarChart3 } from 'lucide-vue-next';
 import { Button } from '@/Components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import PageCard from '@/Components/PageCard.vue';
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 
 defineProps<{
     canLogin?: boolean;
@@ -66,89 +67,107 @@ defineProps<{
 
             <!-- Features -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Card class="glass-surface border-0 transition-shadow duration-200">
-                    <CardHeader>
+                <PageCard>
+                    <template #title>
+                      <CardHeader class="pb-2">
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Car class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Gestión de vehículos</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CardDescription class="text-sm text-muted-foreground">
-                            Registra y gestiona todos tus vehículos con información detallada.
-                        </CardDescription>
-                    </CardContent>
-                </Card>
+                      </CardHeader>
+                    </template>
 
-                <Card class="glass-surface border-0 transition-shadow duration-200">
-                    <CardHeader>
+                    <CardContent>
+                      <p class="text-sm text-muted-foreground">
+                        Registra y gestiona todos tus vehículos con información detallada.
+                      </p>
+                    </CardContent>
+                </PageCard>
+
+                <PageCard>
+                    <template #title>
+                      <CardHeader class="pb-2">
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Wrench class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Mantenimiento</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CardDescription class="text-sm text-muted-foreground">
-                            Programa y registra todos los mantenimientos de tu vehículo.
-                        </CardDescription>
-                    </CardContent>
-                </Card>
+                      </CardHeader>
+                    </template>
 
-                <Card class="glass-surface border-0 transition-shadow duration-200">
-                    <CardHeader>
+                    <CardContent>
+                      <p class="text-sm text-muted-foreground">
+                        Programa y registra todos los mantenimientos de tu vehículo.
+                      </p>
+                    </CardContent>
+                </PageCard>
+
+                <PageCard>
+                    <template #title>
+                      <CardHeader class="pb-2">
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <FileText class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Documentos</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CardDescription class="text-sm text-muted-foreground">
-                            Almacena y organiza todos los documentos de tu vehículo.
-                        </CardDescription>
-                    </CardContent>
-                </Card>
+                      </CardHeader>
+                    </template>
 
-                <Card class="glass-surface border-0 transition-shadow duration-200">
-                    <CardHeader>
+                    <CardContent>
+                      <p class="text-sm text-muted-foreground">
+                        Almacena y organiza todos los documentos de tu vehículo.
+                      </p>
+                    </CardContent>
+                </PageCard>
+
+                <PageCard>
+                    <template #title>
+                      <CardHeader class="pb-2">
                         <div class="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
                             <Shield class="h-6 w-6 text-accent" />
                         </div>
                         <CardTitle class="text-base">Suscripciones</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CardDescription class="text-sm text-muted-foreground">
-                            Planes adaptados a las necesidades de tu taller.
-                        </CardDescription>
-                    </CardContent>
-                </Card>
+                      </CardHeader>
+                    </template>
 
-                <Card class="glass-surface border-0 transition-shadow duration-200">
-                    <CardHeader>
+                    <CardContent>
+                      <p class="text-sm text-muted-foreground">
+                        Planes adaptados a las necesidades de tu taller.
+                      </p>
+                    </CardContent>
+                </PageCard>
+
+                <PageCard>
+                    <template #title>
+                      <CardHeader class="pb-2">
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Users class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Clientes</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CardDescription class="text-sm text-muted-foreground">
-                            Gestiona clientes y sus vehículos desde el panel de taller.
-                        </CardDescription>
-                    </CardContent>
-                </Card>
+                      </CardHeader>
+                    </template>
 
-                <Card class="glass-surface border-0 transition-shadow duration-200">
-                    <CardHeader>
+                    <CardContent>
+                      <p class="text-sm text-muted-foreground">
+                        Gestiona clientes y sus vehículos desde el panel de taller.
+                      </p>
+                    </CardContent>
+                </PageCard>
+
+                <PageCard>
+                    <template #title>
+                      <CardHeader class="pb-2">
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <BarChart3 class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Reportes</CardTitle>
-                    </CardHeader>
+                      </CardHeader>
+                    </template>
+
                     <CardContent>
-                        <CardDescription class="text-sm text-muted-foreground">
-                            Genera informes detallados de mantenimiento e ingresos.
-                        </CardDescription>
+                      <p class="text-sm text-muted-foreground">
+                        Genera informes detallados de mantenimiento e ingresos.
+                      </p>
                     </CardContent>
-                </Card>
+                </PageCard>
             </div>
         </div>
     </div>
