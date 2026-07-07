@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { FileText, Calendar, Plus, ExternalLink } from 'lucide-vue-next'
 
@@ -46,14 +47,17 @@ const documentLabels: Record<string, string> = {
       </span>
     </template>
 
-    <Card class="glass-surface border-0">
-      <CardHeader class="flex flex-row items-center justify-between pb-3">
-        <CardTitle class="text-lg font-semibold">Documentos del vehículo</CardTitle>
-        <Button variant="ghost" size="sm" class="rounded-lg glass-tab" @click="$emit('open-upload')">
-          <Plus class="mr-2 h-4 w-4" />
-          Subir documento
-        </Button>
-      </CardHeader>
+    <PageCard>
+      <template #title>
+        <CardHeader class="flex flex-row items-center justify-between pb-3">
+          <CardTitle class="text-lg font-semibold">Documentos del vehículo</CardTitle>
+          <Button variant="ghost" size="sm" class="rounded-lg glass-tab" @click="$emit('open-upload')">
+            <Plus class="mr-2 h-4 w-4" />
+            Subir documento
+          </Button>
+        </CardHeader>
+      </template>
+
       <CardContent>
         <div v-if="Object.keys(documents).length === 0" class="text-center py-12">
           <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
@@ -93,6 +97,6 @@ const documentLabels: Record<string, string> = {
           </div>
         </div>
       </CardContent>
-    </Card>
+    </PageCard>
   </WebLayout>
 </template>
