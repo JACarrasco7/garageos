@@ -2,7 +2,8 @@
 import { Link } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
 import { Download, ArrowLeft, Eye, Calendar } from 'lucide-vue-next'
@@ -45,11 +46,13 @@ const scoreVariant = (score: number) => {
     </template>
 
     <div class="max-w-3xl mx-auto">
-      <Card>
-        <CardHeader class="text-center">
-          <CardTitle class="text-2xl">{{ vehicle.brand }} {{ vehicle.model }}</CardTitle>
-          <CardDescription>{{ vehicle.plate }} • {{ vehicle.year }}</CardDescription>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader class="text-center">
+            <CardTitle class="text-2xl">{{ vehicle.brand }} {{ vehicle.model }}</CardTitle>
+            <CardDescription>{{ vehicle.plate }} • {{ vehicle.year }}</CardDescription>
+          </CardHeader>
+        </template>
 
         <CardContent class="text-center mb-8">
           <p class="text-sm text-muted-foreground mb-2">Puntuación de Salud</p>
@@ -82,7 +85,7 @@ const scoreVariant = (score: number) => {
             </Button>
           </div>
         </CardFooter>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>
