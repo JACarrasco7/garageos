@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useForm, router } from '@inertiajs/vue3'
+import WebLayout from '@/layouts/WebLayout.vue'
+import PageCard from '@/Components/PageCard.vue'
 import {
   CheckCircle2,
   AlertCircle,
@@ -11,7 +13,7 @@ import {
   ClipboardCheck
 } from 'lucide-vue-next'
 import { Button } from '@/Components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Label } from '@/Components/ui/label'
 import { Checkbox } from '@/Components/ui/checkbox'
 import { Textarea } from '@/Components/ui/textarea'
@@ -113,91 +115,102 @@ const verificationItems = [
 </script>
 
 <template>
-  <div class="space-y-6 max-w-5xl mx-auto p-4">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div>
-        <h1 class="text-3xl font-bold flex items-center gap-3">
-          <ShieldCheck class="h-8 w-8 text-primary" />
-          Auditoría de Verificación
-        </h1>
-        <p class="text-muted-foreground">
-          Vehículo: {{ import.brand }} {{ import.model }} ({{ import.year }})
-          <span v-if="import.vin" class="ml-2 font-mono text-xs bg-muted px-2 py-1 rounded">VIN: {{ import.vin }}</span>
-        </p>
-      </div>
-      <div class="flex items-center gap-3">
-        <Badge :class="[statusColors[evaluation.status]]" class="text-sm px-4 py-1">
-          {{ evaluation.status }}
-        </Badge>
-        <div class="text-right">
-          <span class="text-xs font-medium text-muted-foreground">Score de Confianza</span>
-          <div class="text-xl font-bold">{{ evaluation.score }}%</div>
+  <WebLayout>
+    <template #header>
+      Auditoría de Verificación
+    </template>
+
+    <div class="space-y-6 max-w-5xl mx-auto p-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold flex items-center gap-3">
+            <ShieldCheck class="h-8 w-8 text-primary" />
+            Auditoría de Verificación
+          </h1>
+          <p class="text-muted-foreground">
+            Vehículo: {{ import.brand }} {{ import.model }} ({{ import.year }})
+            <span v-if="import.vin" class="ml-2 font-mono text-xs bg-muted px-2 py-1 rounded">VIN: {{ import.vin }}</span>
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <Badge :class="[statusColors[evaluation.status]]" class="text-sm px-4 py-1">
+            {{ evaluation.status }}
+          </Badge>
+          <div class="text-right">
+            <span class="text-xs font-medium text-muted-foreground">Score de Confianza</span>
+            <div class="text-xl font-bold">{{ evaluation.score }}%</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Left Column: Verification Checks -->
-      <div class="lg:col-span-2 space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle class="flex items-center gap-2">
-              <ClipboardCheck class="h-5 w-5" />
-              Checklist de Auditoría
-            </CardTitle>
-            <CardDescription>
-              Marque los puntos verificados basándose en la evidencia documental y física.
-            </CardDescription>
-          </CardHeader>
-          <CardContent class="space-y-6">
-            <div class="space-y-4">
-              <div
-                v-for="item in verificationItems"
-                :key="item.key"
-                class="flex items-start gap-4 p-4 rounded-xl border transition-colors hover:bg-muted/30"
-                :class="form[item.key] ? 'border-green-200 bg-green-50/30' : 'border-border'"
-              >
-                <Checkbox
-                  :id="item.key"
-                  v-model:checked="form[item.key]"
-                  @update:checked="updateVerification"
-                />
-                <div class="grid flex-1 gap-1.5 leading-none">
-                  <Label :for="item.key" class="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    {{ item.label }}
-                  </Label>
-                  <p class="text-sm text-muted-foreground">
-                    {{ item.description }}
-                  </p>
-                </div>
-                <div v-if="form[item.key]" class="text-green-600">
-                  <CheckCircle2 class="h-5 w-5" />
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column: Verification Checks -->
+        <div class="lg:col-span-2 space-y-6">
+          <PageCard>
+            <template #title>
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <ClipboardCheck class="h-5 w-5" />
+                  Checklist de Auditoría
+                </CardTitle>
+                <p class="text-sm text-muted-foreground">
+                  Marque los puntos verificados basándose en la evidencia documental y física.
+                </p>
+              </CardHeader>
+            </template>
+            <CardContent class="space-y-6">
+              <div class="space-y-4">
+                <div
+                  v-for="item in verificationItems"
+                  :key="item.key"
+                  class="flex items-start gap-4 p-4 rounded-xl border transition-colors hover:bg-muted/30"
+                  :class="form[item.key] ? 'border-green-200 bg-green-50/30' : 'border-border'"
+                >
+                  <Checkbox
+                    :id="item.key"
+                    v-model:checked="form[item.key]"
+                    @update:checked="updateVerification"
+                  />
+                  <div class="grid flex-1 gap-1.5 leading-none">
+                    <Label :for="item.key" class="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      {{ item.label }}
+                    </Label>
+                    <p class="text-sm text-muted-foreground">
+                      {{ item.description }}
+                    </p>
+                  </div>
+                  <div v-if="form[item.key]" class="text-green-600">
+                    <CheckCircle2 class="h-5 w-5" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="space-y-2 pt-4">
-              <Label for="notes" class="text-sm font-semibold">Observaciones del Auditor</Label>
-              <Textarea
-                id="notes"
-                v-model="form.notes"
-                placeholder="Añada cualquier detalle relevante sobre la verificación..."
-                @blur="updateVerification"
-                class="min-h-[120px]"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              <div class="space-y-2 pt-4">
+                <Label for="notes" class="text-sm font-semibold">Observaciones del Auditor</Label>
+                <Textarea
+                  id="notes"
+                  v-model="form.notes"
+                  placeholder="Añada cualquier detalle relevante sobre la verificación..."
+                  @blur="updateVerification"
+                  class="min-h-[120px]"
+                />
+              </div>
+            </CardContent>
+          </PageCard>
+        </div>
 
-      <!-- Right Column: Reports & Actions -->
-      <div class="space-y-6">
-        <Card class="border-primary/20 bg-primary/5">
-          <CardHeader>
-            <CardTitle class="text-lg flex items-center gap-2">
-              <FileText class="h-5 w-5 text-primary" />
-              Certificación
+        <!-- Right Column: Reports & Actions -->
+        <div class="space-y-6">
+          <PageCard>
+            <template #title>
+              <CardHeader>
+                <CardTitle class="text-lg flex items-center gap-2">
+                  <FileText class="h-5 w-5 text-primary" />
+                  Certificación
+                </CardTitle>
+              </CardHeader>
+            </template>
+            <CardContent>
             </CardTitle>
             <CardDescription>
               Genere los documentos oficiales de GarageOS.
@@ -270,5 +283,5 @@ const verificationItems = [
         </Card>
       </div>
     </div>
-  </div>
+  </WebLayout>
 </template>
