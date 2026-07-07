@@ -2,7 +2,8 @@
 import { ref, computed } from 'vue'
 import { Head, router } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Badge } from '@/Components/ui/badge'
 import { Check, AlertCircle, Upload, FileText, Calendar, ShieldCheck, MapPin, Star } from 'lucide-vue-next'
@@ -151,10 +152,12 @@ const loadProviders = () => {
 
     <div class="space-y-6">
       <!-- Progress Stepper -->
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Progreso del Trámite</CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Progreso del Trámite</CardTitle>
+          </CardHeader>
+        </template>
         <CardContent>
           <div class="flex items-center justify-between">
             <div
@@ -180,13 +183,15 @@ const loadProviders = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Document Checklist -->
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Documentos requeridos</CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Documentos requeridos</CardTitle>
+          </CardHeader>
+        </template>
         <CardContent class="space-y-4">
           <div
             v-for="step in steps"
@@ -246,13 +251,15 @@ const loadProviders = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Timeline Info -->
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Información del Proceso</CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Información del Proceso</CardTitle>
+          </CardHeader>
+        </template>
         <CardContent class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
@@ -269,18 +276,20 @@ const loadProviders = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Service Providers -->
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <div class="flex items-center justify-between">
-            <CardTitle>Proveedores de Servicios</CardTitle>
-            <Button size="sm" variant="outline" @click="loadProviders">
-              Actualizar
-            </Button>
-          </div>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <div class="flex items-center justify-between">
+              <CardTitle>Proveedores de Servicios</CardTitle>
+              <Button size="sm" variant="outline" @click="loadProviders">
+                Actualizar
+              </Button>
+            </div>
+          </CardHeader>
+        </template>
         <CardContent class="space-y-4">
           <div v-if="providers.length === 0" class="text-center py-8 text-muted-foreground">
             <MapPin class="h-12 w-12 mx-auto mb-2 opacity-50" />
@@ -326,7 +335,7 @@ const loadProviders = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>
