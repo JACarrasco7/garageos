@@ -2,7 +2,8 @@
 import { Link } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
 import { Plus, Car, Calendar, Fuel } from 'lucide-vue-next'
@@ -31,16 +32,19 @@ defineProps<{
       Mis Vehículos
     </template>
 
-    <Card class="glass-panel border-0" data-tour="vehicles">
-      <CardHeader class="flex flex-row items-center justify-between pb-3">
-        <CardTitle class="text-lg font-semibold">Lista de vehículos</CardTitle>
-        <Button as-child variant="ghost" size="sm" class="rounded-lg glass-tab">
-          <Link :href="route('vehicles.wizard')">
-            <Plus class="mr-2 h-4 w-4" />
-            Añadir vehículo
-          </Link>
-        </Button>
-      </CardHeader>
+    <PageCard data-tour="vehicles">
+      <template #title>
+        <CardHeader class="flex flex-row items-center justify-between pb-3">
+          <CardTitle class="text-lg font-semibold">Lista de vehículos</CardTitle>
+          <Button as-child variant="ghost" size="sm" class="rounded-lg glass-tab">
+            <Link :href="route('vehicles.wizard')">
+              <Plus class="mr-2 h-4 w-4" />
+              Añadir vehículo
+            </Link>
+          </Button>
+        </CardHeader>
+      </template>
+
       <CardContent>
         <div v-if="vehicles.length === 0" class="text-center py-12">
           <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
@@ -85,6 +89,6 @@ defineProps<{
           </Link>
         </div>
       </CardContent>
-    </Card>
+    </PageCard>
   </WebLayout>
 </template>
