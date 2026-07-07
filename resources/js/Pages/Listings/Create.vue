@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useForm } from '@inertiajs/vue3'
-import { router } from '@inertiajs/vue3'
+import { useForm, router, Link } from '@inertiajs/vue3'
+import WebLayout from '@/layouts/WebLayout.vue'
+import PageCard from '@/Components/PageCard.vue'
 import { Input } from '@/Components/ui/input'
 import { Button } from '@/Components/ui/button'
 import { Label } from '@/Components/ui/label'
 import { Textarea } from '@/Components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Alert, AlertDescription } from '@/Components/ui/alert'
 import { Upload, X, Plus, MapPin, DollarSign, Calendar, Fuel, Gauge, Info } from 'lucide-vue-next'
@@ -114,208 +115,221 @@ const formatPrice = (value: string) => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto space-y-6">
-    <!-- Header -->
-    <div>
-      <h1 class="text-3xl font-bold">Publicar anuncio</h1>
-      <p class="text-muted-foreground mt-1">Vende tu vehículo en el marketplace de GarageOS</p>
-    </div>
+  <WebLayout>
+    <template #header>
+      Publicar anuncio
+    </template>
 
-    <form @submit.prevent="submit" class="space-y-6">
-      <!-- Step 1: Select Vehicle -->
-      <Card>
-        <CardHeader>
-          <CardTitle>1. Selecciona tu vehículo</CardTitle>
-          <CardDescription>Elige uno de tus vehículos del garaje</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card
-              v-for="vehicle in props.vehicles"
-              :key="vehicle.id"
-              :class="[
-                'cursor-pointer transition-all',
-                form.vehicle_id === vehicle.id ? 'ring-2 ring-primary' : 'hover:shadow-md'
-              ]"
-              @click="selectVehicle(vehicle.id)"
-            >
-              <CardHeader class="pb-3">
-                <div class="flex items-start justify-between">
+    <div class="max-w-4xl mx-auto space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold">Publicar anuncio</h1>
+          <p class="text-muted-foreground mt-1">Vende tu vehículo en el marketplace de GarageOS</p>
+        </div>
+        <Button variant="ghost" size="sm" @click="goBack()">
+          <ChevronLeft class="h-4 w-4 mr-1" />
+          Volver
+        </Button>
+      </div>
+
+      <form @submit.prevent="submit" class="space-y-6">
+        <!-- Step 1: Select Vehicle -->
+        <PageCard>
+          <template #title>
+            <CardHeader>
+              <CardTitle>1. Selecciona tu vehículo</CardTitle>
+              <CardDescription>Elige uno de tus vehículos del garaje</CardDescription>
+            </CardHeader>
+          </template>
+          <CardContent>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div
+                v-for="vehicle in props.vehicles"
+                :key="vehicle.id"
+                class="cursor-pointer transition-all p-4 rounded-xl border"
+                :class="[
+                  form.vehicle_id === vehicle.id ? 'ring-2 ring-primary bg-primary/5' : 'hover:shadow-md bg-card'
+                ]"
+                @click="selectVehicle(vehicle.id)"
+              >
+                <div class="flex items-start justify-between mb-2">
                   <div>
-                    <CardTitle class="text-base">{{ vehicle.brand }} {{ vehicle.model }}</CardTitle>
-                    <CardDescription class="text-sm">{{ vehicle.year }} • {{ vehicle.mileage_km.toLocaleString('es-ES') }} km</CardDescription>
+                    <p class="font-bold text-base">{{ vehicle.brand }} {{ vehicle.model }}</p>
+                    <p class="text-sm text-muted-foreground">{{ vehicle.year }} • {{ vehicle.mileage_km.toLocaleString('es-ES') }} km</p>
                   </div>
                   <Badge v-if="form.vehicle_id === vehicle.id">Seleccionado</Badge>
                 </div>
-              </CardHeader>
-              <CardContent class="pt-0">
-                <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Fuel class="h-4 w-4" />
+                <div class="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Fuel class="h-3 w-3" />
                   {{ vehicle.fuel_type }}
-                  <Gauge class="h-4 w-4" />
+                  <Gauge class="h-3 w-3" />
                   {{ vehicle.power_hp }} CV
-                  <MapPin class="h-4 w-4" />
+                  <MapPin class="h-3 w-3" />
                   {{ vehicle.plate }}
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </CardContent>
-      </Card>
-
-      <!-- Step 2: Listing Details -->
-      <Card>
-        <CardHeader>
-          <CardTitle>2. Detalles del anuncio</CardTitle>
-          <CardDescription>Completa la información del anuncio</CardDescription>
-        </CardHeader>
-        <CardContent class="space-y-4">
-          <div class="space-y-2">
-            <Label for="title">Título *</Label>
-            <Input
-              id="title"
-              v-model="form.title"
-              placeholder="Ej. BMW 320d 2018 en perfecto estado"
-            />
-          </div>
-
-          <div class="space-y-2">
-            <Label for="description">Descripción *</Label>
-            <Textarea
-              id="description"
-              v-model="form.description"
-              rows="5"
-              placeholder="Describe el estado del vehículo, características, historial de mantenimiento..."
-            />
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="space-y-2">
-              <Label for="price">Precio (€) *</Label>
-              <Input
-                id="price"
-                v-model="form.price"
-                type="number"
-                placeholder="Ej. 15000"
-                @input="form.price = formatPrice(form.price)"
-              />
-            </div>
-
-            <div class="space-y-2">
-              <Label for="currency">Moneda</Label>
-              <Select v-model="form.currency">
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="EUR">EUR €</SelectItem>
-                  <SelectItem value="USD">USD $</SelectItem>
-                  <SelectItem value="GBP">GBP £</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div class="flex items-end">
-              <div class="flex items-center space-x-2">
-                <input
-                  id="is_negotiable"
-                  v-model="form.is_negotiable"
-                  type="checkbox"
-                  class="rounded border-gray-300"
-                />
-                <Label for="is_negotiable" class="cursor-pointer">Precio negociable</Label>
               </div>
             </div>
-          </div>
+          </CardContent>
+        </PageCard>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Step 2: Listing Details -->
+        <PageCard>
+          <template #title>
+            <CardHeader>
+              <CardTitle>2. Detalles del anuncio</CardTitle>
+              <CardDescription>Completa la información del anuncio</CardDescription>
+            </CardHeader>
+          </template>
+          <CardContent class="space-y-4">
             <div class="space-y-2">
-              <Label for="location_city">Ciudad *</Label>
+              <Label for="title">Título *</Label>
               <Input
-                id="location_city"
-                v-model="form.location_city"
-                placeholder="Ej. Madrid"
+                id="title"
+                v-model="form.title"
+                placeholder="Ej. BMW 320d 2018 en perfecto estado"
               />
             </div>
 
             <div class="space-y-2">
-              <Label for="location_region">Provincia *</Label>
-              <Select v-model="form.location_region">
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona provincia" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem v-for="region in regions" :key="region" :value="region">
-                    {{ region }}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <Label for="description">Descripción *</Label>
+              <Textarea
+                id="description"
+                v-model="form.description"
+                rows="5"
+                placeholder="Describe el estado del vehículo, características, historial de mantenimiento..."
+              />
             </div>
-          </div>
-        </CardContent>
-      </Card>
 
-      <!-- Step 3: Photos -->
-      <Card>
-        <CardHeader>
-          <CardTitle>3. Fotos del vehículo</CardTitle>
-          <CardDescription>Añade fotos para atraer más compradores</CardDescription>
-        </CardHeader>
-        <CardContent class="space-y-4">
-          <div class="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary cursor-pointer">
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              @change="handlePhotoUpload"
-              class="hidden"
-              ref="fileInput"
-            >
-            <Upload class="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <p class="text-sm font-medium">Click o arrastra fotos aquí</p>
-            <p class="text-xs text-muted-foreground mt-1">PNG, JPG hasta 5MB por foto</p>
-          </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="space-y-2">
+                <Label for="price">Precio (€) *</Label>
+                <Input
+                  id="price"
+                  v-model="form.price"
+                  type="number"
+                  placeholder="Ej. 15000"
+                  @input="form.price = formatPrice(form.price)"
+                />
+              </div>
 
-          <div v-if="previewPhotos.length > 0" class="grid grid-cols-3 md:grid-cols-4 gap-4">
-            <div
-              v-for="(photo, index) in previewPhotos"
-              :key="index"
-              class="relative group"
-            >
-              <img
-                :src="photo"
-                alt="Foto del vehículo"
-                class="w-full h-32 object-cover rounded-lg"
-              >
-              <Button
-                variant="destructive"
-                size="sm"
-                class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                @click="removePhoto(index)"
-              >
-                <X class="h-4 w-4" />
-              </Button>
+              <div class="space-y-2">
+                <Label for="currency">Moneda</Label>
+                <Select v-model="form.currency">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="EUR">EUR €</SelectItem>
+                    <SelectItem value="USD">USD $</SelectItem>
+                    <SelectItem value="GBP">GBP £</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div class="flex items-end">
+                <div class="flex items-center space-x-2">
+                  <input
+                    id="is_negotiable"
+                    v-model="form.is_negotiable"
+                    type="checkbox"
+                    class="rounded border-gray-300"
+                  />
+                  <Label for="is_negotiable" class="cursor-pointer">Precio negociable</Label>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <Alert>
-            <Info class="h-4 w-4" />
-            <AlertDescription>
-              Se recomienda añadir al menos 5 fotos: frontal, trasera, laterales, interior y motor.
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <Label for="location_city">Ciudad *</Label>
+                <Input
+                  id="location_city"
+                  v-model="form.location_city"
+                  placeholder="Ej. Madrid"
+                />
+              </div>
 
-      <!-- Submit -->
-      <div class="flex justify-end gap-3">
-        <Button variant="outline" type="button" @click="goBack()">
-          Cancelar
-        </Button>
-        <Button type="submit" :disabled="form.processing">
-          {{ form.processing ? 'Publicando...' : 'Publicar anuncio' }}
-        </Button>
-      </div>
-    </form>
-  </div>
+              <div class="space-y-2">
+                <Label for="location_region">Provincia *</Label>
+                <Select v-model="form.location_region">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona provincia" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem v-for="region in regions" :key="region" :value="region">
+                      {{ region }}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </PageCard>
+
+        <!-- Step 3: Photos -->
+        <PageCard>
+          <template #title>
+            <CardHeader>
+              <CardTitle>3. Fotos del vehículo</CardTitle>
+              <CardDescription>Añade fotos para atraer más compradores</CardDescription>
+            </CardHeader>
+          </template>
+          <CardContent class="space-y-4">
+            <div class="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary cursor-pointer">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                @change="handlePhotoUpload"
+                class="hidden"
+                ref="fileInput"
+              >
+              <Upload class="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <p class="text-sm font-medium">Click o arrastra fotos aquí</p>
+              <p class="text-xs text-muted-foreground mt-1">PNG, JPG hasta 5MB por foto</p>
+            </div>
+
+            <div v-if="previewPhotos.length > 0" class="grid grid-cols-3 md:grid-cols-4 gap-4">
+              <div
+                v-for="(photo, index) in previewPhotos"
+                :key="index"
+                class="relative group"
+              >
+                <img
+                  :src="photo"
+                  alt="Foto del vehículo"
+                  class="w-full h-32 object-cover rounded-lg"
+                >
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  @click="removePhoto(index)"
+                >
+                  <X class="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            <Alert>
+              <Info class="h-4 w-4" />
+              <AlertDescription>
+                Se recomienda añadir al menos 5 fotos: frontal, trasera, laterales, interior y motor.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </PageCard>
+
+        <!-- Submit -->
+        <div class="flex justify-end gap-3">
+          <Button variant="outline" type="button" @click="goBack()">
+            Cancelar
+          </Button>
+          <Button type="submit" :disabled="form.processing">
+            {{ form.processing ? 'Publicando...' : 'Publicar anuncio' }}
+          </Button>
+        </div>
+      </form>
+    </div>
+  </WebLayout>
 </template>
