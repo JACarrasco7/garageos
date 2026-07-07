@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { usePage } from '@inertiajs/vue3'
+import { usePage, Link } from '@inertiajs/vue3'
+import WebLayout from '@/layouts/WebLayout.vue'
+import PageCard from '@/Components/PageCard.vue'
 import { loadStripe } from '@stripe/stripe-js'
 import { Button } from '@/Components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 
 interface Listing {
   id: number
@@ -56,21 +58,29 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto py-8">
-    <Card>
-      <CardHeader>
-        <CardTitle>Comprar {{ listing.title }}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p class="text-2xl font-bold mb-4">
-          {{ listing.price.toLocaleString('es-ES') }} {{ listing.currency }}
-        </p>
-        <div ref="cardElement" class="border rounded p-3 mb-4"></div>
-        <p v-if="error" class="text-destructive text-sm mb-2">{{ error }}</p>
-        <Button :disabled="loading" class="w-full" @click="handleSubmit">
-          {{ loading ? 'Procesando...' : 'Pagar ahora' }}
-        </Button>
-      </CardContent>
-    </Card>
-  </div>
+  <WebLayout>
+    <template #header>
+      Checkout
+    </template>
+
+    <div class="max-w-2xl mx-auto py-8">
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Comprar {{ listing.title }}</CardTitle>
+          </CardHeader>
+        </template>
+        <CardContent>
+          <p class="text-2xl font-bold mb-4">
+            {{ listing.price.toLocaleString('es-ES') }} {{ listing.currency }}
+          </p>
+          <div ref="cardElement" class="border rounded p-3 mb-4"></div>
+          <p v-if="error" class="text-destructive text-sm mb-2">{{ error }}</p>
+          <Button :disabled="loading" class="w-full" @click="handleSubmit">
+            {{ loading ? 'Procesando...' : 'Pagar ahora' }}
+          </Button>
+        </CardContent>
+      </PageCard>
+    </div>
+  </WebLayout>
 </template>
