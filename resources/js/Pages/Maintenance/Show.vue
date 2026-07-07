@@ -2,7 +2,8 @@
 import { Link } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
 import { ArrowLeft } from 'lucide-vue-next'
@@ -39,18 +40,20 @@ defineProps<{
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <div class="flex justify-between items-start">
-            <div>
-              <CardTitle>{{ entry.title }}</CardTitle>
-              <p class="text-sm text-muted-foreground capitalize">{{ entry.type }}</p>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <div class="flex justify-between items-start">
+              <div>
+                <CardTitle>{{ entry.title }}</CardTitle>
+                <p class="text-sm text-muted-foreground capitalize">{{ entry.type }}</p>
+              </div>
+              <Badge :variant="entry.is_verified ? 'default' : 'secondary'">
+                {{ entry.is_verified ? 'Verificado' : 'Pendiente' }}
+              </Badge>
             </div>
-            <Badge :variant="entry.is_verified ? 'default' : 'secondary'">
-              {{ entry.is_verified ? 'Verificado' : 'Pendiente' }}
-            </Badge>
-          </div>
-        </CardHeader>
+          </CardHeader>
+        </template>
         <CardContent class="space-y-4">
           <div class="border-t border-border pt-4">
             <p class="text-sm text-muted-foreground">Fecha: {{ entry.service_date }}</p>
@@ -67,7 +70,7 @@ defineProps<{
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>
