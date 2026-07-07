@@ -22,6 +22,30 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::get('/dashboard/glassmorphism', function () {
+    return Inertia::render('DashboardGlassmorphism', [
+        'vehicles' => [],
+        'alerts' => [],
+        'stats' => [
+            'total_vehicles' => 0,
+            'total_documents' => 0,
+            'pending_alerts' => 0,
+        ],
+    ]);
+})->middleware(['auth', 'verified'])->name('dashboard.glassmorphism');
+
+Route::get('/dashboard/minimal', function () {
+    return Inertia::render('DashboardMinimal', [
+        'vehicles' => [],
+        'alerts' => [],
+        'stats' => [
+            'total_vehicles' => 0,
+            'total_documents' => 0,
+            'pending_alerts' => 0,
+        ],
+    ]);
+})->middleware(['auth', 'verified'])->name('dashboard.minimal');
+
 Route::get('/dashboard/stats', [DashboardController::class, 'stats'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.stats');
@@ -54,4 +78,5 @@ require __DIR__.'/admin.php';
 require __DIR__.'/../app/Modules/Providers/Routes/providers.php';
 require base_path('app/Modules/Vehicle/Routes/vehicle.php');
 require base_path('app/Modules/Maintenance/Routes/mobile_maintenance.php');
+require base_path('app/Modules/Listings/Routes/web.php');
 require __DIR__.'/mobile.php';

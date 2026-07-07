@@ -7,8 +7,35 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Star } from 'lucide-vue-next'
 
+interface Offer {
+  id: number
+  price: number
+  status: string
+  provider: {
+    name: string
+  }
+  delivery_time_days?: number
+  warranty_months?: number
+  rating_avg?: number
+  rating_count?: number
+}
+
+interface ImportRequest {
+  id: number
+  brand: string
+  model: string
+  year?: number
+  fuel_type?: string
+  mileage?: number
+  budget_min?: number
+  budget_max?: number
+  status: string
+  description?: string
+  offers: Offer[]
+}
+
 defineProps<{
-  request: Object
+  request: ImportRequest
 }>()
 </script>
 

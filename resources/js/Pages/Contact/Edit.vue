@@ -26,7 +26,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.upsert('contact.update', form);
+    form.patch(route('contact.update'));
 };
 </script>
 

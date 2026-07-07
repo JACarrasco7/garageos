@@ -6,6 +6,7 @@ import { Toaster } from 'vue-sonner';
 import { PanelLeftClose, PanelLeftOpen, Menu } from 'lucide-vue-next';
 
 import AppSidebar from '@/Components/AppSidebar.vue';
+import AppHeader from '@/Components/layout/AppHeader.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 import OnboardingTour from '@/Components/OnboardingTour.vue';
 
@@ -48,12 +49,18 @@ onMounted(() => {
 
 <template>
     <div class="flex h-dvh w-full overflow-hidden bg-background relative transition-colors duration-500">
-        <!-- Sidebar (desktop) -->
+        <!-- Background subtle pattern -->
+        <div class="absolute inset-0 opacity-30 pointer-events-none">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(var(--primary),0.03)_0%,transparent_50%)]" />
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(var(--accent),0.02)_0%,transparent_40%)]" />
+        </div>
+
+        <!-- Sidebar (desktop) - flotante -->
         <aside
             :class="[
-                'hidden md:flex shrink-0 h-full m-3 rounded-2xl border backdrop-blur-2xl transition-all duration-500 ease-in-out',
+                'hidden md:flex fixed top-3 left-3 bottom-3 z-30 shrink-0 rounded-2xl border backdrop-blur-2xl transition-all duration-500 ease-in-out',
                 sidebarOpen ? 'w-64' : 'w-16',
-                'bg-card border-border shadow-lg'
+                'bg-card/50 border-white/15 shadow-xl',
             ]"
         >
             <AppSidebar :collapsed="!sidebarOpen" />
@@ -83,8 +90,8 @@ onMounted(() => {
             <aside
                 v-if="mobileOpen"
                 :class="[
-                    'fixed inset-y-0 left-0 z-50 flex h-full w-72 flex-col m-3 rounded-2xl border backdrop-blur-2xl md:hidden',
-                    'bg-card border-border shadow-lg'
+                    'fixed inset-y-0 left-0 top-3 bottom-3 z-50 flex h-auto w-72 flex-col rounded-2xl border backdrop-blur-2xl md:hidden',
+                    'bg-card/50 border-white/15 shadow-xl'
                 ]"
             >
                 <AppSidebar :collapsed="false" @navigate="closeMobile" />
@@ -92,66 +99,17 @@ onMounted(() => {
         </transition>
 
         <!-- Main content -->
-        <div class="flex min-w-0 flex-1 flex-col gap-0 p-3">
-            <!-- Header -->
-            <header
-                :class="[
-                    'shrink-0 flex h-16 items-center gap-3 rounded-2xl border backdrop-blur-2xl px-4 md:px-6',
-                    'bg-card/80 border-border shadow-sm supports-backdrop-filter:bg-card/60'
-                ]"
-            >
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    class="md:hidden"
-                    aria-label="Abrir menú"
-                    @click="showMobile"
-                >
-                    <Menu class="h-5 w-5" />
-                </Button>
+        <div class="flex min-w-0 flex-1 flex-col gap-3 p-3 md:pl-64">
+            <AppHeader>
+                <template #header>
+                    <slot name="header" />
+                </template>
+                <template #header-actions>
+                    <slot name="header-actions" />
+                </template>
+            </AppHeader>
 
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    class="hidden md:inline-flex"
-                    :aria-label="sidebarOpen ? 'Cerrar sidebar' : 'Abrir sidebar'"
-                    @click="toggleSidebar"
-                >
-                    <PanelLeftClose v-if="sidebarOpen" class="h-5 w-5" />
-                    <PanelLeftOpen v-else class="h-5 w-5" />
-                </Button>
-
-                <Separator
-                    orientation="vertical"
-                    class="h-6 bg-border"
-                />
-
-                <Breadcrumb class="min-w-0 flex-1">
-                    <BreadcrumbList>
-                        <BreadcrumbItem>
-                            <BreadcrumbLink as-child>
-                                <Link :href="route('dashboard')" class="text-sm font-medium">
-                                    Dashboard
-                                </Link>
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <template v-if="$slots.header">
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage class="text-sm text-muted-foreground">
-                                    <slot name="header" />
-                                </BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </template>
-                    </BreadcrumbList>
-                </Breadcrumb>
-
-                <ThemeToggle />
-                <slot name="header-actions" />
-            </header>
-
-            <!-- Content -->
-            <main class="flex-1 min-h-0 rounded-2xl border backdrop-blur-2xl flex flex-col overflow-hidden">
+            <main class="flex-1 min-h-0 rounded-2xl border backdrop-blur-xl flex flex-col overflow-hidden bg-card/35 border-white/12 shadow-lg transition-all duration-500">
                 <div class="flex-1 overflow-auto p-6 md:p-8 lg:p-10">
                     <slot />
                 </div>

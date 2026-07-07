@@ -7,8 +7,22 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import { Badge } from '@/Components/ui/badge'
 
+interface ImportRequest {
+  id: number
+  brand: string
+  model: string
+  year?: number
+  budget_min?: number
+  budget_max?: number
+  user: {
+    workshop?: { city?: string }
+  }
+}
+
 defineProps<{
-  requests: Object
+  requests: {
+    data: ImportRequest[]
+  }
 }>()
 </script>
 

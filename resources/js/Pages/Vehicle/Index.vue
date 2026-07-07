@@ -31,10 +31,10 @@ defineProps<{
       Mis Vehículos
     </template>
 
-    <Card class="border-0 shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all duration-300" data-tour="vehicles">
+    <Card class="glass-panel border-0" data-tour="vehicles">
       <CardHeader class="flex flex-row items-center justify-between pb-3">
         <CardTitle class="text-lg font-semibold">Lista de vehículos</CardTitle>
-        <Button as-child variant="outline" size="sm" class="rounded-lg">
+        <Button as-child variant="ghost" size="sm" class="rounded-lg glass-tab">
           <Link :href="route('vehicles.wizard')">
             <Plus class="mr-2 h-4 w-4" />
             Añadir vehículo
@@ -48,7 +48,7 @@ defineProps<{
           </div>
           <h3 class="font-medium text-foreground mb-1">No tienes vehículos registrados</h3>
           <p class="text-sm text-muted-foreground mb-4">Comienza añadiendo tu primer vehículo</p>
-          <Button as-child>
+          <Button as-child class="glass-button">
             <Link :href="route('vehicles.wizard')">Añadir primer vehículo</Link>
           </Button>
         </div>
@@ -58,7 +58,7 @@ defineProps<{
             v-for="vehicle in vehicles"
             :key="vehicle.id"
             :href="route('vehicles.show', vehicle.id)"
-            class="flex flex-col p-4 rounded-xl border border-border/50 bg-card hover:bg-accent/5 hover:border-primary/20 hover:shadow-md hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 group"
+            class="flex flex-col p-4 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:bg-accent/5 hover:border-primary/20 transition-all duration-200 group"
           >
             <div class="flex justify-between items-start mb-3">
               <div>

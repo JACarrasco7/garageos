@@ -2,7 +2,6 @@
 import { Link } from '@inertiajs/vue3'
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
 import StatCard from '@/Components/StatCard.vue'
@@ -44,7 +43,7 @@ defineProps<{
 
   <AppSidebarLayout>
     <template #header>
-      <!-- Dashboard Glassmorphism -->
+      Dashboard Glassmorphism
     </template>
 
     <!-- Liquid Glass Hero -->
@@ -108,36 +107,37 @@ defineProps<{
     <!-- Glass Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Vehículos -->
-      <div class="glass-panel p-6">
-        <div class="flex flex-row items-center justify-between pb-4">
-          <h3 class="text-xl font-bold tracking-tight text-foreground">
-            Mis Vehículos
-          </h3>
-          <Button as-child variant="ghost" size="sm" class="rounded-xl glass-tab">
-            <Link :href="route('vehicles.index')" class="flex items-center gap-1.5">
-              Ver todos
-              <ArrowRight class="h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
-        <div class="space-y-4">
-          <EmptyState
-            v-if="!vehicles?.length"
-            :icon="Car"
-            title="Aún no tienes vehículos"
-            description="Registra tu primer vehículo para empezar a llevar el control de mantenimiento, alertas y documentos."
-            action-label="Añadir primer vehículo"
-            :action-href="route('vehicles.create')"
-            compact
-          />
+      <div class="glass-panel">
+        <div class="p-6 flex flex-col h-full">
+          <div class="flex flex-row items-center justify-between pb-4">
+            <h3 class="text-xl font-bold tracking-tight text-foreground">
+              Mis Vehículos
+            </h3>
+            <Button as-child variant="ghost" size="sm" class="rounded-xl glass-tab">
+              <Link :href="route('vehicles.index')" class="flex items-center gap-1.5">
+                Ver todos
+                <ArrowRight class="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+          <div class="space-y-4 flex-1">
+            <EmptyState
+              v-if="!vehicles?.length"
+              :icon="Car"
+              title="Aún no tienes vehículos"
+              description="Registra tu primer vehículo para empezar a llevar el control de mantenimiento, alertas y documentos."
+              action-label="Añadir primer vehículo"
+              :action-href="route('vehicles.create')"
+              compact
+            />
 
-          <div v-else class="space-y-3">
-            <Link
-              v-for="vehicle in vehicles"
-              :key="vehicle.id"
-              :href="route('vehicles.show', vehicle.id)"
-              class="glass-item group flex items-center justify-between rounded-2xl p-4"
-            >
+            <div v-else class="space-y-3">
+              <Link
+                v-for="vehicle in vehicles"
+                :key="vehicle.id"
+                :href="route('vehicles.show', vehicle.id)"
+                class="glass-item group flex items-center justify-between rounded-2xl p-4"
+              >
               <div class="flex items-center gap-4">
                 <div class="glass-icon flex h-12 w-12 items-center justify-center rounded-2xl">
                   <Car class="h-6 w-6 text-primary" />
@@ -170,19 +170,19 @@ defineProps<{
 
       <!-- Alertas -->
       <div class="glass-panel">
-        <Card class="border-0 bg-transparent">
-          <CardHeader class="flex flex-row items-center justify-between pb-3">
-            <CardTitle class="text-xl font-bold tracking-tight text-foreground">
+        <div class="p-6 flex flex-col h-full">
+          <div class="flex flex-row items-center justify-between pb-4">
+            <h3 class="text-xl font-bold tracking-tight text-foreground">
               Alertas recientes
-            </CardTitle>
+            </h3>
             <Button as-child variant="ghost" size="sm" class="rounded-xl glass-tab">
               <Link :href="route('alerts.index' as any)" class="flex items-center gap-1.5">
                 Ver todas
                 <ArrowRight class="h-4 w-4" />
               </Link>
             </Button>
-          </CardHeader>
-          <CardContent>
+          </div>
+          <div class="space-y-4 flex-1">
             <EmptyState
               v-if="!alerts?.length"
               :icon="Calendar"
@@ -215,8 +215,8 @@ defineProps<{
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   </AppSidebarLayout>
@@ -224,88 +224,85 @@ defineProps<{
 
 <style scoped>
 .glass-liquid {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
 }
 
 .glass-button {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
 }
 
 .glass-button:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .glass-kpi {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(24px);
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 3px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(32px);
-  border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
-  padding: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .glass-item {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
 }
 
 .glass-item:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(var(--primary), 0.5);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(var(--primary), 0.3);
 }
 
 .glass-icon {
-  background: rgba(var(--primary), 0.25);
-  backdrop-filter: blur(12px);
+  background: rgba(var(--primary), 0.2);
+  backdrop-filter: blur(8px);
 }
 
 .glass-badge {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
 }
 
 .glass-alert {
-  background: rgba(245, 158, 11, 0.12);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
 .glass-alert:hover {
-  background: rgba(245, 158, 11, 0.2);
+  background: rgba(245, 158, 11, 0.12);
 }
 
 .glass-alert-icon {
   background: linear-gradient(135deg, rgb(245, 158, 11), rgb(219, 127, 27));
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
 }
 
 .glass-tab {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
 }
 
 .glass-badge-outline {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
 }
 </style>

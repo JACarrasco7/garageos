@@ -54,7 +54,7 @@ const isRequirementCompleted = (index: number): boolean => {
       </div>
 
       <div class="flex justify-end gap-3 mt-6">
-        <Button variant="outline" @click="props.open = false">
+        <Button variant="outline" @click="emit('openChange', false)">
           Cerrar
         </Button>
         <Button as-child>

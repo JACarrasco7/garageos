@@ -40,3 +40,14 @@ export interface AlertRule {
   advance_km: number
   is_active: boolean
 }
+
+export interface Contact {
+  id?: number
+  phone?: string
+  address?: string
+  postal_code?: string
+  city?: string
+  province?: string
+  country?: string
+  is_public?: boolean
+}

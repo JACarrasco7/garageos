@@ -23,7 +23,7 @@ interface VehicleImport {
   brand: string
   model: string
   year: number
-  current_step: string
+  current_step: Step
   status: string
   arrival_date: string | null
   itv_deadline: string | null
@@ -37,7 +37,7 @@ interface Step {
   required_docs: string[]
 }
 
-defineProps<{
+const props = defineProps<{
   vehicleImport: VehicleImport
   steps: Step[]
 }>()
@@ -50,7 +50,7 @@ const uploadForm = useForm({
 })
 
 const currentStepData = computed(() => {
-  return steps.find(s => s.id === vehicleImport.current_step)
+  return props.steps.find(s => s.id === props.vehicleImport.current_step)
 })
 
 const documentTypes: Record<string, string[]> = {
@@ -90,7 +90,7 @@ const getStepIcon = (stepId: string) => {
 }
 
 const isDocumentUploaded = (stepId: string, docType: string): boolean => {
-  return vehicleImport.import_documents.some(
+  return props.vehicleImport.import_documents.some(
     d => d.step === stepId && d.type === docType && d.is_verified
   )
 }
@@ -105,7 +105,7 @@ const handleUpload = (step: string, type: string) => {
 const submitDocument = () => {
   if (!uploadForm.file || !uploadForm.step || !uploadForm.type) return
 
-  uploadForm.post(route('import.upload', vehicleImport.id), {
+  uploadForm.post(route('import.upload', props.vehicleImport.id), {
     forceFormData: true,
     onSuccess: () => {
       uploadForm.reset('file')
@@ -126,7 +126,7 @@ const providers = ref<{
 }[]>([])
 
 const loadProviders = () => {
-  router.get(route('import.providers', vehicleImport.id), (response: any) => {
+  router.get(route('import.providers', props.vehicleImport.id), (response: any) => {
     providers.value = response.providers
   })
 }

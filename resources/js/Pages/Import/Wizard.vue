@@ -11,7 +11,7 @@ import {
 } from 'lucide-vue-next'
 import Purchase from './WizardSteps/Purchase.vue'
 import Transport from './WizardSteps/Transport.vue'
-import ItvInspection from './ItvInspection.vue'
+import ItvInspection from './WizardSteps/ItvInspection.vue'
 import Taxes from './WizardSteps/Taxes.vue'
 import DgtRegistration from './WizardSteps/DgtRegistration.vue'
 import Plates from './WizardSteps/Plates.vue'
@@ -307,7 +307,8 @@ const showInfo = ref(false)
 
     <!-- Verification Info Dialog -->
     <ImportVerificationInfo
-      v-model:open="showInfo"
+      :open="showInfo"
+      @open-change="showInfo = $event"
     />
   </div>
 </template>

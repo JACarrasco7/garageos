@@ -97,7 +97,7 @@ const submit = () => {
                     <Checkbox
                         id="gdpr_consent"
                         :model-value="form.gdpr_consent"
-                        @update:model-value="form.gdpr_consent = $event"
+                        @update:model-value="form.gdpr_consent = Boolean($event)"
                     />
                     <div class="grid gap-1.5 leading-none">
                         <Label for="gdpr_consent" class="text-sm font-normal">

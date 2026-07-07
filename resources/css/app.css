@@ -166,6 +166,9 @@
   .glass-strong-solid {
     @apply bg-card backdrop-blur-xl border border-border/60;
   }
+  .glass-minimal {
+    @apply bg-card/80 backdrop-blur-md border border-border/50 shadow-sm;
+  }
   .gradient-primary {
     @apply bg-gradient-to-r from-primary to-primary/80;
   }

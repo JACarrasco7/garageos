@@ -5,9 +5,33 @@ import { Star } from 'lucide-vue-next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 
+interface Provider {
+  id: number
+  name: string
+  workshop?: {
+    city?: string
+    country?: string
+  }
+}
+
+interface Offer {
+  id: number
+  price: number
+  rating_avg: number
+  rating_count: number
+  delivery_time_days?: number
+  warranty_months?: number
+  request: {
+    brand: string
+    model: string
+  }
+}
+
 defineProps<{
-  provider: Object
-  offers: Object
+  provider: Provider
+  offers: {
+    data: Offer[]
+  }
 }>()
 </script>
 

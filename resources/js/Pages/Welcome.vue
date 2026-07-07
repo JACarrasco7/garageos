@@ -12,12 +12,12 @@ defineProps<{
 
 <template>
     <Head title="GarageOS - Gestión inteligente de tu vehículo" />
-    <div class="min-h-screen bg-gradient-to-br from-background to-muted">
+    <div class="min-h-screen bg-background">
         <div class="container mx-auto px-4 py-12 max-w-7xl">
             <!-- Header -->
             <header class="flex items-center justify-between mb-12">
                 <div class="flex items-center gap-3">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-primary to-primary/80 text-primary-foreground shadow-md">
                         <Car class="h-7 w-7" />
                     </div>
                     <div>
@@ -44,9 +44,8 @@ defineProps<{
 
             <!-- Hero -->
             <div class="text-center mb-16 relative">
-                <div class="absolute inset-0 -z-10">
-                    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl"></div>
-                    <div class="absolute top-1/3 right-1/4 w-64 h-64 rounded-full bg-gradient-to-br from-secondary/20 to-transparent blur-2xl"></div>
+                <div class="absolute inset-0 -z-10 opacity-20">
+                    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-primary blur-3xl"></div>
                 </div>
                 <h2 class="text-4xl md:text-6xl font-bold text-foreground mb-6">
                     Gestión inteligente de tu
@@ -56,10 +55,10 @@ defineProps<{
                     Controla mantenimientos, documentos, y todo lo relacionado con tu coche desde un solo lugar.
                 </p>
                 <div class="flex items-center justify-center gap-4">
-                    <Button as-child size="lg" class="bg-gradient-to-r from-primary to-primary/90 hover:shadow-lg hover:shadow-primary/30 transition-all duration-200">
+                    <Button as-child size="lg" class="bg-primary hover:shadow-md transition-shadow">
                         <Link v-if="canRegister" :href="route('register')">Comenzar gratis</Link>
                     </Button>
-                    <Button as-child variant="outline" size="lg" class="border-primary/20 hover:bg-primary/5">
+                    <Button as-child variant="outline" size="lg" class="border-border/50 hover:bg-accent/5">
                         <Link v-if="$page.props.auth.user" :href="route('vehicles.index')">Ver mis vehículos</Link>
                     </Button>
                 </div>
@@ -67,9 +66,9 @@ defineProps<{
 
             <!-- Features -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Card class="group hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border-border/50">
+                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
                     <CardHeader>
-                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-2">
+                        <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Car class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Gestión de vehículos</CardTitle>
@@ -81,9 +80,9 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border-border/50">
+                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
                     <CardHeader>
-                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-2">
+                        <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Wrench class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Mantenimiento</CardTitle>
@@ -95,9 +94,9 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border-border/50">
+                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
                     <CardHeader>
-                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-2">
+                        <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <FileText class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Documentos</CardTitle>
@@ -109,9 +108,9 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border-border/50">
+                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
                     <CardHeader>
-                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-accent/10 to-destructive/10 flex items-center justify-center mb-2">
+                        <div class="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
                             <Shield class="h-6 w-6 text-accent" />
                         </div>
                         <CardTitle class="text-base">Suscripciones</CardTitle>
@@ -123,9 +122,9 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border-border/50">
+                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
                     <CardHeader>
-                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-2">
+                        <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Users class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Clientes</CardTitle>
@@ -137,9 +136,9 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border-border/50">
+                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
                     <CardHeader>
-                        <div class="h-12 w-12 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-2">
+                        <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <BarChart3 class="h-6 w-6 text-primary" />
                         </div>
                         <CardTitle class="text-base">Reportes</CardTitle>
