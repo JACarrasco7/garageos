@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import WebLayout from '@/layouts/WebLayout.vue';
+import PageCard from '@/Components/PageCard.vue';
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { HelpCircle, Car, FileText, Shield, Truck, Euro } from 'lucide-vue-next';
 
 const faqs = [
@@ -66,45 +68,55 @@ const openItem = ref<string | null>(null);
 </script>
 
 <template>
-    <div class="max-w-4xl mx-auto py-8">
-        <div class="flex items-center gap-3 mb-6">
-            <HelpCircle class="w-8 h-8 text-primary" />
-            <h1 class="text-2xl font-bold">Preguntas Frecuentes</h1>
-        </div>
+    <WebLayout>
+        <template #header>
+            Preguntas Frecuentes
+        </template>
 
-        <div class="space-y-6">
-            <Card v-for="(category, cIdx) in faqs" :key="cIdx">
-                <CardHeader class="pb-3">
-                    <CardTitle class="flex items-center gap-3 text-lg">
-                        <component :is="category.icon" class="w-5 h-5 text-primary" />
-                        {{ category.category }}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div class="space-y-4">
-                        <div v-for="(item, iIdx) in category.items" :key="iIdx" class="border-b last:border-0 pb-4 last:pb-0">
-                            <h3 class="font-medium mb-2">{{ item.question }}</h3>
-                            <p class="text-sm text-muted-foreground">{{ item.answer }}</p>
+        <div class="max-w-4xl mx-auto py-8">
+            <div class="flex items-center gap-3 mb-6">
+                <HelpCircle class="w-8 h-8 text-primary" />
+                <h1 class="text-2xl font-bold">Preguntas Frecuentes</h1>
+            </div>
+
+            <div class="space-y-6">
+                <PageCard v-for="(category, cIdx) in faqs" :key="cIdx">
+                    <template #title>
+                        <CardHeader class="pb-3">
+                            <CardTitle class="flex items-center gap-3 text-lg">
+                                <component :is="category.icon" class="w-5 h-5 text-primary" />
+                                {{ category.category }}
+                            </CardTitle>
+                        </CardHeader>
+                    </template>
+                    <CardContent>
+                        <div class="space-y-4">
+                            <div v-for="(item, iIdx) in category.items" :key="iIdx" class="border-b last:border-0 pb-4 last:pb-0">
+                                <h3 class="font-medium mb-2">{{ item.question }}</h3>
+                                <p class="text-sm text-muted-foreground">{{ item.answer }}</p>
+                            </div>
                         </div>
+                    </CardContent>
+                </PageCard>
+            </div>
+
+            <PageCard class="mt-8">
+                <template #title>
+                    <CardHeader>
+                        <CardTitle>Contacto</CardTitle>
+                    </CardHeader>
+                </template>
+                <CardContent>
+                    <p class="text-muted-foreground mb-4">
+                        ¿No encuentras lo que buscas? Contáctanos directamente.
+                    </p>
+                    <div class="space-y-2 text-sm">
+                        <p><strong>Email:</strong> soporte@garageos.com</p>
+                        <p><strong>Teléfono:</strong> 600 000 000</p>
+                        <p><strong>Horario:</strong> Lunes-Viernes 9:00-18:00</p>
                     </div>
                 </CardContent>
-            </Card>
+            </PageCard>
         </div>
-
-        <Card class="mt-8">
-            <CardHeader>
-                <CardTitle>Contacto</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p class="text-muted-foreground mb-4">
-                    ¿No encuentras lo que buscas? Contáctanos directamente.
-                </p>
-                <div class="space-y-2 text-sm">
-                    <p><strong>Email:</strong> soporte@garageos.com</p>
-                    <p><strong>Teléfono:</strong> 600 000 000</p>
-                    <p><strong>Horario:</strong> Lunes-Viernes 9:00-18:00</p>
-                </div>
-            </CardContent>
-        </Card>
-    </div>
+    </WebLayout>
 </template>
