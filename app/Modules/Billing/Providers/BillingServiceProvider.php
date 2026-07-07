@@ -10,7 +10,15 @@ class BillingServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(StripeClient::class, function ($app) {
-            $secret = config('services.stripe.secret') ?? env('STRIPE_SECRET');
+            $secret = config('services.stripe.secret')
+                ?? config('services.stripe.key')
+                ?? env('STRIPE_SECRET')
+                ?? env('STRIPE_KEY');
+
+            if (empty($secret)) {
+                $secret = 'sk_test_placeholder';
+            }
+
             return new StripeClient($secret);
         });
     }
