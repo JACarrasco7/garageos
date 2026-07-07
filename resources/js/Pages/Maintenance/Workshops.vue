@@ -2,7 +2,8 @@
 import { Link } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Wrench, MapPin, Phone, ShieldCheck, Clock } from 'lucide-vue-next'
 
@@ -53,10 +54,10 @@ defineProps<{
       </div>
 
       <div v-else class="grid gap-4 md:grid-cols-2">
-        <Card
+        <PageCard
           v-for="(workshop, index) in workshops"
           :key="workshop.id"
-          class="glass-surface border-0 group transition-all duration-300 animate-in-up"
+          class="group transition-all duration-300 animate-in-up"
           :style="{ animationDelay: `${index * 50}ms` }"
         >
           <CardContent class="p-6">
@@ -98,7 +99,7 @@ defineProps<{
               </div>
             </div>
           </CardContent>
-        </Card>
+        </PageCard>
       </div>
     </div>
   </WebLayout>
