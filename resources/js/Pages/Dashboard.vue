@@ -100,10 +100,8 @@ defineProps<{
       />
     </div>
 
-    <!-- Glass Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Vehículos -->
-      <div class="glass-panel p-6">
+      <div class="glass-panel-adv p-6">
         <div class="flex flex-row items-center justify-between pb-4">
           <h3 class="text-xl font-bold tracking-tight text-foreground">
             Mis Vehículos
@@ -131,7 +129,7 @@ defineProps<{
               v-for="vehicle in vehicles"
               :key="vehicle.id"
               :href="route('vehicles.show', vehicle.id)"
-              class="glass-item group flex items-center justify-between rounded-2xl p-4"
+              class="glass-item-adv group flex items-center justify-between rounded-2xl p-4"
             >
               <div class="flex items-center gap-4">
                 <div class="glass-icon flex h-12 w-12 items-center justify-center rounded-2xl">
@@ -164,7 +162,7 @@ defineProps<{
       </div>
 
       <!-- Alertas -->
-      <div class="glass-panel">
+      <div class="glass-panel-adv">
         <Card class="border-0 bg-transparent">
           <CardHeader class="flex flex-row items-center justify-between pb-3">
             <CardTitle class="text-xl font-bold tracking-tight text-foreground">
@@ -216,91 +214,3 @@ defineProps<{
     </div>
   </WebLayout>
 </template>
-
-<style scoped>
-.glass-liquid {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.25);
-}
-
-.glass-button {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease;
-}
-
-.glass-button:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-}
-
-.glass-kpi {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(24px);
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 3px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(32px);
-  border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
-  padding: 3px;
-}
-
-.glass-item {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.3s ease;
-}
-
-.glass-item:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(var(--primary), 0.5);
-}
-
-.glass-icon {
-  background: rgba(var(--primary), 0.25);
-  backdrop-filter: blur(12px);
-}
-
-.glass-badge {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.glass-alert {
-  background: rgba(245, 158, 11, 0.12);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-}
-
-.glass-alert:hover {
-  background: rgba(245, 158, 11, 0.2);
-}
-
-.glass-alert-icon {
-  background: linear-gradient(135deg, rgb(245, 158, 11), rgb(219, 127, 27));
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-}
-
-.glass-tab {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-}
-
-.glass-badge-outline {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-}
-</style>
