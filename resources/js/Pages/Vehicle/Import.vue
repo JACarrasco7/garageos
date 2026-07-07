@@ -2,7 +2,8 @@
 import { Link, useForm } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
@@ -31,11 +32,13 @@ const handleFile = (event: Event) => {
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Importar desde CSV</CardTitle>
-          <CardDescription>Sube un archivo CSV con los datos de los vehículos</CardDescription>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Importar desde CSV</CardTitle>
+            <CardDescription>Sube un archivo CSV con los datos de los vehículos</CardDescription>
+          </CardHeader>
+        </template>
         <CardContent>
           <form @submit.prevent="submit" class="space-y-6">
             <div>
@@ -67,7 +70,7 @@ const handleFile = (event: Event) => {
             </div>
           </form>
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>
