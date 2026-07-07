@@ -10,7 +10,8 @@ class BillingServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(StripeClient::class, function ($app) {
-            return new StripeClient(config('services.stripe.secret'));
+            $secret = config('services.stripe.secret') ?? env('STRIPE_SECRET');
+            return new StripeClient($secret);
         });
     }
 
