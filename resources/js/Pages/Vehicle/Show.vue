@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/vue3'
 import { Head } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import WebLayout from '@/layouts/WebLayout.vue'
+import PageCard from '@/Components/PageCard.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
@@ -92,12 +93,17 @@ const ecoLabelColors: Record<string, string> = {
       </div>
 
       <!-- Tab: Información -->
-      <Card v-show="activeTab === 'info'" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="flex items-center gap-2 text-lg font-semibold">
-            <Car class="h-5 w-5" />
-            Datos del vehículo
-          </CardTitle>
+      <PageCard v-show="activeTab === 'info'" class="data-tab">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="flex items-center gap-2 text-lg font-semibold">
+              <Car class="h-5 w-5" />
+              Datos del vehículo
+            </CardTitle>
+          </CardHeader>
+        </template>
+
+        <CardContent>
         </CardHeader>
         <CardContent>
           <dl class="grid grid-cols-2 gap-4 text-sm">
@@ -143,13 +149,16 @@ const ecoLabelColors: Record<string, string> = {
             </div>
           </dl>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Tab: Ficha técnica -->
-      <Card v-show="activeTab === 'specs'" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="text-lg font-semibold">Especificaciones</CardTitle>
-        </CardHeader>
+      <PageCard v-show="activeTab === 'specs'" class="specs-tab">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="text-lg font-semibold">Especificaciones</CardTitle>
+          </CardHeader>
+        </template>
+
         <CardContent>
           <dl v-if="props.vehicle.specs" class="grid grid-cols-3 gap-4 text-sm">
             <div v-if="props.vehicle.specs.engine_cc">
@@ -183,16 +192,19 @@ const ecoLabelColors: Record<string, string> = {
           </dl>
           <p v-else class="text-muted-foreground">No hay especificaciones registradas.</p>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Tab: Fotos -->
-      <Card v-show="activeTab === 'photos'" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="flex items-center gap-2 text-lg font-semibold">
-            <ImageIcon class="h-5 w-5" />
-            Fotos del vehículo
-          </CardTitle>
-        </CardHeader>
+      <PageCard v-show="activeTab === 'photos'" class="photos-tab">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="flex items-center gap-2 text-lg font-semibold">
+              <ImageIcon class="h-5 w-5" />
+              Fotos del vehículo
+            </CardTitle>
+          </CardHeader>
+        </template>
+
         <CardContent>
           <div class="flex flex-col items-center justify-center py-8">
             <ImageIcon class="h-16 w-16 text-muted-foreground/50 mb-4" />
@@ -204,16 +216,19 @@ const ecoLabelColors: Record<string, string> = {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Tab: Documentos -->
-      <Card v-show="activeTab === 'documents'" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="flex items-center gap-2 text-lg font-semibold">
-            <FileText class="h-5 w-5" />
-            Documentos
-          </CardTitle>
-        </CardHeader>
+      <PageCard v-show="activeTab === 'documents'" class="documents-tab">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="flex items-center gap-2 text-lg font-semibold">
+              <FileText class="h-5 w-5" />
+              Documentos
+            </CardTitle>
+          </CardHeader>
+        </template>
+
         <CardContent>
           <div class="flex flex-col items-center justify-center py-8">
             <FileText class="h-16 w-16 text-muted-foreground/50 mb-4" />
@@ -225,16 +240,19 @@ const ecoLabelColors: Record<string, string> = {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Tab: Mantenimiento -->
-      <Card v-show="activeTab === 'maintenance'" class="glass-surface border-0">
-        <CardHeader class="pb-3">
-          <CardTitle class="flex items-center gap-2 text-lg font-semibold">
-            <Wrench class="h-5 w-5" />
-            Mantenimiento
-          </CardTitle>
-        </CardHeader>
+      <PageCard v-show="activeTab === 'maintenance'" class="maintenance-tab">
+        <template #title>
+          <CardHeader class="pb-3">
+            <CardTitle class="flex items-center gap-2 text-lg font-semibold">
+              <Wrench class="h-5 w-5" />
+              Mantenimiento
+            </CardTitle>
+          </CardHeader>
+        </template>
+
         <CardContent>
           <div class="flex flex-col items-center justify-center py-8">
             <Wrench class="h-16 w-16 text-muted-foreground/50 mb-4" />
@@ -246,7 +264,7 @@ const ecoLabelColors: Record<string, string> = {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <Separator />
 
