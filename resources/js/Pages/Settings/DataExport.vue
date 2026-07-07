@@ -38,7 +38,7 @@ const deleteAccount = () => {
     </template>
 
     <div class="max-w-2xl space-y-6">
-      <Card>
+      <Card class="glass-surface">
         <CardHeader>
           <CardTitle class="flex items-center gap-2">
             <Download class="h-5 w-5" />
@@ -49,7 +49,7 @@ const deleteAccount = () => {
           <p class="text-sm text-muted-foreground">
             Descarga una copia de todos tus datos en formato Excel.
           </p>
-          <Button @click="exportData" :disabled="exporting">
+          <Button @click="exportData" :disabled="exporting" class="glass-button">
             {{ exporting ? 'Generando...' : 'Exportar datos' }}
           </Button>
           <a
@@ -63,7 +63,7 @@ const deleteAccount = () => {
         </CardContent>
       </Card>
 
-      <Card class="border-destructive">
+      <Card class="glass-surface border-destructive">
         <CardHeader>
           <CardTitle class="flex items-center gap-2 text-destructive">
             <AlertTriangle class="h-5 w-5" />

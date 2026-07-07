@@ -41,7 +41,7 @@ defineProps<{
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card v-for="workshop in workshops.data" :key="workshop.id" class="border-0 shadow-lg">
+        <Card v-for="workshop in workshops.data" :key="workshop.id" class="glass-surface border-0">
           <CardHeader>
             <CardTitle class="text-lg">{{ workshop.name }}</CardTitle>
           </CardHeader>

@@ -27,7 +27,7 @@ defineProps<{
                 <p class="text-sm text-muted-foreground">Administra tu perfil y preferencias</p>
             </div>
 
-            <Card class="border-0 shadow-lg">
+            <Card class="glass-surface border-0">
                 <CardHeader class="pb-3">
                     <CardTitle class="flex items-center gap-2 text-lg font-semibold">
                         <User class="h-5 w-5" />
@@ -42,7 +42,7 @@ defineProps<{
                 </CardContent>
             </Card>
 
-            <Card class="border-0 shadow-lg">
+            <Card class="glass-surface border-0">
                 <CardHeader class="pb-3">
                     <CardTitle class="flex items-center gap-2 text-lg font-semibold">
                         <Lock class="h-5 w-5" />
@@ -54,7 +54,7 @@ defineProps<{
                 </CardContent>
             </Card>
 
-            <Card class="border-0 shadow-lg border-destructive/50">
+            <Card class="glass-surface border-0 border-destructive/50">
                 <CardHeader class="pb-3">
                     <CardTitle class="flex items-center gap-2 text-lg font-semibold text-destructive">
                         <Trash2 class="h-5 w-5" />

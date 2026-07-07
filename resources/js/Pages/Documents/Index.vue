@@ -46,10 +46,10 @@ const documentLabels: Record<string, string> = {
       </span>
     </template>
 
-    <Card class="border-0 shadow-lg">
+    <Card class="glass-surface border-0">
       <CardHeader class="flex flex-row items-center justify-between pb-3">
         <CardTitle class="text-lg font-semibold">Documentos del vehículo</CardTitle>
-        <Button variant="outline" size="sm" class="rounded-lg" @click="$emit('open-upload')">
+        <Button variant="ghost" size="sm" class="rounded-lg glass-tab" @click="$emit('open-upload')">
           <Plus class="mr-2 h-4 w-4" />
           Subir documento
         </Button>
@@ -72,7 +72,7 @@ const documentLabels: Record<string, string> = {
               <div
                 v-for="doc in group"
                 :key="doc.id"
-                class="flex justify-between items-center p-3 rounded-lg border border-border hover:bg-accent transition-colors"
+                class="flex justify-between items-center p-3 rounded-lg glass-item hover:bg-accent/5 transition-colors"
               >
                 <div>
                   <p class="font-medium text-foreground">{{ doc.title }}</p>

@@ -41,7 +41,7 @@ function resume() {
         <Card
           v-for="plan in plans"
           :key="plan.id"
-          class="border-0 shadow-lg hover:shadow-xl transition-shadow"
+          class="glass-surface border-0 transition-shadow"
         >
           <CardHeader class="text-center pb-3">
             <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-3">

@@ -42,7 +42,7 @@ defineProps<{
     </template>
 
     <div class="space-y-6">
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle class="text-2xl">{{ workshop.name }}</CardTitle>
         </CardHeader>
@@ -70,7 +70,7 @@ defineProps<{
         </CardContent>
       </Card>
 
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Reseñas</CardTitle>
         </CardHeader>

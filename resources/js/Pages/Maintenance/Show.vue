@@ -39,7 +39,7 @@ defineProps<{
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <div class="flex justify-between items-start">
             <div>

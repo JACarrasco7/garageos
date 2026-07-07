@@ -92,7 +92,7 @@ const ecoLabelColors: Record<string, string> = {
       </div>
 
       <!-- Tab: Información -->
-      <Card v-show="activeTab === 'info'" class="border-0 shadow-lg">
+      <Card v-show="activeTab === 'info'" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-lg font-semibold">
             <Car class="h-5 w-5" />
@@ -146,7 +146,7 @@ const ecoLabelColors: Record<string, string> = {
       </Card>
 
       <!-- Tab: Ficha técnica -->
-      <Card v-show="activeTab === 'specs'" class="border-0 shadow-lg">
+      <Card v-show="activeTab === 'specs'" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="text-lg font-semibold">Especificaciones</CardTitle>
         </CardHeader>
@@ -186,7 +186,7 @@ const ecoLabelColors: Record<string, string> = {
       </Card>
 
       <!-- Tab: Fotos -->
-      <Card v-show="activeTab === 'photos'" class="border-0 shadow-lg">
+      <Card v-show="activeTab === 'photos'" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-lg font-semibold">
             <ImageIcon class="h-5 w-5" />
@@ -207,7 +207,7 @@ const ecoLabelColors: Record<string, string> = {
       </Card>
 
       <!-- Tab: Documentos -->
-      <Card v-show="activeTab === 'documents'" class="border-0 shadow-lg">
+      <Card v-show="activeTab === 'documents'" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-lg font-semibold">
             <FileText class="h-5 w-5" />
@@ -228,7 +228,7 @@ const ecoLabelColors: Record<string, string> = {
       </Card>
 
       <!-- Tab: Mantenimiento -->
-      <Card v-show="activeTab === 'maintenance'" class="border-0 shadow-lg">
+      <Card v-show="activeTab === 'maintenance'" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-lg font-semibold">
             <Wrench class="h-5 w-5" />

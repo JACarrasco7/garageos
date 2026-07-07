@@ -65,43 +65,43 @@ const typeLabels: Record<string, string> = {
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <Card class="border-0 shadow-lg bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30">
+      <Card class="glass-surface border-0">
         <CardContent class="pt-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-muted-foreground">Coste Total</p>
               <p class="text-2xl font-bold text-foreground">{{ stats.total_cost?.toLocaleString() ?? 0 }} €</p>
             </div>
-            <div class="p-2 bg-blue-500 rounded-lg">
-              <Wrench class="h-5 w-5 text-primary-foreground" />
+            <div class="p-2 bg-primary/20 rounded-lg">
+              <Wrench class="h-5 w-5 text-primary" />
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card class="border-0 shadow-lg bg-linear-to-br from-green-50 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30">
+      <Card class="glass-surface border-0">
         <CardContent class="pt-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-muted-foreground">Coste por Km</p>
               <p class="text-2xl font-bold text-foreground">{{ stats.cost_per_km?.toFixed(2) ?? 0 }} €/km</p>
             </div>
-            <div class="p-2 bg-green-500 rounded-lg">
-              <Fuel class="h-5 w-5 text-primary-foreground" />
+            <div class="p-2 bg-accent/20 rounded-lg">
+              <Fuel class="h-5 w-5 text-accent" />
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card class="border-0 shadow-lg bg-linear-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/50 dark:to-amber-900/30">
+      <Card class="glass-surface border-0">
         <CardContent class="pt-6">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-muted-foreground">Entradas</p>
               <p class="text-2xl font-bold text-foreground">{{ stats.entries_count }}</p>
             </div>
-            <div class="p-2 bg-amber-500 rounded-lg">
-              <Calendar class="h-5 w-5 text-primary-foreground" />
+            <div class="p-2 bg-destructive/20 rounded-lg">
+              <Calendar class="h-5 w-5 text-destructive" />
             </div>
           </div>
         </CardContent>
@@ -109,7 +109,7 @@ const typeLabels: Record<string, string> = {
     </div>
 
     <!-- Timeline -->
-    <Card class="border-0 shadow-lg">
+    <Card class="glass-surface border-0">
       <CardHeader class="pb-3">
         <CardTitle class="text-lg font-semibold">Historial de Mantenimiento</CardTitle>
       </CardHeader>
@@ -131,7 +131,7 @@ const typeLabels: Record<string, string> = {
               class="relative pl-10"
             >
               <div class="absolute -left-3 w-7 h-7 rounded-full bg-primary border-4 border-background"></div>
-              <div class="rounded-xl border border-border bg-muted/30 p-4">
+              <div class="rounded-xl glass-card p-4">
                 <div class="flex justify-between items-start">
                   <div>
                     <Badge variant="outline" class="text-xs uppercase">

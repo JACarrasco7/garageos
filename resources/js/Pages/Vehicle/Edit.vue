@@ -65,7 +65,7 @@ const submit = () => {
       Editar Vehículo
     </template>
 
-    <Card class="border-0 shadow-lg max-w-2xl">
+    <Card class="glass-surface border-0 max-w-2xl">
       <CardHeader class="pb-3">
         <CardTitle class="flex items-center gap-2 text-lg font-semibold">
           <Car class="h-5 w-5" />
