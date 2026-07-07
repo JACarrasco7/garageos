@@ -129,6 +129,14 @@ class VehicleImport extends Model
 
     public function isStepCompleted(ImportStep $step): bool
     {
+        // Validar que VehicleVerification exista y tenga estado válido para pasos posteriores a VERIFICATION
+        if ($step->value > ImportStep::VERIFICATION->value) {
+            $verification = $this->verification;
+            if (! $verification || ! in_array($verification->overall_status, ['VERIFIED', 'CERTIFIED'])) {
+                return false;
+            }
+        }
+
         $documents = $this->importDocuments()
             ->where('step', $step->value)
             ->where('is_verified', true)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import WorkshopMap from '@/Components/WorkshopMap.vue'
@@ -24,7 +24,7 @@ defineProps<{
 <template>
   <Head title="Mapa de Talleres" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Mapa de Talleres
     </template>
@@ -36,5 +36,5 @@ defineProps<{
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

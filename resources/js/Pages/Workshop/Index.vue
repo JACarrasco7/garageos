@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Input } from '@/Components/ui/input'
@@ -29,7 +29,7 @@ defineProps<{
 <template>
   <Head title="Marketplace de Talleres" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Marketplace de Talleres
     </template>
@@ -69,5 +69,5 @@ defineProps<{
         </Card>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

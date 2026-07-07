@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
+import WebLayout from '@/layouts/WebLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
@@ -33,7 +33,7 @@ const submit = () => {
 <template>
     <Head title="Contacto" />
 
-    <AppSidebarLayout>
+    <WebLayout>
         <template #header>
             Contacto
         </template>
@@ -44,7 +44,7 @@ const submit = () => {
                 <p class="text-sm text-muted-foreground">Gestiona tus datos de contacto y visibilidad</p>
             </div>
 
-            <Card class="border-0 shadow-lg">
+            <Card class="glass-surface border-0">
                 <CardHeader class="pb-3">
                     <CardTitle class="text-lg font-semibold">
                         Datos de contacto
@@ -121,5 +121,5 @@ const submit = () => {
                 </CardContent>
             </Card>
         </div>
-    </AppSidebarLayout>
+    </WebLayout>
 </template>

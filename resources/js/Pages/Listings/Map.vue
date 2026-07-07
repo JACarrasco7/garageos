@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Head, router } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent } from '@/Components/ui/card'
 import ListingMap from '@/Components/ListingMap.vue'
 import { Input } from '@/Components/ui/input'
@@ -41,7 +41,7 @@ const searchNearby = async (lat: number, lng: number) => {
 <template>
   <Head title="Mapa de Listings" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Mapa de Listings
     </template>
@@ -68,5 +68,5 @@ const searchNearby = async (lat: number, lng: number) => {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

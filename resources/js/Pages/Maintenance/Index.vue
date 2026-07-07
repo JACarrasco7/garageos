@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -53,7 +53,7 @@ const typeLabels: Record<string, string> = {
 <template>
   <Head title="Mantenimiento" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       <span v-if="vehicle">
         Mantenimiento - {{ vehicle.brand }} {{ vehicle.model }}
@@ -162,5 +162,5 @@ const typeLabels: Record<string, string> = {
         </div>
       </CardContent>
     </Card>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Badge } from '@/Components/ui/badge'
@@ -30,7 +30,7 @@ function resume() {
 <template>
   <Head title="Planes" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Planes
     </template>
@@ -80,7 +80,7 @@ function resume() {
       </div>
 
       <!-- Current subscription status -->
-      <Card v-if="subscribed" class="border-0 shadow-lg">
+      <Card v-if="subscribed" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-lg font-semibold">
             <Shield class="h-5 w-5" />
@@ -105,5 +105,5 @@ function resume() {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

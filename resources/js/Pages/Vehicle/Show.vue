@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3'
 import { Head } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
@@ -70,7 +70,7 @@ const ecoLabelColors: Record<string, string> = {
 <template>
   <Head :title="`${props.vehicle.brand} ${props.vehicle.model}`" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       {{ props.vehicle.brand }} {{ props.vehicle.model }}
     </template>
@@ -271,5 +271,5 @@ const ecoLabelColors: Record<string, string> = {
         </Button>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

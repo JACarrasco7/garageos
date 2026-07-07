@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, useForm } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
@@ -29,7 +29,7 @@ const submit = () => {
 <template>
   <Head title="Generar Informe de Venta" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Generar Informe de Venta
     </template>
@@ -71,5 +71,5 @@ const submit = () => {
         </CardFooter>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

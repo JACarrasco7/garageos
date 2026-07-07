@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import { Link, useForm } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
@@ -60,7 +60,7 @@ const submit = () => {
 <template>
   <Head title="Editar Vehículo" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Editar Vehículo
     </template>
@@ -203,6 +203,6 @@ const submit = () => {
         </form>
       </CardContent>
     </Card>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>
 

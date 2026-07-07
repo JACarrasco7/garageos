@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
 import { Head } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
@@ -25,13 +25,13 @@ const submit = () => {
 <template>
   <Head title="Importar Vehículo" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Importar Vehículo desde Alemania
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Nueva Importación</CardTitle>
           <CardDescription>Introduce los datos del vehículo alemán para generar la matrícula española</CardDescription>
@@ -93,5 +93,5 @@ const submit = () => {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

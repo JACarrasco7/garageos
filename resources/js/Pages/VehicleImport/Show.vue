@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -34,13 +34,13 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
 <template>
   <Head title="Detalle Importación" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Detalle Importación
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Importación de Vehículo</CardTitle>
         </CardHeader>
@@ -85,5 +85,5 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

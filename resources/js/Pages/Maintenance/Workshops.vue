@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -23,7 +23,7 @@ defineProps<{
 <template>
   <Head title="Mis Talleres" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Mis Talleres
     </template>
@@ -56,7 +56,7 @@ defineProps<{
         <Card
           v-for="(workshop, index) in workshops"
           :key="workshop.id"
-          class="group hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm animate-in-up"
+          class="glass-surface border-0 group transition-all duration-300 animate-in-up"
           :style="{ animationDelay: `${index * 50}ms` }"
         >
           <CardContent class="p-6">
@@ -101,5 +101,5 @@ defineProps<{
         </Card>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

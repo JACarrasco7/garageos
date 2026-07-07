@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
+import WebLayout from '@/layouts/WebLayout.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Button } from '@/Components/ui/button';
 import { Download, Trash2, AlertTriangle } from 'lucide-vue-next';
@@ -32,7 +32,7 @@ const deleteAccount = () => {
 <template>
   <Head title="Exportar datos" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Exportar datos
     </template>
@@ -81,5 +81,5 @@ const deleteAccount = () => {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

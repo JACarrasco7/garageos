@@ -21,12 +21,15 @@ class VerificationService
 
         $score = 0;
         $totalPoints = 5;
+        $points = [];
 
         if ($verification->vin_verified) {
             $score++;
+            $points[] = 'VIN verificado';
         }
         if ($verification->ownership_verified) {
             $score++;
+            $points[] = 'Propiedad verificada';
         }
         if ($verification->technical_data_verified) {
             $score++;
@@ -115,6 +118,12 @@ class VerificationService
         $verification = $import->verification;
         if (! $verification) {
             throw new \Exception('No existe una verificación previa para generar el informe detallado.');
+        }
+
+        // Validar que haya documentos suficientes antes de generar el informe
+        if ($import->importDocuments()->count() === 0) {
+            throw new \Exception('No hay documentos para generar el informe detallado.');
+        }
         }
 
         $data = [

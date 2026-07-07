@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
 import { Head } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Button } from '@/Components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
@@ -29,7 +29,7 @@ defineProps<{
 <template>
   <Head title="Solicitudes Abiertas" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Solicitudes Abiertas para Ofertar
     </template>
@@ -77,5 +77,5 @@ defineProps<{
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

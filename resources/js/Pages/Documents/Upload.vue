@@ -2,7 +2,7 @@
 import { useForm, Link } from '@inertiajs/vue3'
 import { Head, router } from '@inertiajs/vue3'
 import { ref, onMounted } from 'vue'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
@@ -113,13 +113,13 @@ const typeOptions = [
 <template>
   <Head title="Subir Documento" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Subir Documento - {{ vehicle.brand }} {{ vehicle.model }}
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Subir Documento</CardTitle>
           <CardDescription>Arrastra o selecciona el archivo</CardDescription>
@@ -267,5 +267,5 @@ const typeOptions = [
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

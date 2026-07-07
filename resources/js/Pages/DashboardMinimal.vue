@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
@@ -40,7 +40,7 @@ defineProps<{
 <template>
   <Head title="Dashboard - Minimal" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Dashboard Minimal
     </template>
@@ -203,7 +203,7 @@ defineProps<{
         </div>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>
 
 <style scoped>

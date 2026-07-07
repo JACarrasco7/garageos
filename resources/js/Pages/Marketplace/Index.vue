@@ -226,7 +226,7 @@ const goToDetail = (listingId: number) => {
       <Card
         v-for="listing in filteredListings"
         :key="listing.id"
-        class="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200"
+        class="glass-surface border-0 overflow-hidden cursor-pointer transition-shadow duration-200"
         @click="goToDetail(listing.id)"
       >
         <div class="relative h-40 sm:h-48 bg-muted">

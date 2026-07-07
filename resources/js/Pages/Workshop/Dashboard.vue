@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
@@ -58,7 +58,7 @@ const stats = [
 <template>
   <Head title="Panel Taller" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <div class="flex flex-col gap-6 p-6">
       <div class="flex items-center justify-between">
         <div>
@@ -81,7 +81,7 @@ const stats = [
         <Card
           v-for="stat in stats"
           :key="stat.title"
-          class="group hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden relative"
+          class="glass-surface border-0 group transition-all duration-300 overflow-hidden relative"
         >
           <div :class="['absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500', stat.color]" />
           <CardContent class="p-6 relative">
@@ -98,7 +98,7 @@ const stats = [
         </Card>
       </div>
 
-      <Card class="border-border/50 bg-card/50 backdrop-blur-sm">
+      <Card class="glass-surface border-0">
         <CardHeader class="border-b border-border/50">
           <CardTitle class="flex items-center gap-2">
             <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
@@ -144,5 +144,5 @@ const stats = [
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Head, router } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Badge } from '@/Components/ui/badge'
@@ -14,6 +14,7 @@ interface ImportDocument {
   type_label: string
   is_verified: boolean
   file_url: string
+  step: string
 }
 
 interface VehicleImport {
@@ -50,7 +51,7 @@ const uploadForm = useForm({
 })
 
 const currentStepData = computed(() => {
-  return props.steps.find(s => s.id === props.vehicleImport.current_step)
+  return props.steps.find(s => s.id === props.vehicleImport.current_step?.id)
 })
 
 const documentTypes: Record<string, string[]> = {
@@ -126,16 +127,14 @@ const providers = ref<{
 }[]>([])
 
 const loadProviders = () => {
-  router.get(route('import.providers', props.vehicleImport.id), (response: any) => {
-    providers.value = response.providers
-  })
+  router.get(route('import.providers', props.vehicleImport.id))
 }
 </script>
 
 <template>
   <Head :title="`Importación: ${vehicleImport.brand} ${vehicleImport.model}`" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       <div class="flex items-center justify-between">
         <div>
@@ -152,7 +151,7 @@ const loadProviders = () => {
 
     <div class="space-y-6">
       <!-- Progress Stepper -->
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Progreso del Trámite</CardTitle>
         </CardHeader>
@@ -184,7 +183,7 @@ const loadProviders = () => {
       </Card>
 
       <!-- Document Checklist -->
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Documentos requeridos</CardTitle>
         </CardHeader>
@@ -250,7 +249,7 @@ const loadProviders = () => {
       </Card>
 
       <!-- Timeline Info -->
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Información del Proceso</CardTitle>
         </CardHeader>
@@ -273,7 +272,7 @@ const loadProviders = () => {
       </Card>
 
       <!-- Service Providers -->
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <div class="flex items-center justify-between">
             <CardTitle>Proveedores de Servicios</CardTitle>
@@ -329,5 +328,5 @@ const loadProviders = () => {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

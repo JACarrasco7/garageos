@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -42,7 +42,7 @@ defineProps<{
 <template>
   <Head title="Dashboard - Glassmorphism" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       <!-- Dashboard Glassmorphism -->
     </template>
@@ -219,7 +219,7 @@ defineProps<{
         </Card>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
@@ -30,12 +30,12 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
 <template>
   <Head title="Importaciones" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Importaciones
     </template>
 
-    <Card class="border-0 shadow-lg">
+    <Card class="glass-surface border-0">
       <CardHeader class="flex flex-row items-center justify-between pb-3">
         <CardTitle class="text-lg font-semibold">Importaciones de Vehículos</CardTitle>
         <Button as-child variant="outline" size="sm" class="rounded-lg">
@@ -84,5 +84,5 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
         </Table>
       </CardContent>
     </Card>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

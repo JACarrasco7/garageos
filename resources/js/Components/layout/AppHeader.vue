@@ -17,6 +17,9 @@ import ThemeToggle from '@/Components/ThemeToggle.vue';
 const sidebarOpen = inject<import('vue').Ref<boolean>>('sidebarOpen');
 const mobileOpen = inject<import('vue').Ref<boolean>>('mobileSidebarOpen');
 
+const isSidebarOpen = computed(() => sidebarOpen?.value ?? false);
+const isMobileOpen = computed(() => mobileOpen?.value ?? false);
+
 const toggleSidebar = () => {
     if (sidebarOpen) sidebarOpen.value = !sidebarOpen.value;
 };
@@ -47,10 +50,10 @@ const showMobile = () => {
             variant="ghost"
             size="icon"
             class="hidden md:inline-flex"
-            :aria-label="sidebarOpen ? 'Cerrar sidebar' : 'Abrir sidebar'"
+            :aria-label="isSidebarOpen ? 'Cerrar sidebar' : 'Abrir sidebar'"
             @click="toggleSidebar"
         >
-            <PanelLeftClose v-if="sidebarOpen?.value" class="h-5 w-5" />
+            <PanelLeftClose v-if="isSidebarOpen" class="h-5 w-5" />
             <PanelLeftOpen v-else class="h-5 w-5" />
         </Button>
 

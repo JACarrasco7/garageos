@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useForm, Link, Head } from '@inertiajs/vue3';
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
+import WebLayout from '@/layouts/WebLayout.vue';
 import Card from '@/Components/ui/card/Card.vue';
 import CardHeader from '@/Components/ui/card/CardHeader.vue';
 import CardTitle from '@/Components/ui/card/CardTitle.vue';
@@ -108,7 +108,7 @@ const submit = () => {
 <template>
   <Head title="Añadir vehículo" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       <div class="flex items-center justify-between">
         <div>
@@ -186,5 +186,5 @@ const submit = () => {
         </Button>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

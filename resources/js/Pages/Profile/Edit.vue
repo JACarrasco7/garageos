@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
+import WebLayout from '@/layouts/WebLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
@@ -16,7 +16,7 @@ defineProps<{
 <template>
     <Head title="Perfil" />
 
-    <AppSidebarLayout>
+    <WebLayout>
         <template #header>
             Perfil
         </template>
@@ -66,5 +66,5 @@ defineProps<{
                 </CardContent>
             </Card>
         </div>
-    </AppSidebarLayout>
+    </WebLayout>
 </template>

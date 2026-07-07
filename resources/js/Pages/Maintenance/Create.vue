@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm, Link } from '@inertiajs/vue3'
 import { Head, router } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
@@ -64,7 +64,7 @@ const typeOptions = [
 <template>
   <Head title="Añadir Mantenimiento" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Añadir Mantenimiento - {{ vehicle.brand }} {{ vehicle.model }}
     </template>
@@ -178,5 +178,5 @@ const typeOptions = [
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

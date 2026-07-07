@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -71,7 +71,7 @@ const getStatusBadge = (vehicleImport: VehicleImport) => {
 
 <template>
   <Head title="Importaciones" />
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       <div class="flex items-center justify-between">
         <div>
@@ -140,5 +140,5 @@ const getStatusBadge = (vehicleImport: VehicleImport) => {
         </Card>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

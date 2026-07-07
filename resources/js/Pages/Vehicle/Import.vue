@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, useForm } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
@@ -25,13 +25,13 @@ const handleFile = (event: Event) => {
 <template>
   <Head title="Importar Vehículos" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Importar Vehículos
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Importar desde CSV</CardTitle>
           <CardDescription>Sube un archivo CSV con los datos de los vehículos</CardDescription>
@@ -69,5 +69,5 @@ const handleFile = (event: Event) => {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

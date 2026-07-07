@@ -64,4 +64,9 @@ class PaymentIntent extends Model
     {
         return $query->whereIn('status', ['requires_payment_method', 'requires_confirmation', 'requires_action', 'processing']);
     }
+
+    public function scopeWithVehicleImport($query)
+    {
+        return $query->whereNotNull('vehicle_import_id');
+    }
 }

@@ -76,7 +76,7 @@ const submit = () => {
     </div>
 
     <div class="grid gap-4">
-      <Card class="border border-border/50">
+      <Card class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-base">
             <Car class="h-4 w-4 text-primary" />
@@ -119,7 +119,7 @@ const submit = () => {
         </CardContent>
       </Card>
 
-      <Card v-if="form.engine_cc || form.power_hp || form.transmission || form.drive" class="border border-border/50">
+      <Card v-if="form.engine_cc || form.power_hp || form.transmission || form.drive" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-base">
             <Settings class="h-4 w-4 text-primary" />
@@ -158,7 +158,7 @@ const submit = () => {
         </CardContent>
       </Card>
 
-      <Card v-if="form.purchase_date || form.purchase_price" class="border border-border/50">
+      <Card v-if="form.purchase_date || form.purchase_price" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="flex items-center gap-2 text-base">
             <DollarSign class="h-4 w-4 text-primary" />
@@ -177,7 +177,7 @@ const submit = () => {
         </CardContent>
       </Card>
 
-      <Card v-if="form.photo" class="border border-border/50">
+      <Card v-if="form.photo" class="glass-surface border-0">
         <CardHeader class="pb-3">
           <CardTitle class="text-base">Foto del vehículo</CardTitle>
         </CardHeader>

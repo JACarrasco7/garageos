@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -26,7 +26,7 @@ defineProps<{
 <template>
   <Head title="Mis Vehículos" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Mis Vehículos
     </template>
@@ -58,7 +58,7 @@ defineProps<{
             v-for="vehicle in vehicles"
             :key="vehicle.id"
             :href="route('vehicles.show', vehicle.id)"
-            class="flex flex-col p-4 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:bg-accent/5 hover:border-primary/20 transition-all duration-200 group"
+            class="glass-panel border-0 hover:bg-accent/5 transition-all duration-200 group"
           >
             <div class="flex justify-between items-start mb-3">
               <div>
@@ -86,5 +86,5 @@ defineProps<{
         </div>
       </CardContent>
     </Card>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

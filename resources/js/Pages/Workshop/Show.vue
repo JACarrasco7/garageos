@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
@@ -36,7 +36,7 @@ defineProps<{
 <template>
   <Head :title="workshop.name" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       {{ workshop.name }}
     </template>
@@ -88,5 +88,5 @@ defineProps<{
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

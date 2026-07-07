@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Link } from '@inertiajs/vue3'
@@ -9,7 +9,7 @@ import { CheckCircle } from 'lucide-vue-next'
 
 <template>
   <Head title="Suscripción activada" />
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       ¡Suscripción activada!
     </template>
@@ -29,5 +29,5 @@ import { CheckCircle } from 'lucide-vue-next'
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

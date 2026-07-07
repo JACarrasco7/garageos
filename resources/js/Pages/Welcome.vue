@@ -66,7 +66,7 @@ defineProps<{
 
             <!-- Features -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
+                <Card class="glass-surface border-0 transition-shadow duration-200">
                     <CardHeader>
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Car class="h-6 w-6 text-primary" />
@@ -80,7 +80,7 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
+                <Card class="glass-surface border-0 transition-shadow duration-200">
                     <CardHeader>
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Wrench class="h-6 w-6 text-primary" />
@@ -94,7 +94,7 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
+                <Card class="glass-surface border-0 transition-shadow duration-200">
                     <CardHeader>
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <FileText class="h-6 w-6 text-primary" />
@@ -108,7 +108,7 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
+                <Card class="glass-surface border-0 transition-shadow duration-200">
                     <CardHeader>
                         <div class="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
                             <Shield class="h-6 w-6 text-accent" />
@@ -122,7 +122,7 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
+                <Card class="glass-surface border-0 transition-shadow duration-200">
                     <CardHeader>
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <Users class="h-6 w-6 text-primary" />
@@ -136,7 +136,7 @@ defineProps<{
                     </CardContent>
                 </Card>
 
-                <Card class="group transition-shadow duration-200 border-border/50 bg-card/50 backdrop-blur-sm">
+                <Card class="glass-surface border-0 transition-shadow duration-200">
                     <CardHeader>
                         <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
                             <BarChart3 class="h-6 w-6 text-primary" />

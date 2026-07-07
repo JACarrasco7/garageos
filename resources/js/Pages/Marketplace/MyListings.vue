@@ -182,7 +182,7 @@ const goBack = () => window.history.back()
       <Card
         v-for="listing in filteredListings()"
         :key="listing.id"
-        class="overflow-hidden hover:shadow-lg transition-shadow"
+        class="glass-surface border-0 overflow-hidden transition-shadow"
       >
         <!-- Photo -->
         <div class="aspect-video bg-muted relative">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
 import { Head } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Button } from '@/Components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Input } from '@/Components/ui/input'
@@ -28,7 +28,7 @@ const submit = () => {
 <template>
   <Head title="Nueva Solicitud de Importación" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Nueva Solicitud de Importación
     </template>
@@ -94,5 +94,5 @@ const submit = () => {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

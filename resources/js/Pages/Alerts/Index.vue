@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Head } from '@inertiajs/vue3';
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
+import WebLayout from '@/layouts/WebLayout.vue';
 import Card from '@/Components/ui/card/Card.vue';
 import CardHeader from '@/Components/ui/card/CardHeader.vue';
 import CardTitle from '@/Components/ui/card/CardTitle.vue';
@@ -28,7 +28,7 @@ defineProps<{
 <template>
   <Head title="Alertas" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Alertas
     </template>
@@ -94,5 +94,5 @@ defineProps<{
         </div>
       </CardContent>
     </Card>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

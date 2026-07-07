@@ -86,6 +86,38 @@ class ImportPaymentController extends Controller
     {
         $this->authorize('update', $milestone->vehicleImport);
 
+        // Validar que el PaymentIntent esté asociado a un VehicleImport
+        if (! $milestone->paymentIntent || ! $milestone->paymentIntent->vehicleImport) {
+            return response()->json(['error' => 'El hito no está asociado a una importación válida.'], 400);
+        }
+
+        // Validar que el PaymentIntent esté pagado
+        if ($milestone->paymentIntent->status !== 'succeeded') {
+            return response()->json(['error' => 'El pago no ha sido procesado correctamente.'], 400);
+        }
+
+        // Validar que el VehicleImport esté en estado correcto para liberar el hito
+        if ($milestone->milestone === 'H3_entrega' && $milestone->vehicleImport->status !== 'delivered') {
+            return response()->json(['error' => 'El vehículo no ha sido entregado.'], 400);
+        }
+
+        // Validar que el hito esté en estado 'paid'
+        if ($milestone->status !== 'paid') {
+            return response()->json(['error' => 'El hito no ha sido pagado.'], 400);
+        }
+
+        // Validar que el hito no haya sido liberado previamente
+        if ($milestone->status === 'released') {
+            return response()->json(['error' => 'El hito ya ha sido liberado.'], 400);
+        }
+
+        // Validar que el hito esté asociado a un VehicleImport válido
+        if (! $milestone->vehicleImport) {
+            return response()->json(['error' => 'El hito no está asociado a una importación válida.'], 400);
+        }
+            return response()->json(['error' => 'El hito no está asociado a una importación válida.'], 400);
+        }
+
         if (in_array($milestone->milestone, ['H1_reserva', 'H2_compra'])) {
             return DB::transaction(function () use ($milestone) {
                 $milestone->update([
@@ -101,6 +133,12 @@ class ImportPaymentController extends Controller
             $import = $milestone->vehicleImport;
             if (! $import->delivery_confirmed_at) {
                 return response()->json(['error' => 'La entrega debe estar confirmada antes de liberar el hito H3.'], 400);
+            }
+            if (empty($import->plate_new)) {
+                return response()->json(['error' => 'La matrícula definitiva es obligatoria para liberar el hito H3.'], 400);
+            }
+            if (empty($import->itv_deadline)) {
+                return response()->json(['error' => 'La fecha límite de ITV es obligatoria para liberar el hito H3.'], 400);
             }
 
             return DB::transaction(function () use ($milestone) {

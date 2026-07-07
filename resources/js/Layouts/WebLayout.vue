@@ -1,13 +1,28 @@
 <script setup lang="ts">
+import { onMounted, provide, ref } from 'vue';
+import { useFcm } from '@/Composables/useFcm';
+import { Toaster } from 'vue-sonner';
+
+import AppSidebar from '@/Components/AppSidebar.vue';
+import OnboardingTour from '@/Components/OnboardingTour.vue';
 import WebSidebar from '@/Components/WebSidebar.vue';
 import WebHeader from '@/Components/WebHeader.vue';
 import WebMainContent from '@/Components/WebMainContent.vue';
 
-interface WebLayoutProps {
-  sidebarOpen?: boolean;
-}
+const { registerFcm, addListeners } = useFcm();
 
-defineProps<WebLayoutProps>();
+const sidebarOpen = ref(true);
+const mobileOpen = ref(false);
+
+provide('sidebarOpen', sidebarOpen);
+provide('mobileSidebarOpen', mobileOpen);
+
+onMounted(() => {
+    if ('PushNotifications' in window) {
+        registerFcm();
+        addListeners();
+    }
+});
 </script>
 
 <template>
@@ -20,13 +35,34 @@ defineProps<WebLayoutProps>();
 
         <!-- Sidebar (desktop) - flotante -->
         <aside
-            class="hidden md:flex fixed top-3 left-3 bottom-3 z-30 w-64 shrink-0 rounded-2xl border backdrop-blur-2xl shadow-xl bg-card/50 border-white/15"
+            :class="[
+                'hidden md:flex fixed top-3 left-3 bottom-3 z-30 shrink-0 rounded-2xl border backdrop-blur-2xl transition-all duration-500 ease-in-out',
+                sidebarOpen ? 'w-64' : 'w-16',
+                'bg-card/50 border-white/15 shadow-xl',
+            ]"
         >
-            <WebSidebar />
+            <WebSidebar>
+                <AppSidebar :collapsed="!sidebarOpen" />
+            </WebSidebar>
         </aside>
 
+        <!-- Sidebar (mobile drawer) -->
+        <transition
+            enter-active-class="transition-transform duration-300 ease-out"
+            leave-active-class="transition-transform duration-300 ease-in"
+            enter-from-class="-translate-x-full"
+            leave-to-class="-translate-x-full"
+        >
+            <aside
+                v-if="mobileOpen"
+                class="fixed inset-y-0 left-0 top-3 bottom-3 z-50 flex h-auto w-72 flex-col rounded-2xl border backdrop-blur-2xl md:hidden bg-card/50 border-white/15 shadow-xl"
+            >
+                <AppSidebar :collapsed="false" @navigate="mobileOpen = false" />
+            </aside>
+        </transition>
+
         <!-- Main content -->
-        <div class="flex min-w-0 flex-1 flex-col gap-3 p-3 md:pl-72">
+        <div :class="['flex min-w-0 flex-1 flex-col gap-3 p-3 transition-all duration-500', sidebarOpen ? 'md:pl-72' : 'md:pl-20']">
             <WebHeader>
                 <template #default>
                     <slot name="header" />
@@ -40,5 +76,8 @@ defineProps<WebLayoutProps>();
                 <slot />
             </WebMainContent>
         </div>
+
+        <Toaster position="top-right" rich-colors />
+        <OnboardingTour />
     </div>
 </template>

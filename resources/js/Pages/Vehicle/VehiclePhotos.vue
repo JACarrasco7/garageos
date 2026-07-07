@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { router, Link } from '@inertiajs/vue3';
 import { Head } from '@inertiajs/vue3';
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
+import WebLayout from '@/layouts/WebLayout.vue';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
@@ -156,7 +156,7 @@ const formatFileSize = (bytes: number | null) => {
 <template>
   <Head title="Galería de Fotos" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       <div class="flex items-center justify-between">
         <div>
@@ -176,7 +176,7 @@ const formatFileSize = (bytes: number | null) => {
 
     <div class="mx-auto max-w-6xl space-y-6">
       <!-- Controles de subida -->
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <CardTitle>Subir fotos</CardTitle>
           <CardDescription>
@@ -314,7 +314,7 @@ const formatFileSize = (bytes: number | null) => {
       </div>
 
       <!-- Empty state -->
-      <Card v-else class="border-0 shadow-lg">
+      <Card v-else class="glass-surface border-0">
         <CardContent class="flex flex-col items-center justify-center py-12">
           <ImageIcon class="h-16 w-16 text-muted-foreground/50" />
           <p class="mt-4 text-lg font-medium text-muted-foreground">
@@ -326,5 +326,5 @@ const formatFileSize = (bytes: number | null) => {
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

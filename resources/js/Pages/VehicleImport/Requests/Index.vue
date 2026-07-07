@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Button } from '@/Components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
@@ -28,7 +28,7 @@ defineProps<{
 <template>
   <Head title="Mis Solicitudes de Importación" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Mis Solicitudes de Importación
     </template>
@@ -85,5 +85,5 @@ defineProps<{
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

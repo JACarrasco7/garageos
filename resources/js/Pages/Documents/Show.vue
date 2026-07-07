@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -26,13 +26,13 @@ defineProps<{
 <template>
   <Head :title="document.title" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       {{ document.title }}
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="border-0 shadow-lg">
+      <Card class="glass-surface border-0">
         <CardHeader>
           <div class="flex justify-between items-start">
             <div>
@@ -68,5 +68,5 @@ defineProps<{
         </CardContent>
       </Card>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

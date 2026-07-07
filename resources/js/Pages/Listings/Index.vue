@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Plus, Search } from 'lucide-vue-next'
@@ -23,7 +23,7 @@ defineProps<{
 <template>
   <Head title="Mercado" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Mercado de Vehículos
     </template>
@@ -63,5 +63,5 @@ defineProps<{
         </Card>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
-import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue'
+import WebLayout from '@/layouts/WebLayout.vue'
 import { Star } from 'lucide-vue-next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
@@ -38,7 +38,7 @@ defineProps<{
 <template>
   <Head title="Portafolio de Proveedor" />
 
-  <AppSidebarLayout>
+  <WebLayout>
     <template #header>
       Portafolio de {{ provider.name }}
     </template>
@@ -78,5 +78,5 @@ defineProps<{
         </Card>
       </div>
     </div>
-  </AppSidebarLayout>
+  </WebLayout>
 </template>
