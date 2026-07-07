@@ -3,7 +3,8 @@ import { ref, computed } from 'vue';
 import { router, Link } from '@inertiajs/vue3';
 import { Head } from '@inertiajs/vue3';
 import WebLayout from '@/layouts/WebLayout.vue';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card';
+import PageCard from '@/Components/PageCard.vue';
+import { CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
@@ -176,13 +177,15 @@ const formatFileSize = (bytes: number | null) => {
 
     <div class="mx-auto max-w-6xl space-y-6">
       <!-- Controles de subida -->
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Subir fotos</CardTitle>
-          <CardDescription>
-            Arrastra fotos o haz clic para seleccionar (máx. 10 a la vez)
-          </CardDescription>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Subir fotos</CardTitle>
+            <CardDescription>
+              Arrastra fotos o haz clic para seleccionar (máx. 10 a la vez)
+            </CardDescription>
+          </CardHeader>
+        </template>
         <CardContent>
           <div class="mb-4 flex items-center gap-4">
             <div class="flex-1">
@@ -238,7 +241,7 @@ const formatFileSize = (bytes: number | null) => {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
       <!-- Filtros por categoría -->
       <div class="flex flex-wrap items-center gap-2">
@@ -314,7 +317,7 @@ const formatFileSize = (bytes: number | null) => {
       </div>
 
       <!-- Empty state -->
-      <Card v-else class="glass-surface border-0">
+      <PageCard>
         <CardContent class="flex flex-col items-center justify-center py-12">
           <ImageIcon class="h-16 w-16 text-muted-foreground/50" />
           <p class="mt-4 text-lg font-medium text-muted-foreground">
@@ -324,7 +327,7 @@ const formatFileSize = (bytes: number | null) => {
             Sube la primera foto usando el botón de arriba
           </p>
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>
