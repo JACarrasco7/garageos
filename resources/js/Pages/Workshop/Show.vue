@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Textarea } from '@/Components/ui/textarea'
 import { Star, MapPin, Phone, Mail } from 'lucide-vue-next'
@@ -42,10 +43,13 @@ defineProps<{
     </template>
 
     <div class="space-y-6">
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle class="text-2xl">{{ workshop.name }}</CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle class="text-2xl">{{ workshop.name }}</CardTitle>
+          </CardHeader>
+        </template>
+
         <CardContent class="space-y-4">
           <img v-if="workshop.logo" :src="workshop.logo" :alt="workshop.name" class="w-32 h-32 rounded-lg object-cover" />
           <div class="flex items-center gap-2">
@@ -68,12 +72,15 @@ defineProps<{
             </div>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
 
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Reseñas</CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Reseñas</CardTitle>
+          </CardHeader>
+        </template>
+
         <CardContent class="space-y-4">
           <div v-if="reviews.length" class="space-y-4">
             <div v-for="review in reviews" :key="review.id" class="border-b pb-4">
@@ -86,7 +93,7 @@ defineProps<{
           </div>
           <p v-else class="text-muted-foreground">Aún no hay reseñas.</p>
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>

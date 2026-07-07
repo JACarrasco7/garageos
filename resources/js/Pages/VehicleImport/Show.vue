@@ -3,7 +3,8 @@ import { useForm } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
 import { ArrowLeft, CheckCircle, XCircle, Clock, RefreshCw } from 'lucide-vue-next'
@@ -40,10 +41,13 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Importación de Vehículo</CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Importación de Vehículo</CardTitle>
+          </CardHeader>
+        </template>
+
         <CardContent class="space-y-4">
           <div class="space-y-1">
             <p class="text-sm text-muted-foreground">Matrícula Original (Alemania)</p>
@@ -83,7 +87,7 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>

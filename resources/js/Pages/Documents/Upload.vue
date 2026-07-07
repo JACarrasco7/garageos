@@ -3,7 +3,8 @@ import { useForm, Link } from '@inertiajs/vue3'
 import { Head, router } from '@inertiajs/vue3'
 import { ref, onMounted } from 'vue'
 import WebLayout from '@/layouts/WebLayout.vue'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle, CardDescription } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
@@ -119,11 +120,14 @@ const typeOptions = [
     </template>
 
     <div class="max-w-2xl mx-auto space-y-6">
-      <Card class="glass-surface border-0">
-        <CardHeader>
-          <CardTitle>Subir Documento</CardTitle>
-          <CardDescription>Arrastra o selecciona el archivo</CardDescription>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <CardTitle>Subir Documento</CardTitle>
+            <CardDescription>Arrastra o selecciona el archivo</CardDescription>
+          </CardHeader>
+        </template>
+
         <CardContent>
           <form @submit.prevent="submit" class="space-y-6">
             <!-- Tipo -->
@@ -265,7 +269,7 @@ const typeOptions = [
             </div>
           </form>
         </CardContent>
-      </Card>
+      </PageCard>
     </div>
   </WebLayout>
 </template>

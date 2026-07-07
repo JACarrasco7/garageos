@@ -2,7 +2,8 @@
 import { Link } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Badge } from '@/Components/ui/badge'
 import { Wrench, Calendar, Fuel, CheckCircle2 } from 'lucide-vue-next'
 
@@ -65,54 +66,69 @@ const typeLabels: Record<string, string> = {
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <Card class="glass-surface border-0">
-        <CardContent class="pt-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-medium text-muted-foreground">Coste Total</p>
-              <p class="text-2xl font-bold text-foreground">{{ stats.total_cost?.toLocaleString() ?? 0 }} €</p>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-muted-foreground">Coste Total</p>
+                <p class="text-2xl font-bold text-foreground">{{ stats.total_cost?.toLocaleString() ?? 0 }} €</p>
+              </div>
+              <div class="p-2 bg-primary/20 rounded-lg">
+                <Wrench class="h-5 w-5 text-primary" />
+              </div>
             </div>
-            <div class="p-2 bg-primary/20 rounded-lg">
-              <Wrench class="h-5 w-5 text-primary" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardHeader>
+        </template>
 
-      <Card class="glass-surface border-0">
-        <CardContent class="pt-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-medium text-muted-foreground">Coste por Km</p>
-              <p class="text-2xl font-bold text-foreground">{{ stats.cost_per_km?.toFixed(2) ?? 0 }} €/km</p>
-            </div>
-            <div class="p-2 bg-accent/20 rounded-lg">
-              <Fuel class="h-5 w-5 text-accent" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        <CardContent class="pt-6" />
+      </PageCard>
 
-      <Card class="glass-surface border-0">
-        <CardContent class="pt-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-medium text-muted-foreground">Entradas</p>
-              <p class="text-2xl font-bold text-foreground">{{ stats.entries_count }}</p>
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-muted-foreground">Coste por Km</p>
+                <p class="text-2xl font-bold text-foreground">{{ stats.cost_per_km?.toFixed(2) ?? 0 }} €/km</p>
+              </div>
+              <div class="p-2 bg-accent/20 rounded-lg">
+                <Fuel class="h-5 w-5 text-accent" />
+              </div>
             </div>
-            <div class="p-2 bg-destructive/20 rounded-lg">
-              <Calendar class="h-5 w-5 text-destructive" />
+          </CardHeader>
+        </template>
+
+        <CardContent class="pt-6" />
+      </PageCard>
+
+      <PageCard>
+        <template #title>
+          <CardHeader>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-muted-foreground">Entradas</p>
+                <p class="text-2xl font-bold text-foreground">{{ stats.entries_count }}</p>
+              </div>
+              <div class="p-2 bg-destructive/20 rounded-lg">
+                <Calendar class="h-5 w-5 text-destructive" />
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardHeader>
+        </template>
+
+        <CardContent class="pt-6" />
+      </PageCard>
     </div>
 
     <!-- Timeline -->
-    <Card class="glass-surface border-0">
-      <CardHeader class="pb-3">
-        <CardTitle class="text-lg font-semibold">Historial de Mantenimiento</CardTitle>
-      </CardHeader>
+    <PageCard>
+      <template #title>
+        <CardHeader class="pb-3">
+          <CardTitle class="text-lg font-semibold">Historial de Mantenimiento</CardTitle>
+        </CardHeader>
+      </template>
+
       <CardContent>
         <div v-if="!entries.length" class="text-center py-12">
           <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">

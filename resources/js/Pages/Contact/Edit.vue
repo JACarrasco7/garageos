@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import WebLayout from '@/layouts/WebLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import PageCard from '@/Components/PageCard.vue';
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
 import { Textarea } from '@/Components/ui/textarea';
 import { Button } from '@/Components/ui/button';
@@ -44,12 +45,15 @@ const submit = () => {
                 <p class="text-sm text-muted-foreground">Gestiona tus datos de contacto y visibilidad</p>
             </div>
 
-            <Card class="glass-surface border-0">
-                <CardHeader class="pb-3">
-                    <CardTitle class="text-lg font-semibold">
-                        Datos de contacto
-                    </CardTitle>
-                </CardHeader>
+            <PageCard>
+                <template #title>
+                    <CardHeader class="pb-3">
+                        <CardTitle class="text-lg font-semibold">
+                            Datos de contacto
+                        </CardTitle>
+                    </CardHeader>
+                </template>
+
                 <CardContent>
                     <form @submit.prevent="submit" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -119,7 +123,7 @@ const submit = () => {
                         </Button>
                     </form>
                 </CardContent>
-            </Card>
+            </PageCard>
         </div>
     </WebLayout>
 </template>

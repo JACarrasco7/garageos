@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Input } from '@/Components/ui/input'
 import { Button } from '@/Components/ui/button'
 import { Star, MapPin, Phone } from 'lucide-vue-next'
@@ -41,10 +42,13 @@ defineProps<{
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card v-for="workshop in workshops.data" :key="workshop.id" class="glass-surface border-0">
-          <CardHeader>
-            <CardTitle class="text-lg">{{ workshop.name }}</CardTitle>
-          </CardHeader>
+        <PageCard v-for="workshop in workshops.data" :key="workshop.id">
+          <template #title>
+            <CardHeader>
+              <CardTitle class="text-lg">{{ workshop.name }}</CardTitle>
+            </CardHeader>
+          </template>
+
           <CardContent class="space-y-3">
             <img v-if="workshop.logo" :src="workshop.logo" :alt="workshop.name" class="w-full h-32 object-cover rounded" />
             <div class="flex items-center gap-2">
@@ -66,7 +70,7 @@ defineProps<{
               <Button class="w-full" size="sm">Ver perfil</Button>
             </Link>
           </CardContent>
-        </Card>
+        </PageCard>
       </div>
     </div>
   </WebLayout>
