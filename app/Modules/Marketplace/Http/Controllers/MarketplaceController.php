@@ -3,6 +3,7 @@
 namespace App\Modules\Marketplace\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Billing\Actions\CreatePaymentIntentAction;
 use App\Modules\Marketplace\Models\MarketplaceFavorite;
 use App\Modules\Marketplace\Models\MarketplaceListing;
 use App\Modules\Vehicle\Models\Vehicle;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Stripe\StripeClient;
 
 class MarketplaceController extends Controller
 {
@@ -200,8 +202,8 @@ class MarketplaceController extends Controller
     {
         $this->authorize('purchase', $listing);
 
-        $action = new \App\Modules\Billing\Actions\CreatePaymentIntentAction(
-            app(\Stripe\StripeClient::class)
+        $action = new CreatePaymentIntentAction(
+            app(StripeClient::class)
         );
 
         $intent = $action->execute(

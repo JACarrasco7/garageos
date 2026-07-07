@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -22,7 +22,6 @@ RUN composer install --no-dev --optimize-autoloader
 
 COPY . .
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY supervisord-free.conf /etc/supervisor/conf.d/supervisord-free.conf
 
 RUN php artisan config:cache
 RUN php artisan route:cache

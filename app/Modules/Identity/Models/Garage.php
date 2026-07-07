@@ -24,4 +24,24 @@ class Garage extends Model
     {
         return $this->hasMany(Vehicle::class);
     }
+
+    public function scopeByUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    public function scopeByName($query, $name)
+    {
+        return $query->where('name', $name);
+    }
+
+    public function vehicleCount(): int
+    {
+        return $this->vehicles()->count();
+    }
+
+    public function activeVehicles(): HasMany
+    {
+        return $this->vehicles()->where('is_active', true);
+    }
 }

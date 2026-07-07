@@ -26,7 +26,8 @@ interface MaintenanceEntry {
 }
 
 defineProps<{
-  vehicle: Vehicle
+  vehicle?: Vehicle
+  vehicles: Vehicle[]
   entries: MaintenanceEntry[]
   stats: {
     total_cost: number
@@ -54,7 +55,12 @@ const typeLabels: Record<string, string> = {
 
   <AppSidebarLayout>
     <template #header>
-      Mantenimiento - {{ vehicle.brand }} {{ vehicle.model }}
+      <span v-if="vehicle">
+        Mantenimiento - {{ vehicle.brand }} {{ vehicle.model }}
+      </span>
+      <span v-else>
+        Mantenimiento
+      </span>
     </template>
 
     <!-- Stats -->

@@ -71,4 +71,27 @@ class Document extends Model implements HasMedia
     {
         return $this->expiry_date ? now()->diffInDays($this->expiry_date, false) : 0;
     }
+
+    public function scopeByType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+    public function scopeVerified($query)
+    {
+        return $query->where('is_verified', true);
+    }
+
+    public function scopeExpiringSoon($query, $days = 30)
+    {
+        return $query->whereNotNull('expiry_date')
+            ->where('expiry_date', '>=', now())
+            ->where('expiry_date', '<=', now()->addDays($days));
+    }
+
+    public function scopeExpired($query)
+    {
+        return $query->whereNotNull('expiry_date')
+            ->where('expiry_date', '<', now());
+    }
 }

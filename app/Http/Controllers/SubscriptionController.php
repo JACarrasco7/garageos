@@ -31,6 +31,18 @@ class SubscriptionController extends Controller
 
         $user = $request->user();
 
+        // Si es el plan gratuito, activar directamente
+        if ($plan === 'free') {
+            // Asegurar que el usuario tenga el rol 'user'
+            if (! $user->hasRole('user')) {
+                $user->assignRole('user');
+            }
+
+            return redirect()->route('subscription.index')
+                ->with('success', 'Plan gratuito activado correctamente.');
+        }
+
+        // Si ya tiene suscripción activa, no crear otra
         if ($user->subscribed('default')) {
             return redirect()->route('subscription.index')
                 ->with('info', 'Ya tienes una suscripción activa.');
@@ -38,7 +50,7 @@ class SubscriptionController extends Controller
 
         $stripePriceId = $planConfig['stripe_price_id'] ?? null;
 
-        if (! $stripePriceId || $stripePriceId === 'price_basic_placeholder' || $stripePriceId === 'price_pro_placeholder') {
+        if (! $stripePriceId || str_contains($stripePriceId, 'placeholder')) {
             return redirect()->route('subscription.index')
                 ->with('error', 'Las suscripciones no están configuradas aún. Contacta al administrador.');
         }
@@ -52,6 +64,14 @@ class SubscriptionController extends Controller
 
     public function success(Request $request)
     {
+        $user = $request->user();
+
+        // Asignar rol según el plan suscrito
+        $plan = $user->subscription('default')?->stripe_price;
+        if ($plan === 'importer') {
+            $user->assignRole('importer');
+        }
+
         return Inertia::render('Subscription/Success');
     }
 

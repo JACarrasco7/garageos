@@ -64,4 +64,14 @@ class VehiclePhoto extends Model
     {
         return $query->where('category', 'principal')->first();
     }
+
+    public function scopeByVehicle($query, $vehicleId)
+    {
+        return $query->where('vehicle_id', $vehicleId);
+    }
+
+    public function isMain(): bool
+    {
+        return $this->category === 'principal';
+    }
 }

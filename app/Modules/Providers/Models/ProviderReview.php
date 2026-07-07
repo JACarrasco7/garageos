@@ -29,4 +29,19 @@ class ProviderReview extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeByProvider($query, $providerId)
+    {
+        return $query->where('provider_id', $providerId);
+    }
+
+    public function scopeByServiceType($query, $serviceType)
+    {
+        return $query->where('service_type', $serviceType);
+    }
+
+    public function scopeByRating($query, $rating)
+    {
+        return $query->where('rating', $rating);
+    }
 }

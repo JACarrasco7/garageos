@@ -39,7 +39,7 @@ return new class extends Migration
 
             $table->index(['brand', 'model']);
             $table->index('price_eur');
-            $table->index('source_url(255)');
+            $table->index('source_url');
             $table->index('is_active');
         });
     }

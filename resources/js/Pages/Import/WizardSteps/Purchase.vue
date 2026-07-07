@@ -27,6 +27,13 @@ const form = useForm({
   currency: 'EUR',
   purchase_country: 'DE',
   purchase_date: '',
+  vin: '',
+  brand: '',
+  model: '',
+  year: '',
+  engine_cc: '',
+  power_kw: '',
+  co2_emissions: '',
   invoice_file: null as File | null,
   coc_file: null as File | null,
   technical_data_file: null as File | null,
@@ -35,6 +42,37 @@ const form = useForm({
 
 const uploading = ref(false)
 const uploadProgress = ref(0)
+const decoding = ref(false)
+
+const decodeVin = async () => {
+  if (!form.vin || form.vin.length !== 17) return
+
+  decoding.value = true
+  try {
+    const response = await fetch(route('vin.decode'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+      },
+      body: JSON.stringify({ vin: form.vin }),
+    })
+
+    const data = await response.json()
+    if (data.success) {
+      form.brand = data.data.make || ''
+      form.model = data.data.model || ''
+      form.year = data.data.year?.toString() || ''
+      form.engine_cc = data.data.engine_cc?.toString() || ''
+      form.power_kw = data.data.power_kw?.toString() || ''
+      form.co2_emissions = data.data.co2_emissions?.toString() || ''
+    }
+  } catch (e) {
+    // Silencioso - el usuario rellenará manualmente
+  } finally {
+    decoding.value = false
+  }
+}
 
 const documentTypes = [
   { key: 'invoice_file', label: 'Factura de compra', required: true },
@@ -96,6 +134,40 @@ const formatPrice = (value: string) => {
       </CardDescription>
     </CardHeader>
     <CardContent class="space-y-6">
+      <!-- VIN y Decodificación -->
+      <div class="space-y-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
+        <div class="flex items-center gap-2 text-primary font-semibold">
+          <FileText class="h-4 w-4" />
+          <span>Identificación del Vehículo (VIN)</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="space-y-2 md:col-span-2">
+            <Label for="vin">Número de Bastidor (VIN) *</Label>
+            <Input
+              id="vin"
+              v-model="form.vin"
+              placeholder="WAUZZZ8V8KA000000"
+              maxlength="17"
+              @blur="decodeVin"
+            />
+          </div>
+          <div class="flex items-end">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              :disabled="form.vin.length !== 17 || decoding"
+              @click="decodeVin"
+            >
+              {{ decoding ? 'Decodificando...' : 'Autocompletar' }}
+            </Button>
+          </div>
+        </div>
+        <p class="text-xs text-muted-foreground">
+          Introduce el VIN y pulsa "Autocompletar" para rellenar marca, modelo y datos técnicos automáticamente.
+        </p>
+      </div>
+
       <!-- Vendedor -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="space-y-2">
@@ -167,6 +239,37 @@ const formatPrice = (value: string) => {
               <SelectItem value="IT">Italia</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+      </div>
+
+      <!-- Datos técnicos (autocompletados) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t">
+        <div class="space-y-2">
+          <Label for="brand">Marca</Label>
+          <Input id="brand" v-model="form.brand" placeholder="Ej. BMW" />
+        </div>
+        <div class="space-y-2">
+          <Label for="model">Modelo</Label>
+          <Input id="model" v-model="form.model" placeholder="Ej. Serie 3" />
+        </div>
+        <div class="space-y-2">
+          <Label for="year">Año</Label>
+          <Input id="year" v-model="form.year" type="number" placeholder="2020" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="space-y-2">
+          <Label for="engine_cc">Cilindrada (cc)</Label>
+          <Input id="engine_cc" v-model="form.engine_cc" placeholder="2000" />
+        </div>
+        <div class="space-y-2">
+          <Label for="power_kw">Potencia (kW)</Label>
+          <Input id="power_kw" v-model="form.power_kw" placeholder="140" />
+        </div>
+        <div class="space-y-2">
+          <Label for="co2_emissions">CO2 (g/km)</Label>
+          <Input id="co2_emissions" v-model="form.co2_emissions" placeholder="120" />
         </div>
       </div>
 

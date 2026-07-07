@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('vehicle_imports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('vehicle_id')->nullable()->constrained('vehicles')->onDelete('set null');
-            $table->foreignId('listing_id')->nullable()->constrained('listings')->onDelete('set null');
+            $table->unsignedBigInteger('vehicle_id')->nullable();
+            $table->unsignedBigInteger('listing_id')->nullable();
             $table->string('plate_original', 20)->nullable()->comment('matrícula alemana');
             $table->string('plate_new', 10)->nullable()->comment('matrícula española definitiva');
             $table->string('brand')->nullable();

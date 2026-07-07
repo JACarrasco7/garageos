@@ -48,7 +48,7 @@ defineProps<{
     </template>
 
     <!-- Hero Welcome -->
-    <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between animate-in-up">
+    <div data-tour="dashboard" class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between animate-in-up">
       <div>
         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary/80">
           Panel principal
@@ -108,6 +108,7 @@ defineProps<{
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Vehículos -->
       <Card
+        data-tour="vehicles"
         :class="cn(
           'border backdrop-blur-xl animate-in-up delay-200',
           'bg-card/80 border-border shadow-sm',
@@ -179,6 +180,7 @@ defineProps<{
 
       <!-- Alertas -->
       <Card
+        data-tour="alerts"
         :class="cn(
           'border backdrop-blur-xl animate-in-up delay-300',
           'bg-card/80 border-border shadow-sm',

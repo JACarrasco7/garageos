@@ -158,6 +158,26 @@ class Vehicle extends Model implements HasMedia
         return $query->where('is_active', true);
     }
 
+    public function scopeByBrand($query, $brand)
+    {
+        return $query->where('brand', $brand);
+    }
+
+    public function scopeByFuelType($query, $fuelType)
+    {
+        return $query->where('fuel_type', $fuelType);
+    }
+
+    public function scopeByYearRange($query, $from, $to)
+    {
+        return $query->whereBetween('year', [$from, $to]);
+    }
+
+    public function scopeByGarage($query, $garageId)
+    {
+        return $query->where('garage_id', $garageId);
+    }
+
     public function lastOilChangeKm(): ?int
     {
         return $this->maintenanceEntries()

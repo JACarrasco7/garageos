@@ -73,8 +73,7 @@ test('total cost includes all components', function () {
     $result = $action->execute($import);
 
     $expectedTotal = $result['valuation']->estimated_value
-        + $result['taxes']['iedmt']
-        + $result['taxes']['itp_estimate'];
+        + $result['taxes']['total_tax'];
 
     expect($result['total_cost'])->toBe($expectedTotal);
 });

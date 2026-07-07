@@ -203,6 +203,31 @@ class VehicleImportController extends Controller
         ]);
     }
 
+    public function confirmDelivery(VehicleImport $import): JsonResponse
+    {
+        $this->authorize('update', $import);
+
+        $import->update(['delivery_confirmed_at' => now()]);
+
+        // Auto-release H3 milestone if exists
+        $h3Milestone = $import->paymentMilestones()
+            ->where('milestone', 'H3_entrega')
+            ->where('status', 'paid')
+            ->first();
+
+        if ($h3Milestone) {
+            $h3Milestone->update([
+                'status' => 'released',
+                'released_at' => now(),
+            ]);
+        }
+
+        return response()->json([
+            'import' => VehicleImportResource::make($import),
+            'message' => 'Entrega confirmada. Fondos H3 liberados al importador.',
+        ]);
+    }
+
     public function completeImport(VehicleImport $import): JsonResponse
     {
         $this->authorize('update', $import);

@@ -46,4 +46,14 @@ class StripeAccount extends Model
     {
         return $query->where('onboarding_completed', true);
     }
+
+    public function scopeByUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    public function isFullyOperational(): bool
+    {
+        return $this->charges_enabled && $this->payouts_enabled && $this->onboarding_completed;
+    }
 }

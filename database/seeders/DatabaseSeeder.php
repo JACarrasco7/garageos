@@ -16,10 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            RoleSeeder::class,
             ServicePackSeeder::class,
             AffiliateLinkSeeder::class,
             VehicleImportSeeder::class,
             GarageFullSeeder::class,
+            SuperAdminSeeder::class,
         ]);
 
         User::factory()->create([

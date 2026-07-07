@@ -24,7 +24,6 @@ const { registerFcm, addListeners } = useFcm();
 
 const sidebarOpen = ref(true);
 const mobileOpen = ref(false);
-const onboardingTour = ref<InstanceType<typeof OnboardingTour> | null>(null);
 
 const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value;
@@ -93,11 +92,11 @@ onMounted(() => {
         </transition>
 
         <!-- Main content -->
-        <div class="flex min-w-0 flex-1 flex-col gap-3 p-3">
+        <div class="flex min-w-0 flex-1 flex-col gap-0 p-3">
             <!-- Header -->
             <header
                 :class="[
-                    'sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 rounded-2xl border backdrop-blur-2xl px-4 md:px-6',
+                    'shrink-0 flex h-16 items-center gap-3 rounded-2xl border backdrop-blur-2xl px-4 md:px-6',
                     'bg-card/80 border-border shadow-sm supports-backdrop-filter:bg-card/60'
                 ]"
             >
@@ -152,30 +151,14 @@ onMounted(() => {
             </header>
 
             <!-- Content -->
-            <main
-                :class="[
-                    'flex-1 overflow-auto rounded-2xl border backdrop-blur-2xl flex flex-col',
-                    'bg-card border-border shadow-sm'
-                ]"
-            >
-                <div class="mx-auto w-full max-w-7xl flex-1 p-6 md:p-8 lg:p-10">
+            <main class="flex-1 min-h-0 rounded-2xl border backdrop-blur-2xl flex flex-col overflow-hidden">
+                <div class="flex-1 overflow-auto p-6 md:p-8 lg:p-10">
                     <slot />
                 </div>
-                <!-- Footer -->
-                <footer
-                    :class="[
-                        'shrink-0 border-t px-4 py-3 text-center text-sm text-muted-foreground',
-                        'border-border bg-muted/30'
-                    ]"
-                >
-                    <p>
-                        © {{ new Date().getFullYear() }} GarageOS. Gestión inteligente de vehículos.
-                    </p>
-                </footer>
             </main>
         </div>
 
         <Toaster position="top-right" rich-colors />
-        <OnboardingTour ref="onboardingTour" />
+        <OnboardingTour />
     </div>
 </template>

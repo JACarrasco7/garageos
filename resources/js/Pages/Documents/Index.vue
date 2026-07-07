@@ -22,7 +22,7 @@ interface Document {
 }
 
 defineProps<{
-  vehicle: Vehicle
+  vehicle?: Vehicle
   documents: Record<string, Document[]>
 }>()
 
@@ -38,7 +38,12 @@ const documentLabels: Record<string, string> = {
 <template>
   <AppSidebarLayout>
     <template #header>
-      Documentos - {{ vehicle.brand }} {{ vehicle.model }}
+      <span v-if="vehicle">
+        Documentos - {{ vehicle.brand }} {{ vehicle.model }}
+      </span>
+      <span v-else>
+        Documentos
+      </span>
     </template>
 
     <Card class="border-0 shadow-lg">

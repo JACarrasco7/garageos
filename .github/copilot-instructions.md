@@ -1,6 +1,6 @@
 # GarageOS
 
-Laravel 12 + Inertia 2 + Vue 3 + shadcn-vue + Tailwind 4. Módulos: Vehicle, Maintenance, Alerts, Documents, Identity, Marketplace.
+Laravel 13 + Inertia 2 + Vue 3 + shadcn-vue + Tailwind 4. Módulos: Vehicle, Maintenance, Alerts, Documents, Identity, Marketplace.
 
 ## Convenciones
 - FormRequests para validación (no inline)

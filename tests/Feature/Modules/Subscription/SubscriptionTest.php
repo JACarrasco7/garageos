@@ -25,7 +25,7 @@ class SubscriptionTest extends TestCase
 
         $response->assertOk();
         $response->assertInertia(fn ($page) => $page
-            ->has('plans', 2)
+            ->has('plans', 3)
             ->where('subscribed', false)
         );
     }

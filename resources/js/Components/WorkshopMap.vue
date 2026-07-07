@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useWindowVirtualSize } from '@vueuse/integrations/useWindowVirtualSize'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 

@@ -11,6 +11,10 @@ return new class extends Migration
             return;
         }
 
+        $hasPostgis = DB::selectOne("SELECT 1 FROM pg_available_extensions WHERE name = 'postgis'");
+        if (! $hasPostgis) {
+            return;
+        }
         DB::statement('CREATE EXTENSION IF NOT EXISTS postgis');
 
         DB::statement('

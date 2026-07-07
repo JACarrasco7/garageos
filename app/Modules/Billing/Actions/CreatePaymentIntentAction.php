@@ -19,7 +19,8 @@ class CreatePaymentIntentAction
         string $currency,
         string $description,
         int $sellerId,
-        array $metadata = []
+        array $metadata = [],
+        ?int $vehicleImportId = null
     ): PaymentIntent {
         $sellerAccount = StripeAccount::where('user_id', $sellerId)
             ->where('charges_enabled', true)
@@ -36,6 +37,7 @@ class CreatePaymentIntentAction
             'metadata' => array_merge([
                 'buyer_id' => Auth::id(),
                 'seller_id' => $sellerId,
+                'vehicle_import_id' => $vehicleImportId,
             ], $metadata),
         ];
 
@@ -50,6 +52,7 @@ class CreatePaymentIntentAction
 
         return PaymentIntent::create([
             'user_id' => Auth::id(),
+            'vehicle_import_id' => $vehicleImportId,
             'stripe_payment_intent_id' => $stripeIntent->id,
             'amount' => $amount,
             'currency' => $currency,

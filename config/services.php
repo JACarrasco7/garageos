@@ -35,9 +35,17 @@ return [
         ],
     ],
     'stripe' => [
-        'publishable_key' => env('STRIPE_PUBLISHABLE_KEY'),
+        'key' => env('STRIPE_PUBLISHABLE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'client_id' => env('STRIPE_CLIENT_ID'),
+        'webhook' => [
+            'secret' => env('STRIPE_WEBHOOK_SECRET'),
+        ],
     ],
     'cochesnet' => [
         'key' => env('SERVICES_COCHESNET_KEY'),
+    ],
+    'ocr' => [
+        'api_key' => env('OCR_API_KEY'),
     ],
 ];

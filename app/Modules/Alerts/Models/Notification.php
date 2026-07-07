@@ -46,4 +46,29 @@ class Notification extends Model
     {
         return $this->read_at !== null;
     }
+
+    public function scopeByUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    public function scopeByVehicle($query, $vehicleId)
+    {
+        return $query->where('vehicle_id', $vehicleId);
+    }
+
+    public function scopeByType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+    public function scopeUnread($query)
+    {
+        return $query->whereNull('read_at');
+    }
+
+    public function scopeSent($query)
+    {
+        return $query->whereNotNull('sent_at');
+    }
 }

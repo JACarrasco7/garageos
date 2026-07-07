@@ -3,6 +3,7 @@
 namespace App\Modules\Billing\Models;
 
 use App\Models\User;
+use App\Modules\VehicleImport\Models\VehicleImport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,7 @@ class PaymentIntent extends Model
 
     protected $fillable = [
         'user_id',
+        'vehicle_import_id',
         'stripe_payment_intent_id',
         'amount',
         'currency',
@@ -36,6 +38,11 @@ class PaymentIntent extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vehicleImport(): BelongsTo
+    {
+        return $this->belongsTo(VehicleImport::class, 'vehicle_import_id');
     }
 
     public function stripeAccount(): BelongsTo

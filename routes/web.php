@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/fcm-token', [ProfileController::class, 'updateFcmToken'])->name('fcm-token.update');
+
+    Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'edit'])->name('contact.edit');
+    Route::patch('/contact', [\App\Http\Controllers\ContactController::class, 'update'])->name('contact.update');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -41,13 +44,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
 });
 
-Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook']);
-
 Route::middleware(['auth', 'role:workshop'])->group(function () {
     Route::get('/workshop/dashboard', [WorkshopDashboardController::class, 'index'])->name('workshop.dashboard');
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/help.php';
+require __DIR__.'/admin.php';
 require __DIR__.'/../app/Modules/Providers/Routes/providers.php';
 require base_path('app/Modules/Vehicle/Routes/vehicle.php');
 require base_path('app/Modules/Maintenance/Routes/mobile_maintenance.php');

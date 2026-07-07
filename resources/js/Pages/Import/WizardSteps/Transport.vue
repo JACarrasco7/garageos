@@ -9,11 +9,13 @@ import { Textarea } from '@/Components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Alert, AlertDescription } from '@/Components/ui/alert'
 import { Truck, Upload, FileText, AlertCircle, CheckCircle2 } from 'lucide-vue-next'
+import { Timeline } from '@/Components/ui/timeline'
 
 interface Props {
   importId: number
   documents: any[]
   stepData: any
+  transportEvents?: any[]
 }
 
 const props = defineProps<Props>()
@@ -213,6 +215,12 @@ const formatPrice = (value: string) => {
             placeholder="Instrucciones especiales para el conductor..."
           />
         </div>
+      </div>
+
+      <!-- Timeline de eventos -->
+      <div v-if="transportEvents?.length" class="pt-4 border-t">
+        <h3 class="font-semibold mb-3">Historial de transporte</h3>
+        <Timeline :items="transportEvents" />
       </div>
 
       <!-- Info ADAC placas temporales -->

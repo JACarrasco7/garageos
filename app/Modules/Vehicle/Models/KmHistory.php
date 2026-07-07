@@ -33,4 +33,19 @@ class KmHistory extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+
+    public function scopeByVehicle($query, $vehicleId)
+    {
+        return $query->where('vehicle_id', $vehicleId);
+    }
+
+    public function scopeBySource($query, $source)
+    {
+        return $query->where('source', $source);
+    }
+
+    public function scopeRecent($query, $days = 30)
+    {
+        return $query->where('recorded_at', '>=', now()->subDays($days));
+    }
 }

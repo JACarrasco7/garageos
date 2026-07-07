@@ -140,4 +140,29 @@ class Listing extends Model
 
         return round($earthRadius * $angle, 2);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeByBrand($query, $brand)
+    {
+        return $query->where('brand', $brand);
+    }
+
+    public function scopeByModel($query, $model)
+    {
+        return $query->where('model', $model);
+    }
+
+    public function scopeByCountry($query, $country)
+    {
+        return $query->where('country', $country);
+    }
+
+    public function scopeByPriceRange($query, $min, $max)
+    {
+        return $query->whereBetween('price_eur', [$min, $max]);
+    }
 }

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('garage_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('garage_id')->nullable();
             $table->string('plate', 10)->comment('matrícula');
             $table->string('vin', 17)->unique()->nullable()->comment('bastidor');
             $table->string('qr_token', 64)->unique()->comment('token del QR físico');

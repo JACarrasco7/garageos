@@ -74,7 +74,7 @@ const getStatusBadge = (vehicleImport: VehicleImport) => {
         <h1 class="text-3xl font-bold">Mis Importaciones</h1>
         <p class="text-muted-foreground mt-1">Gestiona tus trámites de importación DE→ES</p>
       </div>
-      <Link :href="route('import.create')">
+      <Link :href="route('imports.create')">
         <Button>
           <Plus class="h-4 w-4 mr-2" />
           Nueva importación

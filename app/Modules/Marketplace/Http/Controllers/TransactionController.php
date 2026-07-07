@@ -13,6 +13,17 @@ class TransactionController extends Controller
 {
     public function store(Request $request)
     {
+        $user = $request->user();
+
+        $recentOffers = Transaction::where('buyer_id', $user->id)
+            ->where('type', 'offer')
+            ->where('created_at', '>', now()->subHour())
+            ->count();
+
+        if ($recentOffers >= 10) {
+            return back()->with('error', 'Has alcanzado el límite de 10 ofertas por hora. Por favor, espera una hora antes de enviar más ofertas.');
+        }
+
         $validated = $request->validate([
             'listing_id' => ['required', 'exists:marketplace_listings,id'],
             'type' => ['required', 'in:offer,reservation'],
@@ -24,6 +35,10 @@ class TransactionController extends Controller
 
         if ($listing->user_id === $request->user()->id) {
             return back()->with('error', 'No puedes hacer una oferta a tu propio anuncio');
+        }
+
+        if ($listing->status === 'sold' || $listing->status === 'reserved') {
+            return back()->with('error', 'Este anuncio ya está vendido o reservado');
         }
 
         $transaction = Transaction::create([

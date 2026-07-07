@@ -6,11 +6,13 @@ import {
     Car,
     Wrench,
     Upload,
-    Download,
     Shield,
     Settings,
     User,
     LogOut,
+    Truck,
+    ShoppingBag,
+    HelpCircle,
 } from 'lucide-vue-next';
 
 import { cn } from '@/lib/utils';
@@ -28,11 +30,11 @@ defineProps<{
     collapsed?: boolean;
 }>();
 
+const page = usePage();
+
 const emit = defineEmits<{
     navigate: [];
 }>();
-
-const page = usePage();
 
 type NavItem = {
     title: string;
@@ -51,13 +53,19 @@ const navGroups = computed<{ label: string; items: NavItem[] }[]>(() => [
             { title: 'Documentos', route: 'documents.index', icon: Upload, tour: 'documents' },
             { title: 'Mantenimiento', route: 'maintenance.index', icon: Wrench, tour: 'maintenance' },
             { title: 'Alertas', route: 'alerts.index', icon: Shield, tour: 'alerts' },
+            { title: 'Importar Vehículos', route: 'imports.index', icon: Truck, tour: 'import' },
+            { title: 'Mercado', route: 'listings.index', icon: ShoppingBag, tour: 'marketplace' },
+        ],
+    },
+    {
+        label: 'Ayuda',
+        items: [
+            { title: 'Preguntas Frecuentes', route: 'help.index', icon: HelpCircle, tour: 'help' },
         ],
     },
     {
         label: 'Operación',
         items: [
-            { title: 'Importar', route: 'vehicles.import.create', icon: Upload },
-            { title: 'Exportar', route: 'vehicles.export', icon: Download },
             { title: 'Configuración', route: 'profile.edit', icon: Settings },
         ],
     },

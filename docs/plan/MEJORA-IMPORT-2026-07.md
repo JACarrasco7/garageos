@@ -1,0 +1,252 @@
+# Plan de Mejora — Módulo de Importación GarageOS
+
+**Fecha:** 2026-07-06
+**Estado actual del módulo de importación:** Funcional, pero con fricción en pagos y opacidad logística.
+**Objetivo de este documento:** Recopilar problemas detectados, contrastar con lo ya implementado, y proponer una hoja de ruta realista y alcanzable (no "big bang", sino incremental y validado en cada paso).
+
+---
+
+## 1. Auditoría del estado actual
+
+### 1.1 Lo que ya existe y funciona
+
+| Área | Implementación | Archivo |
+|------|---|---|
+| Tabla `vehicle_imports` | Con `user_id`, `importer_id`, `vin`, `plate_original`, etc. | `database/migrations/*` |
+| Wizard 6 pasos | Compra → Transporte → ITV → Impuestos → DGT → Placas | `resources/js/Pages/Import/Wizard.vue` |
+| Billing / Stripe Connect | `PaymentIntent`, `application_fee_amount`, payouts a importador | `app/Modules/Billing/` |
+| Transporte con datos | `transport_type`, `provider`, `cost`, `tracking_number`, `insurance_file` | `resources/js/Pages/Import/WizardSteps/Transport.vue` |
+| Verificación + Certificados | Informe detallado + Certificado de Confianza (PDF) | `app/Modules/VehicleImport/Services/VerificationService.php` |
+| Contratos de importador | `import_contracts` con DNI/direcciones/fechas | `database/migrations/*_create_import_contracts_table.php` |
+
+### 1.2 Lo que falta y causa problemas reales
+
+| Problema | Impacto en el usuario |
+|----------|----------------------|
+| El pago es 1 sola vez al inicio y otra al final | Riesgo financiero alto para el cliente. No hay puntos de control intermedios. Si el importador desaparece después del primer pago, el cliente pierde todo. |
+| El `Wizard.vue` solo avanza si `isStepActive(order)` lo permite | El importador no puede "saltar" pasos burocráticos como ITV; pero tampoco hay forma de documentar excepciones. |
+| `Transport.vue` solo guarda `tracking_number` como string libre | No hay forma de saber **dónde está el coche ahora** sin llamar al transportista. |
+| El `PaymentIntent` no sabe a qué `VehicleImport` pertenece | La reconciliación contable es manual. Imposible hacer "pago del hito 2 de la importación #43". |
+| El `Storage` guarda los PDFs pero no hay ruta pública para verlos | El cliente no puede descargar el certificado sin que el importador se lo envíe por email. |
+
+---
+
+## 2. Propuestas revisadas y filtradas
+
+### 2.1 Sistema de pagos por hitos — SÍ, pero con cabeza
+
+**Por qué el modelo actual (2 pagos) es malo:**
+- 1 pago inicial grande bloquea capital del cliente.
+- 1 pago final enorme al final genera desconfianza ("¿y si ya no me lo entrega?").
+- No hay vínculo entre `PaymentIntent` y `VehicleImport`, así que un reembolso o disputa es un infierno administrativo.
+
+**Lo que propongo (3 hitos, no más):**
+
+| Hito | Cuándo se cobra | Porcentaje sugerido | Razón |
+|------|-----------------|----------------------|-------|
+| **H1 — Reserva** | Al firmar el contrato | 20% | Compromete al cliente. Cubre gastos de búsqueda del importador. |
+| **H2 — Compra verificada** | Cuando el importador sube el **Informe de Verificación** con `overall_status = 'CERTIFIED'` | 50% | Es el momento de mayor riesgo (el coche ya está pagado en Alemania). |
+| **H3 — Entrega** | Cuando el cliente confirma recepción + ITV aprobada | 30% | El último pago se retiene hasta que el coche esté legalmente en su nombre. |
+
+**Por qué NO más hitos (4, 5, 6):**
+- Cada hito extra es una fricción administrativa y técnica.
+- Los 3 momentos clave están vinculados a **eventos reales del flujo** (contrato, verificación, entrega), no a fechas arbitrarias.
+- Stripe Connect con `transfer_data` y `application_fee_amount` ya soporta esto nativamente — no hay que reinventar la rueda.
+
+**Implementación técnica mínima:**
+
+1. Tabla `import_payment_milestones` con FK a `vehicle_imports` y a `payment_intents`:
+    ```php
+    $table->foreignId('vehicle_import_id')->constrained();
+    $table->foreignId('payment_intent_id')->nullable()->constrained();
+    $table->enum('milestone', ['H1_reserva', 'H2_compra', 'H3_entrega']);
+    $table->decimal('amount', 12, 2);
+    $table->enum('status', ['pending', 'authorized', 'paid', 'released', 'refunded']);
+    $table->timestamp('released_at')->nullable();
+    $table->text('release_condition'); // ej. "verification_score >= 80%"
+    ```
+
+2. `CreateMilestonePaymentAction` reutiliza `CreatePaymentIntentAction` pero añade `metadata.vehicle_import_id` y `metadata.milestone`.
+
+3. **Disparador automático**:
+    - H1 → al firmar `ImportContract` → `status = signed`.
+    - H2 → al generar `VerificationService::generateCertificate()` con `status = 'CERTIFIED'` → el cliente ve "Pago pendiente de autorizar".
+    - H3 → al pasar ITV (campo `itv_verified = true` en `VehicleVerification`).
+
+4. **Liberación al importador**:
+    - H1 y H2 se transfieren al importador inmediatamente al cobrar (`transfer_data.destination`).
+    - H3 se retiene en la plataforma y se transfiere cuando `delivery_confirmed_at` no es null (el cliente confirma recepción).
+
+**Trade-offs honestos:**
+- ⚠️ Más complejidad en el webhook de Stripe (manejamos `payment_intent.succeeded` por milestone, no global).
+- ⚠️ Si el importador rechaza H3, hay disputa. Necesitaremos un panel admin para resolverlo.
+- ✅ Pero el cliente duerme tranquilo, y eso vale todo.
+
+---
+
+### 2.2 Trazabilidad logística — SÍ, y resulta que casi está
+
+**Descubrimiento:**
+`Transport.vue` ya tiene los datos básicos (`tracking_number`, `transport_eta`, `transport_date`). Lo que falta es:
+
+1. **Modelo de "eventos de tracking"** (no solo el número):
+    ```php
+    // app/Modules/VehicleImport/Models/TransportEvent.php
+    $table->foreignId('vehicle_import_id')->constrained();
+    $table->string('status'); // 'pickup_scheduled', 'picked_up', 'in_transit', 'customs', 'delivered'
+    $table->string('location')->nullable(); // 'Múnich, DE'
+    $table->decimal('latitude', 10, 7)->nullable();
+    $table->decimal('longitude', 10, 7)->nullable();
+    $table->text('note')->nullable();
+    $table->string('photo_path')->nullable(); // Foto del coche cargado
+    $table->timestamp('occurred_at');
+    ```
+
+2. **UI mejorada en `Transport.vue`**:
+    - Línea de tiempo visual (timeline component) con los eventos.
+    - Botón "Reportar nueva ubicación" para el importador.
+    - Sección de fotos del transporte (el importador sube foto al recoger, en ruta, al entregar).
+
+3. **Notificaciones automáticas** (ya tenemos `Notifications` module):
+    - Al añadir un evento, notificar al cliente (`User::find($vehicleImport->user_id)`).
+    - Esto resuelve la "ansiedad de tránsito" sin código nuevo.
+
+**Esfuerzo:** Bajo. Es extensión pura de algo que ya existe.
+
+---
+
+### 2.3 Automatización técnica (VIN Decoder) — REDEFINICIÓN
+
+**Tu comentario es correcto:** ya tenemos el **Informe de Verificación interno** que hace de "Carfax casero". No necesitamos el VIN decoder externo como **sustituto** de eso.
+
+**Pero sí lo necesitamos como COMPLEMENTO**, y por una razón concreta: cuando el cliente rellena el Wizard inicial, tiene que escribir marca, modelo, año, motor, potencia, CO2 a mano. Eso es tedioso y propenso a errores.
+
+**Lo que tiene sentido:**
+- Carfax casero no quiero, quiero uno ejorado con todo. quiero lol mejor de carveticla y carfax o autodna y hacerlo nsootros mismo conectand9 ala dgt alemanc o cmo sea pagano por api o coko sea
+- Al introducir el VIN en el paso 1, mostrar un botón "Autocompletar datos técnicos".
+- Esto consulta una API pública (ej. **NHTSA vPIC** — gratis y sin auth para VINs europeos modernos, o_DATABASE VIN europe_ para los antiguos).
+- **El Informe GarageOS sigue siendo el documento legal.** El decoder es solo una herramienta de UX para evitar escribir 8 campos a mano.
+
+**Implementación:**
+1. `app/Modules/VehicleImport/Services/VinDecoderService.php`:
+    ```php
+    public function decode(string $vin): array
+    public function isValid(string $vin): bool // checksum
+    ```
+
+2. Endpoint `POST /api/vin/decode` que devuelve JSON con `make, model, year, engine, power_kw, co2`.
+
+3. En `Purchase.vue`, al perder foco del campo VIN:
+    ```typescript
+    const decoded = await fetch('/api/vin/decode', { method: 'POST', body: JSON.stringify({ vin }) })
+    if (decoded.success) Object.assign(form, decoded.data)
+    ```
+
+**Caveat honesto:** Las APIs públicas de VIN europeas son menos fiables que las americanas. Si el decoder falla, **no bloqueamos el formulario** — el usuario sigue escribiéndolo a mano.
+
+---
+
+## 6. Estado de implementación actual (2026-07-06)
+
+| Fase | Estado | Comentario |
+|------|--------|------------|
+| Fase 1 | ✅ COMPLETA | `PaymentIntent.vehicle_import_id`, relaciones `paymentMilestones()`/`paymentIntents()`, `VehicleImportPolicy` |
+| Fase 2 | ✅ COMPLETA | `ImportPaymentMilestone`, `releaseMilestone()` H3, `confirmDelivery()`, triggers H1/H2/H3 |
+| Fase 3 | ✅ COMPLETA | `TransportEvent`, `Timeline` component, integrado en `Transport.vue` |
+| Fase 4 | ✅ COMPLETA | `VinDecoderService` con NHTSA vPIC, `Purchase.vue` con `decodeVin()`, `isValid()` checksum |
+| Fase 5 | ✅ COMPLETA | Ruta pública `/verify/{certificateId}`, `PublicVerification.vue` |
+| Fase 6 | ✅ COMPLETA | `DocumentVerificationService`, endpoints de verificación, DNI/NIE validación |
+
+**Implementado:**
+- ✅ `VehicleImportPolicy` - autorización para user/importer
+- ✅ `delivery_confirmed_at` + migración
+- ✅ `contract()` relación en VehicleImport
+- ✅ Tests `PaymentMilestoneTest` (4/4 pasan)
+- ✅ Tests `VehicleImportMarketplaceTest` (5/5 pasan)
+- ✅ Tests `VehicleImportRequestTest` (3/3 pasan)
+- ✅ `VehicleImportRequestFactory` y `VehicleImportOfferFactory` creados
+- ✅ `StoreVehicleImportRequestRequest` actualizado con `status`
+- ✅ `Timeline` component + `ImportVerificationInfo.vue`
+- ✅ `DocumentVerificationService` con OCR y validación DNI/NIE
+- ✅ Botón flotante de ayuda en Wizard.vue
+
+### 2.4 Marketplace y reputación — DIFERIR
+
+**Por qué:** No es un problema técnico del módulo de importación, es un problema de negocio (¿hay suficientes importadores en la plataforma?). Construir un sistema de ratings antes de tener volumen es teatro.
+
+**Cuándo hacerlo:** Cuando tengamos > 5 importadores reales cerrando operaciones.
+
+---
+
+### 2.5 Impuestos (Modelo 576) y seguros — DIFERIR
+
+**Por qué:**
+- El Modelo 576 requiere integración con la AEAT, que es un proyecto en sí mismo (certificado digital, SOAP, etc.).
+- Los comparadores de seguros necesitan acuerdos comerciales con aseguradoras.
+- Ambos son **integraciones externas**, no features de plataforma.
+
+**Cuándo hacerlo:** Cuando sea un problema real de los clientes (ahora mismo no lo es).
+
+---
+
+### 2.6 Verificación automática de documentos — IMPLEMENTADA
+
+**Implementado:**
+- `DocumentVerificationService` con validación DNI/NIE español
+- OCR con Tesseract o Google Vision API
+- Endpoints: `/verify/id`, `/verify/document`, `/verify/contract`
+
+**Configuración OCR:**
+```bash
+# Opción 1: Tesseract (local)
+choco install tesseract
+
+# Opción 2: Google Vision (en la nube)
+GOOGLE_VISION_KEY=tu_api_key
+OCR_ENGINE=google_vision
+```
+
+**Uso:**
+```bash
+curl -X POST /verify/id -d '{"document":"12345678Z"}'
+curl -X POST /verify/document -F "document=@dni.pdf" -F "type=coc"
+```
+
+---
+
+## 3. Hoja de ruta recomendada (orden de implementación)
+
+| Fase | Trabajo | Esfuerzo | Valor para el usuario |
+|------|---------|----------|------------------------|
+| **Fase 1 — Pulir lo existente** | Mover `PaymentIntent` a tener `vehicle_import_id`. Añadir relación `paymentMilestones()` al modelo. | 2h | Bajo pero necesario para todo lo demás |
+| **Fase 2 — Hitos de pago** | Implementar tabla `import_payment_milestones`, `CreateMilestonePaymentAction`, disparadores automáticos. UI de "estado de pagos" en el Wizard. | 1-2 días | **ALTO** — resuelve el mayor problema de confianza |
+| **Fase 3 — Tracking logístico** | Tabla `transport_events`, UI de timeline en `Transport.vue`, notificaciones automáticas. | 1 día | Alto — el cliente quiere saber dónde está su coche |
+| **Fase 4 — VIN Decoder** | Servicio + endpoint + UX en `Purchase.vue` (opcional, no bloqueante). | 0.5 días | Medio — calidad de vida |
+| **Fase 5 — Portal público de certificados** | Ruta `/verify/{certificate_id}` pública que muestra el estado del certificado con su QR. | 1 día | Medio — da valor real al certificado |
+
+**Total estimado:** 5-7 días de trabajo para las fases 1-4. La fase 5 puede esperar.
+
+**Fase 0 (crítica, ANTES de todo):**
+- Tests de regresión. Cada cambio en pagos DEBE tener test que verifique que un reembolso no rompe el flujo de Stripe Connect.
+- Sin tests, este tipo de cambios es una bomba de relojería.
+
+---
+
+## 4. Lo que NO voy a hacer
+
+- ❌ **No vamos a hacer un "Stripe interno"**. Usamos lo que ya hay.
+- ❌ **No vamos a inventar 6 hitos de pago**. 3 cubren el 95% del riesgo.
+- ❌ **No vamos a hacer un marketplace de importadores ahora**. No hay masa crítica.
+- ❌ **No vamos a integrar con la AEAT** ni con aseguradoras en esta iteración.
+- ❌ **No vamos a "ocultar" rutas o features para salir del paso**. Si algo no funciona, se arregla de raíz.
+
+---
+
+## 5. Preguntas para validar antes de implementar
+
+1. **¿Los porcentajes 20/50/30 te encajan?** ¿O prefieres otra distribución (ej. 30/40/30)?
+2. **¿El H3 (entrega) lo libera el cliente automáticamente o hay un plazo de 7 días "sin respuesta = liberación"?** Esto último es más limpio operativamente.
+3. **¿Para el tracking, prefieres que el importador suba la ubicación manualmente o que intentemos integrar con alguna API de transportistas (ClickTrans, uShip)?** Esto último es caro y frágil.
+4. **¿El VIN decoder debe ser opcional o por defecto autocompletar?** Si falla, ¿bloqueamos o seguimos?
+
+Una vez validemos esto, ejecutamos Fase 1 y Fase 2 — son las que más impacto tienen.

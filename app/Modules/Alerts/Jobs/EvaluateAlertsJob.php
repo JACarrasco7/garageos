@@ -36,8 +36,23 @@ class EvaluateAlertsJob implements ShouldQueue
                 $shouldTrigger = true;
             }
 
-            if ($shouldTrigger && ! $rule->last_triggered) {
+            if ($shouldTrigger) {
+                $lockKey = "alert_rule_lock_{$rule->id}";
+
+                if (\Cache::has($lockKey)) {
+                    continue;
+                }
+
+                \Cache::forever($lockKey, true);
+
+                if ($rule->last_triggered) {
+                    \Cache::forget($lockKey);
+                    continue;
+                }
+
                 $rule->update(['last_triggered' => now()]);
+                \Cache::forget($lockKey);
+
                 event(new AlertTriggered($rule));
             }
         }

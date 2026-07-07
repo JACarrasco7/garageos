@@ -59,11 +59,10 @@ class DashboardController extends Controller
             'notifications' => $notifications,
             'stats' => $stats,
             'limits' => [
-                'max_vehicles' => $user->subscribed('default')
-                    ? config('subscription.plans.'.$user->subscription('default')->stripe_price.'.vehicle_limit', null)
-                    : 1,
+                'max_vehicles' => $user->getVehicleLimit(),
                 'current_vehicles' => $user->garages()->withCount('vehicles')->get()->sum('vehicles_count'),
                 'subscribed' => $user->subscribed('default'),
+                'plan' => $user->subscription('default')?->stripe_price ?? 'free',
             ],
         ]);
     }

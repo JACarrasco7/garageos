@@ -15,7 +15,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('register'), {
+    form.transform((data) => ({
+        ...data,
+        gdpr_consent: data.gdpr_consent ? '1' : '0',
+    })).post(route('register'), {
+        onError: () => {
+            form.reset('password', 'password_confirmation');
+        },
         onFinish: () => {
             form.reset('password', 'password_confirmation');
         },
@@ -88,7 +94,11 @@ const submit = () => {
                 </div>
 
                 <div class="flex items-start space-x-2">
-                    <Checkbox id="gdpr_consent" v-model:checked="form.gdpr_consent" required />
+                    <Checkbox
+                        id="gdpr_consent"
+                        :model-value="form.gdpr_consent"
+                        @update:model-value="form.gdpr_consent = $event"
+                    />
                     <div class="grid gap-1.5 leading-none">
                         <Label for="gdpr_consent" class="text-sm font-normal">
                             Acepto la política de privacidad y el tratamiento de mis datos
@@ -98,6 +108,7 @@ const submit = () => {
                         </p>
                     </div>
                 </div>
+                <p v-if="form.errors.gdpr_consent" class="text-sm text-destructive">{{ form.errors.gdpr_consent }}</p>
 
                 <Button
                     type="submit"

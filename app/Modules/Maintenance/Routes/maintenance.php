@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 // User workshop management (auth required)
 Route::middleware(['web', 'auth'])->group(function () {
-    Route::get('/vehicles/{vehicle}/maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::get('/vehicles/{vehicle}/maintenance', [MaintenanceController::class, 'indexForVehicle'])->name('maintenance.vehicle.index');
     Route::get('/vehicles/{vehicle}/maintenance/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
     Route::post('/vehicles/{vehicle}/maintenance', [MaintenanceController::class, 'store'])->name('maintenance.store');
     Route::get('/my-workshops', [WorkshopController::class, 'index'])->name('workshops.index');

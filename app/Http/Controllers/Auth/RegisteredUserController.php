@@ -44,7 +44,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'gdpr_consent' => true,
             'gdpr_consent_at' => now(),
+            'email_verified_at' => now(),
         ]);
+
+        $user->assignRole('user');
 
         event(new Registered($user));
 

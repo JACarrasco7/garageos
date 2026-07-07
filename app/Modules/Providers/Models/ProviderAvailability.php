@@ -25,4 +25,19 @@ class ProviderAvailability extends Model
     {
         return $this->belongsTo(Provider::class, 'provider_id');
     }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('is_available', true);
+    }
+
+    public function scopeByDay($query, $dayOfWeek)
+    {
+        return $query->where('day_of_week', $dayOfWeek);
+    }
+
+    public function isAvailableOnDay($dayOfWeek): bool
+    {
+        return $this->is_available && $this->day_of_week == $dayOfWeek;
+    }
 }

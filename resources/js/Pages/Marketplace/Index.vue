@@ -152,7 +152,7 @@ const goToDetail = (listingId: number) => {
             <div>
               <label class="text-sm font-medium mb-1 block">Marca</label>
               <Select v-model="selectedBrand">
-                <SelectTrigger>
+                <SelectTrigger class="h-9">
                   <SelectValue placeholder="Todas" />
                 </SelectTrigger>
                 <SelectContent>
@@ -167,7 +167,7 @@ const goToDetail = (listingId: number) => {
             <div>
               <label class="text-sm font-medium mb-1 block">Combustible</label>
               <Select v-model="selectedFuelType">
-                <SelectTrigger>
+                <SelectTrigger class="h-9">
                   <SelectValue placeholder="Todos" />
                 </SelectTrigger>
                 <SelectContent>
@@ -185,6 +185,7 @@ const goToDetail = (listingId: number) => {
                 v-model="priceRange.min"
                 type="number"
                 placeholder="€0"
+                class="h-9"
               />
             </div>
 
@@ -194,6 +195,7 @@ const goToDetail = (listingId: number) => {
                 v-model="priceRange.max"
                 type="number"
                 placeholder="€50,000"
+                class="h-9"
               />
             </div>
 
@@ -204,13 +206,13 @@ const goToDetail = (listingId: number) => {
                   v-model="yearRange.from"
                   type="number"
                   placeholder="Desde"
-                  class="flex-1"
+                  class="flex-1 h-9"
                 />
                 <Input
                   v-model="yearRange.to"
                   type="number"
                   placeholder="Hasta"
-                  class="flex-1"
+                  class="flex-1 h-9"
                 />
               </div>
             </div>
@@ -220,14 +222,14 @@ const goToDetail = (listingId: number) => {
     </Card>
 
     <!-- Listings Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <Card
         v-for="listing in filteredListings"
         :key="listing.id"
-        class="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+        class="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200"
         @click="goToDetail(listing.id)"
       >
-        <div class="relative h-48 bg-muted">
+        <div class="relative h-40 sm:h-48 bg-muted">
           <img
             v-if="listing.photos.length > 0"
             :src="listing.photos[0]"
@@ -235,20 +237,70 @@ const goToDetail = (listingId: number) => {
             class="w-full h-full object-cover"
           />
           <div v-else class="w-full h-full flex items-center justify-center">
-            <span class="text-muted-foreground">Sin foto</span>
+            <span class="text-muted-foreground text-sm">Sin foto</span>
           </div>
           <Button
             variant="ghost"
             size="sm"
-            class="absolute top-2 right-2 bg-white/80 hover:bg-white"
+            class="absolute top-2 right-2 bg-white/80 hover:bg-white h-7 w-7 p-0"
             @click.stop="toggleFavorite(listing.id)"
           >
-            <Heart class="h-4 w-4" />
+            <Heart class="h-3.5 w-3.5" />
           </Button>
-          <Badge class="absolute top-2 left-2">
+          <Badge class="absolute top-2 left-2 text-xs">
             {{ listing.is_negotiable ? 'Negociable' : 'Precio fijo' }}
           </Badge>
         </div>
+        <CardHeader class="pb-2">
+          <CardTitle class="text-base">{{ listing.brand }} {{ listing.model }}</CardTitle>
+          <CardDescription class="text-sm">{{ listing.year }} • {{ listing.mileage_km.toLocaleString('es-ES') }} km</CardDescription>
+        </CardHeader>
+        <CardContent class="pt-0">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xl font-bold">
+                {{ listing.price.toLocaleString('es-ES') }} {{ listing.currency }}
+              </span>
+              <div class="flex items-center gap-1 text-xs text-muted-foreground">
+                <Eye class="h-3.5 w-3.5" />
+                {{ listing.views }}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 text-xs text-muted-foreground">
+              <div class="flex items-center gap-1">
+                <Fuel class="h-3.5 w-3.5" />
+                {{ listing.fuel_type }}
+              </div>
+              <div class="flex items-center gap-1">
+                <Gauge class="h-3.5 w-3.5" />
+                {{ listing.power_hp }} CV
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1 text-xs text-muted-foreground">
+              <MapPin class="h-3.5 w-3.5" />
+              {{ listing.location_city }}, {{ listing.location_region }}
+            </div>
+
+            <div class="pt-2 border-t">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-muted" />
+                <span class="text-xs">{{ listing.user.name }}</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+
+    <!-- No Results -->
+    <div v-if="filteredListings.length === 0" class="text-center py-8">
+      <p class="text-lg text-muted-foreground">No se encontraron anuncios</p>
+      <p class="text-sm text-muted-foreground mt-1">Intenta ajustar los filtros de búsqueda</p>
+    </div>
+  </div>
+</template>        </div>
         <CardHeader>
           <CardTitle class="text-lg">{{ listing.brand }} {{ listing.model }}</CardTitle>
           <CardDescription class="text-base">{{ listing.year }} • {{ listing.mileage_km.toLocaleString('es-ES') }} km</CardDescription>

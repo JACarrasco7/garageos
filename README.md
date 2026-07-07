@@ -1,102 +1,173 @@
-<h1 align="center">GarageOS</h1>
+# 🚗 GarageOS
+
+> Plataforma SaaS modular para gestión de vehículos, mantenimientos, marketplace e importación de vehículos Alemania → España.
 
 <p align="center">
-<a href="https://github.com/garageos/garageos/actions"><img src="https://github.com/garageos/garageos/workflows/tests/badge.svg" alt="Build Status"></a>
-<img src="https://img.shields.io/badge/tests-58%20written-brightgreen" alt="Tests">
-<img src="https://img.shields.io/badge/php-8.4-blue" alt="PHP 8.4">
-<img src="https://img.shields.io/badge/laravel-12.x-red" alt="Laravel 12">
-<img src="https://img.shields.io/badge/tailwind-4.x-blue" alt="Tailwind 4">
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel" alt="Laravel 13">
+  <img src="https://img.shields.io/badge/PHP-8.4-777BB4?logo=php" alt="PHP 8.4">
+  <img src="https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vue.js" alt="Vue 3.5">
+  <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss" alt="Tailwind 4">
+  <img src="https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql" alt="PostgreSQL">
 </p>
 
-## Stack
+---
 
-- **Laravel 12** + **Vue 3.5** + **Inertia.js 2** + **TypeScript 5.8**
-- **Tailwind CSS 4** + **shadcn-vue** + **PostgreSQL 16** + **Redis 7**
-- **FrankenPHP + Octane** para producción
-- **Capacitor 7** para móvil (iOS/Android)
+## 📚 Índice de Documentación
 
-## Stack DB: PostgreSQL
+### 🚀 [Setup y Entorno de Desarrollo](docs/setup/)
+| Documento | Descripción |
+|-----------|-------------|
+| **[Laragon (recomendado)](docs/setup/LARAGON.md)** | **Setup oficial: Laragon + Docker DB** |
+| [Docker](docs/setup/DOCKER.md) | TODO: Setup legacy con Docker completo |
+| [WSL](docs/setup/WSL-SETUP.md) | Alternativa con WSL2 + PHP nativo |
+| [PostgreSQL](docs/setup/POSTGRESQL.md) | Configuración de base de datos |
+| [Setup inicial](docs/setup/SETUP.md) | Primeros pasos en el proyecto |
 
-**¿Por qué PostgreSQL?**
-- JSONB indexable para datos dinámicos (specs de vehículos, raw extraction)
-- Full-text search nativo con stemmer español (`to_tsvector`)
-- Mejor concurrencia (MVCC maduro) — escala con muchas escrituras
-- PostGIS disponible si necesitamos geolocalización (talleres)
-- Particionado nativo para escalar por fecha/tenant
+### 🏗️ [Arquitectura](docs/architecture/)
+| Documento | Descripción |
+|-----------|-------------|
+| [Stack](docs/architecture/STACK.md) | Stack tecnológico completo |
+| [Módulos](docs/architecture/MODULAR.md) | Arquitectura modular |
+| [Base de datos](docs/architecture/DATABASE.md) | Modelo de datos |
+| [API REST](docs/architecture/API.md) | Endpoints |
+| [Plan general](docs/architecture/PLAN.md) | Roadmap completo |
 
-Ver [`docs/POSTGRESQL_SETUP.md`](docs/POSTGRESQL_SETUP.md) para setup completo.
+### 🧩 [Módulos del Sistema](docs/modules/)
+| Módulo | Descripción |
+|--------|-------------|
+| [Vehicle](docs/modules/VEHICLE.md) | Gestión de vehículos |
+| [VehicleImport](docs/modules/VEHICLE-IMPORT.md) | Importación DE→ES |
+| [Maintenance](docs/modules/MAINTENANCE.md) | Service Packs |
+| [Marketplace](docs/modules/MARKETPLACE.md) | Compraventa |
+| [Documents](docs/modules/DOCUMENTS.md) | Documentos + OCR |
+| [Alerts](docs/modules/ALERTS.md) | Reglas de alertas |
+| [Identity](docs/modules/IDENTITY.md) | Usuarios y garajes |
+| **[Sistema de Roles y Suscripciones](docs/SYSTEM_ROLES_SUBSCRIPTIONS.md)** | Roles, planes y features |
 
-### Setup local con PostgreSQL
+#### 🔑 Credenciales SuperAdmin
+- **Email:** `jacararsco@garageos.com`
+- **Password:** `admin`
+- **Rol:** `superadmin`
+- **Acceso:** `/admin`
 
-**Opción A — Docker (recomendado):**
-```bash
-docker-compose up -d postgres
-# en otra terminal
+### 💻 [Desarrollo](docs/development/)
+| Documento | Descripción |
+|-----------|-------------|
+| [Convenciones](docs/development/CONVENTIONS.md) | Estilo de código |
+| [Testing](docs/development/TESTING.md) | Tests con Pest |
+| [Git workflow](docs/development/GIT-WORKFLOW.md) | Flujo de Git |
+| [Debugging](docs/development/DEBUGGING.md) | Resolución de problemas |
+
+### 🎨 [Diseño](docs/design/)
+| Documento | Descripción |
+|-----------|-------------|
+| [Design System](docs/design/DESIGN-SYSTEM.md) | Tokens y componentes |
+| [Mejoras visuales](docs/design/VISUAL-IMPROVEMENTS.md) | Plan de mejoras |
+| [Dark mode](docs/design/DARK-MODE.md) | Modo oscuro |
+| [OpenDesigner](docs/design/OPENDESIGNER.md) | Workflow de diseño |
+
+### 📱 [Mobile](docs/mobile/)
+| Documento | Descripción |
+|-----------|-------------|
+| [Capacitor](docs/mobile/CAPACITOR.md) | Configuración |
+| [Implementación](docs/mobile/IMPLEMENTATION.md) | Plan de implementación |
+| [Estado](docs/mobile/STATUS.md) | Estado actual |
+
+### 🚀 [Despliegue](docs/deployment/)
+| Documento | Descripción |
+|-----------|-------------|
+| [Deploy gratis](docs/deployment/FREE-DEPLOY.md) | Opciones gratuitas |
+| [Producción](docs/deployment/PRODUCTION.md) | Deploy en producción |
+
+---
+
+## ⚡ Quick Start (100% Laragon nativo)
+
+```powershell
+# 1. Instala PostgreSQL 16 en C:\laragon\bin\postgresql\16
+#    Descarga: https://www.postgresql.org/download/windows/
+
+# 2. Configura DB
+powershell -ExecutionPolicy Bypass -File scripts\setup-postgresql-native.ps1
+
+# 3. Instala deps
+composer install
+npm install
+
+# 4. Setup Laravel
+cp .env.example .env
+php artisan key:generate
 php artisan migrate
-php artisan db:seed
+
+# 5. Arranca (2 terminales)
+php artisan serve      # http://localhost:8000
+npm run dev            # http://localhost:5173
 ```
 
-**Opción B — PostgreSQL local (Laragon):**
-1. Instalar PostgreSQL 16+
-2. Crear DB y usuario:
-```sql
-CREATE DATABASE garageos;
-CREATE USER garageos WITH PASSWORD 'garageos';
-GRANT ALL PRIVILEGES ON DATABASE garageos TO garageos;
+📖 Ver guía completa: [docs/setup/LARAGON.md](docs/setup/LARAGON.md)
+
+---
+
+## 🛠️ Stack
+
+| Capa | Tecnología |
+|------|-----------|
+| Backend | Laravel 13 + PHP 8.4 |
+| Frontend | Vue 3.5 + Inertia.js 2 + TypeScript 5.8 |
+| Estilos | Tailwind CSS 4 + shadcn-vue |
+| Base de datos | PostgreSQL 16 + PostGIS |
+| Cache/Queue | Redis 7 |
+| Mobile | Capacitor 7 |
+| Tests | Pest PHP 3 |
+| Server | Octane + FrankenPHP |
+| DevOps | Docker + Docker Compose |
+
+---
+
+## 📦 Estructura del Proyecto
+
 ```
-3. Configurar `.env` (ver `.env.example`)
-4. `php artisan migrate`
-
-### Tests
-
-Los tests usan **SQLite en memoria** (estándar Laravel, más rápido):
-```bash
-php artisan test --parallel
+app_garage/
+├── app/
+│   ├── Modules/              # Módulos del sistema
+│   │   ├── Vehicle/         # Gestión vehículos
+│   │   ├── VehicleImport/   # Importación DE→ES
+│   │   ├── Maintenance/     # Service Packs
+│   │   ├── Marketplace/     # Compraventa
+│   │   ├── Documents/       # Documentos + OCR
+│   │   ├── Alerts/          # Alertas
+│   │   └── Identity/        # Usuarios/Garajes
+│   ├── Http/                 # Controllers
+│   ├── Models/               # Modelos globales
+│   ├── Services/             # Servicios compartidos
+│   ├── Console/              # Comandos Artisan
+│   └── Providers/            # Service Providers
+├── database/
+│   ├── migrations/           # 15+ migraciones
+│   ├── seeders/              # Datos iniciales
+│   └── factories/            # Factories para tests
+├── resources/
+│   ├── js/                   # Frontend Vue + Inertia
+│   │   ├── Components/       # shadcn-vue
+│   │   ├── Pages/            # Páginas Inertia
+│   │   ├── Layouts/          # Layouts
+│   │   └── types/            # TypeScript types
+│   └── views/                # Vistas Blade
+├── routes/                   # Rutas
+├── tests/                    # Tests Pest
+├── docs/                     # 📚 Esta documentación
+└── docker/                   # Configuración Docker
 ```
 
-## Producción
+---
 
-### Requisitos previos
-- Configurar `.env` con:
-  - `STRIPE_KEY` y `STRIPE_SECRET` (suscripciones)
-  - `FIREBASE_PROJECT_ID` y `FIREBASE_CREDENTIALS` (push)
-  - `SERVICES_COCHESNET_KEY` (scraper de mercado)
+## 🤝 Contribución
 
-### Deploy
-```bash
-# 1. Migraciones
-php artisan migrate --force
+Ver [workflow de desarrollo](docs/development/GIT-WORKFLOW.md).
 
-# 2. Storage link
-php artisan storage:link
+---
 
-# 3. Cache
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+## 📄 Licencia
 
-# 4. Horizon
-php artisan horizon:terminate
-
-# 5. Docker
-docker-compose up -d
-```
-
-### Mobile (Android)
-```bash
-npx cap add android
-npx cap sync
-npx cap open android
-```
-
-## Licencia
-
-MIT
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Propietario - Todos los derechos reservados.

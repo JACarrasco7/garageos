@@ -29,4 +29,14 @@ class MarketplaceFavorite extends Model
     {
         return $this->belongsTo(MarketplaceListing::class, 'listing_id');
     }
+
+    public function scopeByUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    public function scopeByListing($query, $listingId)
+    {
+        return $query->where('listing_id', $listingId);
+    }
 }

@@ -20,7 +20,7 @@ class VehicleImportPolicy
      */
     public function view(User $user, VehicleImport $vehicleImport): bool
     {
-        return $vehicleImport->user_id === $user->id;
+        return $vehicleImport->user_id === $user->id || $vehicleImport->importer_id === $user->id;
     }
 
     public function create(User $user): bool
@@ -30,7 +30,7 @@ class VehicleImportPolicy
 
     public function update(User $user, VehicleImport $vehicleImport): bool
     {
-        return $vehicleImport->user_id === $user->id;
+        return $vehicleImport->user_id === $user->id || $vehicleImport->importer_id === $user->id;
     }
 
     /**

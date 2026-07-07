@@ -11,6 +11,11 @@ return new class extends Migration
             return;
         }
 
+        $hasPostgis = DB::selectOne("SELECT 1 FROM pg_available_extensions WHERE name = 'postgis'");
+        if (! $hasPostgis) {
+            return;
+        }
+
         DB::statement('ALTER TABLE listings ADD COLUMN location geography(Point, 4326)');
         DB::statement('CREATE INDEX listings_location_idx ON listings USING GIST (location)');
     }

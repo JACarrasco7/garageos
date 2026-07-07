@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('maintenance_entries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('document_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('workshop_id')->nullable()->constrained()->nullOnDelete();
+            $table->unsignedBigInteger('vehicle_id');
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->unsignedBigInteger('workshop_id')->nullable();
             $table->enum('type', [
                 'aceite', 'filtros', 'neumaticos', 'frenos',
                 'distribucion', 'embrague', 'bateria', 'itv',

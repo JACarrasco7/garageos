@@ -20,7 +20,7 @@ class StripeConnectController extends Controller
 
         return Inertia::render('Billing/StripeConnect', [
             'account' => $account,
-            'stripeClientId' => env('STRIPE_CLIENT_ID'),
+            'stripeClientId' => config('services.stripe.client_id'),
         ]);
     }
 

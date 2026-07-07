@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('marketplace_listings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('vehicle_id')->nullable()->constrained('vehicles')->onDelete('set null');
+            $table->unsignedBigInteger('vehicle_id')->nullable()->after('user_id');
             $table->string('title');
             $table->text('description');
             $table->decimal('price', 10, 2);

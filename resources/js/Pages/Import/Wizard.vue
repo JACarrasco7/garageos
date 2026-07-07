@@ -7,14 +7,15 @@ import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/Components/ui/tabs'
 import {
   Car, Truck, Search, Calculator, FileCheck, CreditCard,
-  CheckCircle2, Clock, AlertTriangle, Trophy
+  CheckCircle2, Clock, AlertTriangle, Trophy, HelpCircle
 } from 'lucide-vue-next'
 import Purchase from './WizardSteps/Purchase.vue'
 import Transport from './WizardSteps/Transport.vue'
-import ItvInspection from './WizardSteps/ItvInspection.vue'
+import ItvInspection from './ItvInspection.vue'
 import Taxes from './WizardSteps/Taxes.vue'
 import DgtRegistration from './WizardSteps/DgtRegistration.vue'
 import Plates from './WizardSteps/Plates.vue'
+import ImportVerificationInfo from '@/Components/ImportVerificationInfo.vue'
 
 interface VehicleImport {
   id: number
@@ -144,6 +145,8 @@ const getStepStatusBadge = (step: any) => {
   }
   return { variant: 'outline' as const, class: '', icon: Clock, text: 'Pendiente' }
 }
+
+const showInfo = ref(false)
 </script>
 
 <template>
@@ -290,5 +293,21 @@ const getStepStatusBadge = (step: any) => {
         Generar Certificado de Importación
       </Button>
     </div>
+
+    <!-- Floating Help Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+      <Button
+        size="lg"
+        class="rounded-full shadow-lg bg-blue-600 hover:bg-blue-700"
+        @click="showInfo = true"
+      >
+        <HelpCircle class="h-6 w-6" />
+      </Button>
+    </div>
+
+    <!-- Verification Info Dialog -->
+    <ImportVerificationInfo
+      v-model:open="showInfo"
+    />
   </div>
 </template>

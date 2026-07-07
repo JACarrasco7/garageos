@@ -15,7 +15,29 @@ use Inertia\Response;
 
 class DocumentController extends Controller
 {
-    public function index(Vehicle $vehicle): Response
+    public function index(Request $request): Response
+    {
+        $user = $request->user();
+        $vehicleIds = Vehicle::query()
+            ->whereHas('garage', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
+            ->pluck('id');
+
+        $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
+        $documents = Document::whereIn('vehicle_id', $vehicleIds)
+            ->latest()
+            ->get()
+            ->groupBy('type');
+
+        return Inertia::render('Documents/Index', [
+            'vehicle' => $vehicles->first(),
+            'vehicles' => $vehicles,
+            'documents' => $documents,
+        ]);
+    }
+
+    public function indexForVehicle(Vehicle $vehicle): Response
     {
         $this->authorize('view', $vehicle->garage);
 
@@ -26,6 +48,7 @@ class DocumentController extends Controller
 
         return Inertia::render('Documents/Index', [
             'vehicle' => $vehicle,
+            'vehicles' => collect([$vehicle]),
             'documents' => $documents,
         ]);
     }

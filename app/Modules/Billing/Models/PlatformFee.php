@@ -35,4 +35,27 @@ class PlatformFee extends Model
     {
         return $this->belongsTo(StripeAccount::class, 'stripe_account_id', 'stripe_account_id');
     }
+
+    public function scopeByCurrency($query, $currency)
+    {
+        return $query->where('currency', $currency);
+    }
+
+    public function scopeProcessed($query)
+    {
+        return $query->whereNotNull('processed_at');
+    }
+
+    public function scopeUnprocessed($query)
+    {
+        return $query->whereNull('processed_at');
+    }
+
+    public function markAsProcessed(?string $invoicePath = null): void
+    {
+        $this->update([
+            'processed_at' => now(),
+            'invoice_path' => $invoicePath,
+        ]);
+    }
 }

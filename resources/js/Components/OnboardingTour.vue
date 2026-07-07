@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
-import { Car, FileText, Wrench, Bell, X } from 'lucide-vue-next';
+import { Car, FileText, Wrench, Bell, ShoppingBag, Truck, User, HelpCircle } from 'lucide-vue-next';
 
 interface TourStep {
   target: string;
@@ -35,6 +35,24 @@ const steps: TourStep[] = [
     title: 'Alertas',
     content: 'Recibe notificaciones de vencimientos y mantenimientos.',
     icon: Bell,
+  },
+  {
+    target: '[data-tour="marketplace"]',
+    title: 'Mercado de venta',
+    content: 'Publica tu vehículo para venta al mejor precio. Encuentra ofertas de compra.',
+    icon: ShoppingBag,
+  },
+  {
+    target: '[data-tour="imports"]',
+    title: 'Importaciones',
+    content: 'Gestiona todo el proceso de importación de tu vehículo desde Alemania.',
+    icon: Truck,
+  },
+  {
+    target: '[data-tour="help"]',
+    title: 'Ayuda y soporte',
+    content: 'Accede a preguntas frecuentes y contacta con soporte cuando lo necesites.',
+    icon: HelpCircle,
   },
 ];
 
@@ -109,20 +127,20 @@ defineExpose({ startTour });
 </script>
 
 <template>
-  <div v-if="isVisible" class="fixed inset-0 z-50">
+  <div v-if="isVisible" class="fixed inset-0 z-[100] pointer-events-none">
     <!-- Overlay -->
     <div class="absolute inset-0 bg-black/50" />
 
     <!-- Highlight -->
     <div
-      class="absolute border-2 border-primary rounded-lg transition-all duration-300 pointer-events-none"
+      class="absolute border-2 border-primary rounded-lg transition-all duration-300 pointer-events-none shadow-lg"
       :style="highlightStyle"
     />
 
     <!-- Tooltip -->
     <Card
       v-if="steps[currentStep]"
-      class="absolute w-64 pointer-events-auto"
+      class="absolute w-64 pointer-events-auto shadow-xl border-primary/20 z-[101]"
       :style="tooltipStyle"
     >
       <CardHeader class="pb-2">

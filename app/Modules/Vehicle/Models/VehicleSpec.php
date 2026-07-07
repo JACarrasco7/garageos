@@ -36,4 +36,19 @@ class VehicleSpec extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+
+    public function scopeByEngineSize($query, $cc)
+    {
+        return $query->where('engine_cc', $cc);
+    }
+
+    public function scopeByPowerRange($query, $minHp, $maxHp)
+    {
+        return $query->whereBetween('power_hp', [$minHp, $maxHp]);
+    }
+
+    public function getPowerKwAttribute(): ?float
+    {
+        return $this->power_hp ? round($this->power_hp * 0.7457, 2) : null;
+    }
 }

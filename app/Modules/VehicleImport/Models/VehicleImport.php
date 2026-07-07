@@ -3,12 +3,14 @@
 namespace App\Modules\VehicleImport\Models;
 
 use App\Models\User;
+use App\Modules\Billing\Models\PaymentIntent;
 use App\Modules\Vehicle\Models\Vehicle;
 use App\Modules\VehicleImport\Enums\ImportStep;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class VehicleImport extends Model
 {
@@ -18,9 +20,12 @@ class VehicleImport extends Model
 
     protected $fillable = [
         'user_id',
+        'importer_id',
         'vehicle_id',
         'listing_id',
+        'vehicle_import_offer_id',
         'plate_original',
+        'vin',
         'plate_new',
         'brand',
         'model',
@@ -32,12 +37,22 @@ class VehicleImport extends Model
         'purchase_date',
         'arrival_date',
         'itv_deadline',
+        'delivery_confirmed_at',
         'current_step',
         'needs_homologation',
         'status',
-        'documents',
         'rejection_reason',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function importer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'importer_id');
+    }
 
     protected $casts = [
         'year' => 'integer',
@@ -47,6 +62,7 @@ class VehicleImport extends Model
         'purchase_date' => 'date',
         'arrival_date' => 'date',
         'itv_deadline' => 'date',
+        'delivery_confirmed_at' => 'datetime',
         'needs_homologation' => 'boolean',
         'documents' => 'array',
         'current_step' => ImportStep::class,
@@ -59,14 +75,29 @@ class VehicleImport extends Model
         'status' => 'pending',
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function vehicle(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class);
+    }
+
+    public function verification()
+    {
+        return $this->hasOne(VehicleVerification::class);
+    }
+
+    public function transportEvents(): HasMany
+    {
+        return $this->hasMany(TransportEvent::class);
+    }
+
+    public function contract(): HasOne
+    {
+        return $this->hasOne(ImportContract::class);
+    }
+
+    public function offer(): BelongsTo
+    {
+        return $this->belongsTo(VehicleImportOffer::class, 'vehicle_import_offer_id');
     }
 
     public function importDocuments(): HasMany
@@ -77,6 +108,16 @@ class VehicleImport extends Model
     public function temporaryPlates(): HasMany
     {
         return $this->hasMany(TemporaryPlate::class, 'import_id');
+    }
+
+    public function paymentMilestones(): HasMany
+    {
+        return $this->hasMany(ImportPaymentMilestone::class);
+    }
+
+    public function paymentIntents(): HasMany
+    {
+        return $this->hasMany(PaymentIntent::class);
     }
 
     public function calculateItvDeadline(): void
@@ -148,6 +189,49 @@ class VehicleImport extends Model
     public function scopeCompleted($query)
     {
         return $query->where('current_step', ImportStep::COMPLETED);
+    }
+
+    public function syncToGarage($import): void
+    {
+        $vehicle = Vehicle::updateOrCreate(
+            [
+                'plate' => $import->plate_new ?? $import->plate_original,
+            ],
+            [
+                'garage_id' => $import->user->garages()->first()?->id,
+                'brand' => $import->brand,
+                'model' => $import->model,
+                'year' => $import->year,
+                'engine_cc' => $import->engine_cc,
+                'power_kw' => $import->power_kw,
+                'imported_from' => $import->origin_country,
+                'import_date' => $import->purchase_date,
+            ]
+        );
+
+        $import->update([
+            'vehicle_id' => $vehicle->id,
+        ]);
+    }
+
+    public function validateVIN(): bool
+    {
+        if (!$this->vin) {
+            return false;
+        }
+
+        return strlen($this->vin) === 17;
+    }
+
+    public function getStatusLabel(): string
+    {
+        return match ($this->status) {
+            'pending' => 'Pendiente',
+            'processing' => 'En proceso',
+            'completed' => 'Completado',
+            'rejected' => 'Rechazado',
+            default => 'Desconocido',
+        };
     }
 
     public function calculateImportTaxes(float $purchasePrice): array

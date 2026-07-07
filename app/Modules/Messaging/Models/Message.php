@@ -44,4 +44,24 @@ class Message extends Model
             ]);
         }
     }
+
+    public function scopeUnread($query)
+    {
+        return $query->where('is_read', false);
+    }
+
+    public function scopeByConversation($query, $conversationId)
+    {
+        return $query->where('conversation_id', $conversationId);
+    }
+
+    public function scopeBySender($query, $senderId)
+    {
+        return $query->where('sender_id', $senderId);
+    }
+
+    public function scopeRecent($query, $limit = 50)
+    {
+        return $query->latest()->limit($limit);
+    }
 }
