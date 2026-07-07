@@ -3,13 +3,13 @@ import { inject, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { Button } from '@/Components/ui/button';
 import { Separator } from '@/Components/ui/separator';
-import { 
-    Breadcrumb, 
-    BreadcrumbItem, 
-    BreadcrumbLink, 
-    BreadcrumbList, 
-    BreadcrumbPage, 
-    BreadcrumbSeparator 
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator
 } from '@/Components/ui/breadcrumb';
 import { PanelLeftClose, PanelLeftOpen, Menu } from 'lucide-vue-next';
 import ThemeToggle from '@/Components/ThemeToggle.vue';

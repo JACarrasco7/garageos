@@ -115,8 +115,6 @@ class ImportPaymentController extends Controller
         if (! $milestone->vehicleImport) {
             return response()->json(['error' => 'El hito no está asociado a una importación válida.'], 400);
         }
-            return response()->json(['error' => 'El hito no está asociado a una importación válida.'], 400);
-        }
 
         if (in_array($milestone->milestone, ['H1_reserva', 'H2_compra'])) {
             return DB::transaction(function () use ($milestone) {
