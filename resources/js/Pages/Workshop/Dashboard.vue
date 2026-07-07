@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import WebLayout from '@/layouts/WebLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table'
 import { Button } from '@/Components/ui/button'
 import { Wrench, Car, Clock, CheckCircle2 } from 'lucide-vue-next'
@@ -78,10 +79,10 @@ const stats = [
       </div>
 
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card
+        <PageCard
           v-for="stat in stats"
           :key="stat.title"
-          class="glass-surface border-0 group transition-all duration-300 overflow-hidden relative"
+          class="group transition-all duration-300 overflow-hidden relative"
         >
           <div :class="['absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500', stat.color]" />
           <CardContent class="p-6 relative">
@@ -95,18 +96,20 @@ const stats = [
               <p class="text-3xl font-bold text-foreground mt-1">{{ stat.value }}</p>
             </div>
           </CardContent>
-        </Card>
+        </PageCard>
       </div>
 
-      <Card class="glass-surface border-0">
-        <CardHeader class="border-b border-border/50">
-          <CardTitle class="flex items-center gap-2">
-            <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-              <Car class="h-4 w-4 text-primary" />
-            </div>
-            Vehículos asignados
-          </CardTitle>
-        </CardHeader>
+      <PageCard>
+        <template #title>
+          <CardHeader class="border-b border-border/50">
+            <CardTitle class="flex items-center gap-2">
+              <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                <Car class="h-4 w-4 text-primary" />
+              </div>
+              Vehículos asignados
+            </CardTitle>
+          </CardHeader>
+        </template>
         <CardContent class="p-0">
           <Table>
             <TableHeader>
@@ -142,7 +145,4 @@ const stats = [
             </TableBody>
           </Table>
         </CardContent>
-      </Card>
-    </div>
-  </WebLayout>
-</template>
+    </PageCard>

@@ -19,6 +19,24 @@ class VerificationService
             'verified_by' => auth()->id(),
         ]);
 
+        $documents = $import->importDocuments()->where('is_verified', true)->get();
+        $missingDocuments = $this->getMissingDocuments($import, $documents);
+
+        if ($missingDocuments->isNotEmpty()) {
+            return [
+                'score' => 0,
+                'status' => 'UNVERIFIED',
+                'points' => [
+                    'vin' => false,
+                    'ownership' => false,
+                    'technical' => false,
+                    'itv' => false,
+                    'legal' => false,
+                ],
+                'missing_documents' => $missingDocuments->values()->all(),
+            ];
+        }
+
         $score = 0;
         $totalPoints = 5;
 
@@ -50,7 +68,27 @@ class VerificationService
                 'itv' => $verification->itv_verified,
                 'legal' => $verification->legal_status_verified,
             ],
+            'missing_documents' => [],
         ];
+    }
+
+    protected function getMissingDocuments(VehicleImport $import, $documents): array
+    {
+        $requiredTypes = [
+            'compraventa',
+            'coc',
+            'ficha_tecnica_origen',
+            'tarjeta_itv_origen',
+        ];
+
+        $missing = [];
+        foreach ($requiredTypes as $type) {
+            if (! $documents->contains('type', $type)) {
+                $missing[] = $type;
+            }
+        }
+
+        return collect($missing);
     }
 
     protected function determineStatus(float $percentage): string

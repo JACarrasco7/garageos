@@ -74,35 +74,30 @@ defineProps<{
 
     <!-- KPI Glass Grid -->
     <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-      <div class="glass-kpi">
-        <StatCard
-          title="Vehículos"
-          :value="stats?.total_vehicles ?? 0"
-          :icon="Car"
-          accent="primary"
-          :description="(vehicles?.filter(v => v.is_active).length ?? 0) + ' activos'"
-          :href="route('vehicles.index')"
-        />
-      </div>
-      <div class="glass-kpi">
-        <StatCard
-          title="Documentos"
-          :value="stats?.total_documents ?? 0"
-          :icon="Shield"
-          accent="accent"
-          description="ITV, seguro, permiso de circulación"
-        />
-      </div>
-      <div class="glass-kpi">
-        <StatCard
-          title="Alertas pendientes"
-          :value="stats?.pending_alerts ?? 0"
-          :icon="Bell"
-          accent="destructive"
-          :pulse="(stats?.pending_alerts ?? 0) > 0"
-          description="Mantenimiento y avisos"
-        />
-      </div>
+      <StatCard
+        title="Vehículos"
+        :value="stats?.total_vehicles ?? 0"
+        :icon="Car"
+        accent="primary"
+        :description="(vehicles?.filter(v => v.is_active).length ?? 0) + ' activos'"
+        :href="route('vehicles.index')"
+      />
+      <StatCard
+        title="Documentos"
+        :value="stats?.total_documents ?? 0"
+        :icon="Shield"
+        accent="accent"
+        description="ITV, seguro, permiso de circulación"
+      />
+      <StatCard
+        title="Alertas pendientes"
+        :value="stats?.pending_alerts ?? 0"
+        :icon="Bell"
+        accent="destructive"
+        :pulse="(stats?.pending_alerts ?? 0) > 0"
+        description="Mantenimiento y avisos"
+        :href="route('alerts.index' as any)"
+      />
     </div>
 
     <!-- Glass Content Grid -->

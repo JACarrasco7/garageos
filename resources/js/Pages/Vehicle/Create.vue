@@ -2,7 +2,8 @@
 import { useForm, Link } from '@inertiajs/vue3'
 import { Head } from '@inertiajs/vue3'
 import WebLayout from '@/layouts/WebLayout.vue'
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
+import PageCard from '@/Components/PageCard.vue'
+import { CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
@@ -43,13 +44,16 @@ const submit = () => {
       Añadir Vehículo
     </template>
 
-    <Card class="glass-surface border-0 max-w-2xl">
-      <CardHeader class="pb-3">
-        <CardTitle class="flex items-center gap-2 text-lg font-semibold">
-          <Car class="h-5 w-5" />
-          Nuevo vehículo
-        </CardTitle>
-      </CardHeader>
+    <PageCard class="max-w-2xl">
+      <template #title>
+        <CardHeader class="pb-3">
+          <CardTitle class="flex items-center gap-2 text-lg font-semibold">
+            <Car class="h-5 w-5" />
+            Nuevo vehículo
+          </CardTitle>
+        </CardHeader>
+      </template>
+
       <CardContent>
         <form @submit.prevent="submit" class="space-y-4">
           <div class="space-y-2">
@@ -141,6 +145,6 @@ const submit = () => {
           </div>
         </form>
       </CardContent>
-    </Card>
+    </PageCard>
   </WebLayout>
 </template>

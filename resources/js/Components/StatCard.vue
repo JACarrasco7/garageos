@@ -18,6 +18,7 @@ interface Props {
     href?: string;
     trend?: Trend;
     pulse?: boolean;
+    class?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), { accent: 'primary' });
@@ -48,7 +49,9 @@ const cardClasses = computed(() =>
     cn(
         'group relative overflow-hidden rounded-2xl border backdrop-blur-xl p-6 transition-all duration-300',
         'bg-card/80 border-border shadow-sm hover:bg-card hover:shadow-md',
+        'glass-kpi',
         props.href && 'block cursor-pointer',
+        props.class,
     ),
 );
 </script>
