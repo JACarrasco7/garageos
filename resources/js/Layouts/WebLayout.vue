@@ -5,7 +5,6 @@ import { Toaster } from 'vue-sonner';
 
 import AppSidebar from '@/Components/AppSidebar.vue';
 import OnboardingTour from '@/Components/OnboardingTour.vue';
-import WebSidebar from '@/Components/WebSidebar.vue';
 import WebHeader from '@/Components/WebHeader.vue';
 import WebMainContent from '@/Components/WebMainContent.vue';
 
@@ -41,9 +40,7 @@ onMounted(() => {
                 'bg-card/50 border-white/15 shadow-xl',
             ]"
         >
-            <WebSidebar>
-                <AppSidebar :collapsed="!sidebarOpen" />
-            </WebSidebar>
+            <AppSidebar :collapsed="!sidebarOpen" />
         </aside>
 
         <!-- Sidebar (mobile drawer) -->

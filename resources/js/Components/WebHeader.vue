@@ -6,9 +6,9 @@ defineSlots<{
 </script>
 
 <template>
-    <header class="flex items-center justify-between p-4 rounded-2xl border backdrop-blur-xl bg-card/35 border-white/12 shadow-lg mb-3">
+    <header class="flex items-center justify-between p-4 mb-3">
         <div class="flex items-center gap-4">
-            <slot />
+            <h1 class="text-lg font-semibold tracking-tight text-foreground"><slot /></h1>
         </div>
         <div class="flex items-center gap-2">
             <slot name="actions" />
