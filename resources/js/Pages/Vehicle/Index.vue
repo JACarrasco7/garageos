@@ -50,7 +50,7 @@ defineProps<{
       <!-- </CardContent> -->
     <!-- </PageCard> -->
 
-                  <div v-if="vehicles.length === 0" class="text-center py-12 bg-amber-50 rounded-3xl border border-amber-200">
+                  <div v-if="vehicles.length === 0" class="text-center py-12">
           <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
             <Car class="h-8 w-8 text-muted-foreground" />
           </div>

@@ -82,7 +82,7 @@
   --duration-slow: 480ms;
 
   /* === Neutrals - Foundation === */
-  --background: #F8FAFC; /* Slate 50 - Light Clean Background */
+  --background: #E8F5F0; /* Green Mist - Soft green background for glass contrast */
   --foreground: #0F172A; /* Slate 900 - Carbon Fiber/Asphalt */
   --card: oklch(1 0 0);
   --card-foreground: #0F172A;
