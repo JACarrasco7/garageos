@@ -32,8 +32,8 @@ defineProps<{
       Mis Vehículos
     </template>
 
-    <PageCard data-tour="vehicles">
-      <template #title>
+    <!-- <PageCard data-tour="vehicles"> -->
+      <!-- <template #title>
         <CardHeader class="flex flex-row items-center justify-between pb-3">
           <CardTitle class="text-lg font-semibold">Lista de vehículos</CardTitle>
           <Button as-child variant="ghost" size="sm" class="rounded-lg glass-tab">
@@ -43,10 +43,14 @@ defineProps<{
             </Link>
           </Button>
         </CardHeader>
-      </template>
+      </template> -->
 
-      <CardContent>
-        <div v-if="vehicles.length === 0" class="text-center py-12">
+      <!-- <CardContent> -->
+
+      <!-- </CardContent> -->
+    <!-- </PageCard> -->
+
+                  <div v-if="vehicles.length === 0" class="text-center py-12 bg-amber-50 rounded-3xl border border-amber-200">
           <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
             <Car class="h-8 w-8 text-muted-foreground" />
           </div>
@@ -88,7 +92,6 @@ defineProps<{
             <p class="text-sm text-muted-foreground mt-2">{{ vehicle.current_km.toLocaleString() }} km</p>
           </Link>
         </div>
-      </CardContent>
-    </PageCard>
+
   </WebLayout>
 </template>

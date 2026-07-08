@@ -12,12 +12,12 @@ defineProps<{
 </script>
 
 <template>
-    <div :class="['glass-panel rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-lg', className]">
-        <Card :class="['border-0 bg-transparent shadow-none']">
+    <div :class="['glass-panel rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-lg h-full', className]">
+        <Card :class="['border-0 bg-transparent shadow-none h-full flex flex-col']">
             <CardHeader v-if="title" class="p-5 pb-3">
                 <CardTitle>{{ title }}</CardTitle>
             </CardHeader>
-            <CardContent :class="title ? 'p-5 pt-0' : 'p-5'">
+            <CardContent :class="['p-5 pt-0 flex-1']">
                 <slot />
             </CardContent>
             <CardFooter v-if="$slots.footer" class="p-5 pt-0">
