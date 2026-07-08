@@ -177,6 +177,6 @@ const typeLabels: Record<string, string> = {
           </div>
         </div>
       </CardContent>
-    </Card>
+    </PageCard>
   </WebLayout>
 </template>

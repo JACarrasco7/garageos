@@ -48,7 +48,7 @@ interface VehicleImport {
 }
 
 const props = defineProps<{
-  import: VehicleImport
+  importData: VehicleImport
   verification: Verification
   evaluation: Evaluation
 }>()
@@ -65,7 +65,7 @@ const form = useForm({
 const isGenerating = ref(false)
 
 const updateVerification = () => {
-  form.patch(route('import.verify.update', props.import.id), {
+  form.patch(route('import.verify.update', props.importData.id), {
     preserveScroll: true,
   })
 }
@@ -73,7 +73,7 @@ const updateVerification = () => {
 const generateCertificate = async () => {
   isGenerating.value = true
   try {
-    const response = await router.post(route('import.verify.report', props.import.id), {}, {
+    const response = await router.post(route('import.verify.report', props.importData.id), {}, {
       onSuccess: (page) => {
         // The controller returns JSON, but Inertia handles it.
         // In a real scenario, we'd handle the PDF URL.
@@ -88,7 +88,7 @@ const generateCertificate = async () => {
 const generateDetailedReport = async () => {
   isGenerating.value = true
   try {
-    await router.post(route('import.verify.detailed', props.import.id), {}, {
+    await router.post(route('import.verify.detailed', props.importData.id), {}, {
       onSuccess: () => {
         alert('Informe Técnico Detallado generado con éxito.')
       }
@@ -128,8 +128,8 @@ const verificationItems = [
             Auditoría de Verificación
           </h1>
           <p class="text-muted-foreground">
-            Vehículo: {{ import.brand }} {{ import.model }} ({{ import.year }})
-            <span v-if="import.vin" class="ml-2 font-mono text-xs bg-muted px-2 py-1 rounded">VIN: {{ import.vin }}</span>
+            Vehículo: {{ importData.brand }} {{ importData.model }} ({{ importData.year }})
+            <span v-if="importData.vin" class="ml-2 font-mono text-xs bg-muted px-2 py-1 rounded">VIN: {{ importData.vin }}</span>
           </p>
         </div>
         <div class="flex items-center gap-3">
@@ -144,7 +144,6 @@ const verificationItems = [
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left Column: Verification Checks -->
         <div class="lg:col-span-2 space-y-6">
           <PageCard>
             <template #title>
@@ -199,7 +198,6 @@ const verificationItems = [
           </PageCard>
         </div>
 
-        <!-- Right Column: Reports & Actions -->
         <div class="space-y-6">
           <PageCard>
             <template #title>
@@ -210,77 +208,77 @@ const verificationItems = [
                 </CardTitle>
               </CardHeader>
             </template>
-            <CardContent>
-            </CardTitle>
-            <CardDescription>
-              Genere los documentos oficiales de GarageOS.
-            </CardDescription>
-          </CardHeader>
-          <CardContent class="space-y-4">
-            <div class="space-y-3">
-              <Button
-                class="w-full justify-between group"
-                :disabled="isGenerating || evaluation.score < 40"
-                @click="generateCertificate"
-              >
-                <div class="flex items-center gap-2">
-                  <ShieldCheck class="h-4 w-4" />
-                  <span>Certificado de Confianza</span>
-                </div>
-                <Download class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </Button>
+            <CardContent class="space-y-4">
+              <p class="text-sm text-muted-foreground mb-4">
+                Genere los documentos oficiales de GarageOS.
+              </p>
+              <div class="space-y-3">
+                <Button
+                  class="w-full justify-between group"
+                  :disabled="isGenerating || evaluation.score < 40"
+                  @click="generateCertificate"
+                >
+                  <div class="flex items-center gap-2">
+                    <ShieldCheck class="h-4 w-4" />
+                    <span>Certificado de Confianza</span>
+                  </div>
+                  <Download class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Button>
 
-              <Button
-                variant="outline"
-                class="w-full justify-between group"
-                :disabled="isGenerating"
-                @click="generateDetailedReport"
-              >
-                <div class="flex items-center gap-2">
-                  <Search class="h-4 w-4" />
-                  <span>Informe Técnico Detallado</span>
-                </div>
-                <Download class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </Button>
-            </div>
-
-            <Alert v-if="evaluation.score < 70" variant="warning" class="mt-4">
-              <AlertCircle class="h-4 w-4" />
-              <AlertTitle class="text-xs">Aviso de Calidad</AlertTitle>
-              <AlertDescription class="text-xs">
-                El score actual es bajo. Se recomienda completar más verificaciones para obtener el sello de "CERTIFIED".
-              </AlertDescription>
-            </Alert>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle class="text-sm">Resumen de Auditoría</CardTitle>
-          </CardHeader>
-          <CardContent class="space-y-3">
-            <div class="flex justify-between text-xs">
-              <span class="text-muted-foreground">Progreso de Verificación</span>
-              <span class="font-medium">{{ evaluation.score }}%</span>
-            </div>
-            <div class="h-2 w-full bg-muted rounded-full overflow-hidden">
-              <div
-                class="h-full bg-primary transition-all duration-500"
-                :style="{ width: `${evaluation.score}%` }"
-              />
-            </div>
-            <div class="grid grid-cols-2 gap-2 pt-2">
-              <div class="p-2 rounded bg-muted text-center">
-                <div class="text-[10px] text-muted-foreground uppercase">Estado</div>
-                <div class="text-xs font-bold">{{ evaluation.status }}</div>
+                <Button
+                  variant="outline"
+                  class="w-full justify-between group"
+                  :disabled="isGenerating"
+                  @click="generateDetailedReport"
+                >
+                  <div class="flex items-center gap-2">
+                    <Search class="h-4 w-4" />
+                    <span>Informe Técnico Detallado</span>
+                  </div>
+                  <Download class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Button>
               </div>
-              <div class="p-2 rounded bg-muted text-center">
-                <div class="text-[10px] text-muted-foreground uppercase">Auditor</div>
-                <div class="text-xs font-bold truncate">GarageOS Pro</div>
+
+              <Alert v-if="evaluation.score < 70" variant="warning" class="mt-4">
+                <AlertCircle class="h-4 w-4" />
+                <AlertTitle class="text-xs">Aviso de Calidad</AlertTitle>
+                <AlertDescription class="text-xs">
+                  El score actual es bajo. Se recomienda completar más verificaciones para obtener el sello de "CERTIFIED".
+                </AlertDescription>
+              </Alert>
+            </CardContent>
+          </PageCard>
+
+          <PageCard>
+            <template #title>
+              <CardHeader>
+                <CardTitle class="text-sm">Resumen de Auditoría</CardTitle>
+              </CardHeader>
+            </template>
+            <CardContent class="space-y-3">
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Progreso de Verificación</span>
+                <span class="font-medium">{{ evaluation.score }}%</span>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+              <div class="h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div
+                  class="h-full bg-primary transition-all duration-500"
+                  :style="{ width: `${evaluation.score}%` }"
+                />
+              </div>
+              <div class="grid grid-cols-2 gap-2 pt-2">
+                <div class="p-2 rounded bg-muted text-center">
+                  <div class="text-[10px] text-muted-foreground uppercase">Estado</div>
+                  <div class="text-xs font-bold">{{ evaluation.status }}</div>
+                </div>
+                <div class="p-2 rounded bg-muted text-center">
+                  <div class="text-[10px] text-muted-foreground uppercase">Auditor</div>
+                  <div class="text-xs font-bold truncate">GarageOS Pro</div>
+                </div>
+              </div>
+            </CardContent>
+          </PageCard>
+        </div>
       </div>
     </div>
   </WebLayout>

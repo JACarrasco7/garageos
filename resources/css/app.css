@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @import "tailwindcss";
 
@@ -7,7 +7,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: Figtree, ui-sans, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+  --font-display: 'Inter', ui-sans, system-ui, sans-serif;
 }
 
 @theme inline {
@@ -52,7 +54,34 @@
 :root {
   --radius: 0.625rem;
 
-  /* Neutrals - Foundation */
+  /* === Spacing scale (4 px) === */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  --space-10: 64px;
+  --space-12: 96px;
+
+  /* === Radius scale === */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+
+  /* === Motion tokens === */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 280ms;
+  --duration-slow: 480ms;
+
+  /* === Neutrals - Foundation === */
   --background: #F8FAFC; /* Slate 50 - Light Clean Background */
   --foreground: #0F172A; /* Slate 900 - Carbon Fiber/Asphalt */
   --card: oklch(1 0 0);
@@ -60,89 +89,127 @@
   --popover: oklch(1 0 0);
   --popover-foreground: #0F172A;
 
-  /* Identity Colors - Motor Heritage */
+  /* === Identity Colors - Motor Heritage === */
   --primary: #0A3A2F; /* Nürburgring Green */
   --primary-foreground: oklch(0.985 0 0);
   --sidebar-primary: #0A3A2F;
   --sidebar-primary-foreground: oklch(0.985 0 0);
 
-  /* Action Colors */
-  --accent: #FF8000; /* McLaren Papaya Orange */
-  --accent-foreground: oklch(0.985 0 0);
+  /* === Action Colors === */
+  --accent: #FF8000; /* McLaren Papaya Spark */
+  --accent-foreground: #FFFFFF;
   --destructive: #CC0000; /* Ferrari Rosso Corsa */
 
-  /* Supporting Colors */
+  /* === Semantic States (NEW) === */
+  --success: #16A34A;       /* ITV OK / semáforo verde */
+  --success-foreground: #FFFFFF;
+  --warning: #F59E0B;       /* próximo service */
+  --warning-foreground: #1F2937;
+  --info: #318CE7;          /* info general */
+  --info-foreground: #FFFFFF;
+  --danger: #CC0000;        /* alias destructivo */
+  --danger-foreground: #FFFFFF;
+
+  /* === Heritage Palette - FIA Racing Colours (NEW) === */
+  --heritage-blue:   #318CE7; /* Bleu de France · Alpine F1 */
+  --heritage-silver: #B8B9BC; /* German Silver · Mercedes */
+  --heritage-yellow: #FAE042; /* Belgium Yellow · Spa */
+  --heritage-red:    #DC1F26; /* Japan Hi-Vis · Rising Sun */
+  --heritage-navy:   #002654; /* Le Mans Blue · Ford GT40 */
+  --heritage-bronze: #B08D57; /* Vintage Bronze · patina */
+  --heritage-copper: #B87333; /* Pure copper · patina aged */
+
+  /* === Supporting Colors === */
   --secondary: #CBD5E1; /* McLaren Silver 300 */
   --secondary-foreground: #0F172A;
-  --muted: #CBD5E1;
+  --muted: #F1F5F9;       /* Slate 100 · más suave */
   --muted-foreground: #64748B; /* Slate 500 */
 
-  /* Structure */
-  --border: #CBD5E1;
-  --input: #CBD5E1;
+  /* === Structure === */
+  --border: #E2E8F0;       /* Slate 200 · más suave */
+  --input: #E2E8F0;
   --ring: #0A3A2F;
 
-  /* Charts */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  /* === Charts (rebalanceados a heritage) === */
+  --chart-1: #0A3A2F; /* Nürburgring Green */
+  --chart-2: #318CE7; /* Bleu de France */
+  --chart-3: #FF8000; /* Papaya */
+  --chart-4: #B08D57; /* Bronze */
+  --chart-5: #DC1F26; /* Japan Red */
 
-  /* Sidebar */
+  /* === Sidebar === */
   --sidebar: #F8FAFC;
   --sidebar-foreground: #0F172A;
-  --sidebar-accent: #CBD5E1;
+  --sidebar-accent: #F1F5F9;
   --sidebar-accent-foreground: #0F172A;
-  --sidebar-border: #CBD5E1;
+  --sidebar-border: #E2E8F0;
   --sidebar-ring: #0A3A2F;
 }
 
 .dark {
-  /* Neutrals - Dark Mode */
+  /* === Neutrals - Dark Mode === */
   --background: #020617; /* Slate 950 - Carbon Fiber/Asphalt Dark */
   --foreground: #F8FAFC; /* Slate 50 */
-  --card: #1E293B; /* Slate 800 */
+  --card: #0F172A;       /* Slate 900 · un punto más oscuro que antes */
   --card-foreground: #F8FAFC;
-  --popover: #1E293B;
+  --popover: #0F172A;
   --popover-foreground: #F8FAFC;
 
-  /* Identity Colors */
-  --primary: #14532D; /* Nürburgring Green Light Variant */
-  --primary-foreground: #F8FAFC;
-  --sidebar-primary: #14532D;
-  --sidebar-primary-foreground: #F8FAFC;
+  /* === Identity Colors === */
+  --primary: #22C55E; /* Green brillante sobre fondo oscuro · accesible */
+  --primary-foreground: #020617;
+  --sidebar-primary: #22C55E;
+  --sidebar-primary-foreground: #020617;
 
-  /* Action Colors */
-  --accent: #FF8000; /* McLaren Papaya Orange */
-  --accent-foreground: #F8FAFC;
-  --destructive: #CC0000;
+  /* === Action Colors === */
+  --accent: #FF9233; /* Papaya un punto más cálido para dark */
+  --accent-foreground: #020617;
+  --destructive: #EF4444;
 
-  /* Supporting Colors */
-  --secondary: #0F172A;
+  /* === Semantic States === */
+  --success: #22C55E;
+  --success-foreground: #020617;
+  --warning: #FBBF24;
+  --warning-foreground: #020617;
+  --info: #60A5FA;
+  --info-foreground: #020617;
+  --danger: #EF4444;
+  --danger-foreground: #020617;
+
+  /* === Heritage Palette (dark) === */
+  --heritage-blue:   #60A5FA;
+  --heritage-silver: #D4D4D8;
+  --heritage-yellow: #FACC15;
+  --heritage-red:    #F87171;
+  --heritage-navy:   #3B82F6;
+  --heritage-bronze: #D4A574; /* más cálido sobre fondo oscuro */
+  --heritage-copper: #DA8A67;
+
+  /* === Supporting Colors === */
+  --secondary: #1E293B;
   --secondary-foreground: #CBD5E1;
-  --muted: #0F172A;
-  --muted-foreground: #CBD5E1;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
 
-  /* Structure */
-  --border: #334155; /* Slate 700 */
-  --input: #334155;
-  --ring: #14532D;
+  /* === Structure === */
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #22C55E;
 
-  /* Charts */
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  /* === Charts === */
+  --chart-1: #22C55E;
+  --chart-2: #60A5FA;
+  --chart-3: #FF9233;
+  --chart-4: #D4A574;
+  --chart-5: #F87171;
 
-  /* Sidebar */
+  /* === Sidebar === */
   --sidebar: #020617;
   --sidebar-foreground: #F8FAFC;
   --sidebar-accent: #0F172A;
   --sidebar-accent-foreground: #CBD5E1;
-  --sidebar-border: #0F172A;
-  --sidebar-ring: #14532D;
+  --sidebar-border: #1E293B;
+  --sidebar-ring: #22C55E;
 }
 
 @layer base {
@@ -152,6 +219,47 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-sans);
+  }
+  /* Default motorspace background for body */
+  body {
+    background-color: var(--background);
+  }
+  /* Custom Scrollbar - Space UI Style */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--muted-foreground), transparent 60%);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--muted-foreground), transparent 30%);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted-foreground), transparent 60%) transparent;
+
+  /* Eyebrow labels - micro uppercase */
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  /* Mono numerical data */
+  .data-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -196,21 +304,22 @@
   /* Glass Minimalista - UI Space Style */
   .glass-panel,
   .glass-surface {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Sin box-shadow: causa el "doble fondo" en la esquina con scroll */
   }
   .glass-card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   }
   .glass-item {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
   .dark .glass-panel,
   .dark .glass-surface {
@@ -288,6 +397,16 @@
     );
     background-size: 400% 400%;
     animation: gradientShift 20s ease infinite;
+  }
+
+  .bg-professional-glass {
+    background:
+      radial-gradient(at 0% 0%, oklch(0.60 0.15 160 / 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, oklch(0.50 0.10 200 / 0.10) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, oklch(0.60 0.15 160 / 0.10) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, oklch(0.40 0.10 180 / 0.10) 0px, transparent 50%),
+      oklch(0.98 0.01 200);
+    background-attachment: fixed;
   }
 
   /* Card Hover Effects */
@@ -409,21 +528,34 @@
   .glass-button {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s var(--ease-out-expo);
+    color: var(--foreground); /* Asegura visibilidad en light/dark */
+    font-weight: 600;
   }
   .glass-button:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    color: var(--foreground);
+  }
+  .dark .glass-button {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--foreground);
+  }
+  .dark .glass-button:hover {
+    background: rgba(255, 255, 255, 0.12);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   }
   .glass-kpi {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-radius: 28px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 3px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   }
   .glass-panel-adv {
@@ -482,6 +614,48 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* === ACCESSIBILITY: prefers-reduced-transparency === */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong,
+  .glass-strong-solid,
+  .glass-minimal,
+  .glass-panel,
+  .glass-surface,
+  .glass-card,
+  .glass-item,
+  .glass-liquid,
+  .glass-button,
+  .glass-kpi,
+  .glass-panel-adv,
+  .glass-item-adv,
+  .liquid-glass,
+  .liquid-glass-sm {
+    background: var(--card) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+  }
+}
+
+/* === ACCESSIBILITY: prefers-reduced-motion === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .badge-pulse,
+  .badge-shine,
+  .bg-animated-gradient,
+  .bg-animated-gradient-subtle {
+    animation: none !important;
   }
 }
 

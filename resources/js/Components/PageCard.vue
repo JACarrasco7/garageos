@@ -12,15 +12,17 @@ defineProps<{
 </script>
 
 <template>
-    <Card :class="['border-0 bg-transparent shadow-none', className]">
-        <CardHeader v-if="title">
-            <CardTitle>{{ title }}</CardTitle>
-        </CardHeader>
-        <CardContent>
-            <slot />
-        </CardContent>
-        <CardFooter v-if="$slots.footer">
-            <slot name="footer" />
-        </CardFooter>
-    </Card>
+    <div :class="['glass-panel rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-lg', className]">
+        <Card :class="['border-0 bg-transparent shadow-none']">
+            <CardHeader v-if="title" class="p-5 pb-3">
+                <CardTitle>{{ title }}</CardTitle>
+            </CardHeader>
+            <CardContent :class="title ? 'p-5 pt-0' : 'p-5'">
+                <slot />
+            </CardContent>
+            <CardFooter v-if="$slots.footer" class="p-5 pt-0">
+                <slot name="footer" />
+            </CardFooter>
+        </Card>
+    </div>
 </template>

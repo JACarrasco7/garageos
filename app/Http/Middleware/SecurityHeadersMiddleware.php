@@ -23,7 +23,7 @@ class SecurityHeadersMiddleware
                 ."style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://fonts.googleapis.com; "
                 ."img-src 'self' data: https: http:; "
                 ."font-src 'self' https: data:; "
-                ."connect-src 'self' http://localhost:5173 http://localhost:5174 http://127.0.0.1:5173 http://127.0.0.1:5174 http://app-garage.test:5173 http://app-garage.test:5174 ws://localhost:5173 ws://localhost:5174 ws://127.0.0.1:5173 ws://127.0.0.1:5174 wss: https://sentry.io; "
+                ."connect-src 'self' http://localhost:5173 http://localhost:5174 http://127.0.0.1:5173 http://127.0.0.1:5174 http://app-garage.test:5173 http://app-garage.test:5174 ws://localhost:5173 ws://localhost:5174 ws://127.0.0.1:5173 ws://127.0.0.1:5174 ws://app-garage.test:5173 ws://app-garage.test:5174 wss: https://sentry.io; "
                 ."frame-ancestors 'none';";
         } else {
             $csp = "default-src 'self'; "

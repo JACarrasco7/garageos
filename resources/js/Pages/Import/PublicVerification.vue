@@ -24,7 +24,7 @@ interface Verification {
 }
 
 defineProps<{
-  import: VehicleImport
+  importData: VehicleImport
   verification: Verification
 }>()
 
@@ -52,19 +52,19 @@ const statusColors = {
         <div class="grid grid-cols-2 gap-4">
           <div>
             <span class="text-sm text-muted-foreground">Marca</span>
-            <p class="font-semibold">{{ import.brand }}</p>
+            <p class="font-semibold">{{ importData.brand }}</p>
           </div>
           <div>
             <span class="text-sm text-muted-foreground">Modelo</span>
-            <p class="font-semibold">{{ import.model }}</p>
+            <p class="font-semibold">{{ importData.model }}</p>
           </div>
           <div>
             <span class="text-sm text-muted-foreground">Año</span>
-            <p class="font-semibold">{{ import.year }}</p>
+            <p class="font-semibold">{{ importData.year }}</p>
           </div>
           <div>
             <span class="text-sm text-muted-foreground">VIN</span>
-            <p class="font-mono text-sm">{{ import.vin }}</p>
+            <p class="font-mono text-sm">{{ importData.vin }}</p>
           </div>
         </div>
 

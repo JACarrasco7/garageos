@@ -89,8 +89,7 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
         <!-- Header / Logo -->
         <div
             :class="[
-                'flex shrink-0 items-center border-b h-16 backdrop-blur-xl shadow-sm transition-all duration-300',
-                'border-border bg-linear-to-r from-primary/15 to-accent/8',
+                'flex shrink-0 items-center h-16 transition-all duration-300',
                 collapsed ? 'justify-center px-2' : 'gap-3 px-4',
             ]"
         >
@@ -141,8 +140,8 @@ const user = computed(() => (page.props.auth as { user?: { name?: string; email?
                                 'group relative flex items-center rounded-lg text-sm font-medium transition-all duration-200 interactive-item',
                                 collapsed ? 'h-10 w-10 justify-center mx-auto' : 'h-10 gap-3 px-3',
                                 isActive(item.route)
-                                    ? 'bg-primary/20 text-primary shadow-[0_0_15px_-3px_rgba(10,58,47,0.3)]'
-                                    : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground hover:translate-x-1',
+                                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
+                                    : 'text-muted-foreground hover:bg-white/10 hover:text-foreground hover:translate-x-1',
                             )"
                             :title="collapsed ? item.title : undefined"
                         >

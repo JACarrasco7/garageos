@@ -145,4 +145,7 @@ const stats = [
             </TableBody>
           </Table>
         </CardContent>
-    </PageCard>
+      </PageCard>
+    </div>
+  </WebLayout>
+</template>

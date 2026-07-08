@@ -5,7 +5,7 @@ defineSlots<{
 </script>
 
 <template>
-    <main class="flex-1 min-h-0 overflow-auto p-6 md:p-8 lg:p-10">
-        <slot />
+    <main class="glass-panel rounded-2xl p-6 md:p-8 border-white/20 shadow-sm h-full overflow-y-auto">
+            <slot />
     </main>
 </template>

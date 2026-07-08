@@ -211,23 +211,21 @@ const goBack = () => window.history.back()
               <div v-else class="w-full h-full flex items-center justify-center">
                 <span class="text-muted-foreground">Sin foto</span>
               </div>
-              <Badge
-                :class="getStatusColor(listing.status)"
-                class="absolute top-2 right-2"
-          >
-            {{ getStatusText(listing.status) }}
-          </Badge>
-        </div>
+              <Badge :class="getStatusColor(listing.status)" class="absolute top-2 right-2">
+                {{ getStatusText(listing.status) }}
+              </Badge>
+            </div>
+          </CardContent>
 
-        <!-- Content -->
-        <CardHeader>
+          <!-- Content -->
+          <CardHeader>
           <CardTitle class="line-clamp-1">{{ listing.title }}</CardTitle>
           <CardDescription>
             {{ listing.vehicle.brand }} {{ listing.vehicle.model }} {{ listing.vehicle.year }}
           </CardDescription>
         </CardHeader>
 
-        <CardContent class="space-y-4">
+        <div class="space-y-4">
           <!-- Price -->
           <div>
             <p class="text-2xl font-bold">
@@ -274,7 +272,7 @@ const goBack = () => window.history.back()
               <Trash2 class="h-4 w-4" />
             </Button>
           </div>
-        </CardContent>
+        </div>
       </PageCard>
     </div>
 

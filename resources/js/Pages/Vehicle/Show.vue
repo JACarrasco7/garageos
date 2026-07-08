@@ -104,8 +104,6 @@ const ecoLabelColors: Record<string, string> = {
         </template>
 
         <CardContent>
-        </CardHeader>
-        <CardContent>
           <dl class="grid grid-cols-2 gap-4 text-sm">
             <div>
               <dt class="text-muted-foreground">Matrícula</dt>

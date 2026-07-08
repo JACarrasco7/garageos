@@ -19,6 +19,11 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        rollupOptions: {
+            input: 'resources/js/app.ts',
+        },
+    },
     server: {
         host: '0.0.0.0',
         port: 5173,

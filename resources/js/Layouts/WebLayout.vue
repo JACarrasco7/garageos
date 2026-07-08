@@ -25,19 +25,19 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex h-dvh w-full overflow-hidden bg-background relative transition-colors duration-500">
+    <div class="flex h-dvh w-full overflow-hidden overflow-x-hidden bg-professional-glass relative transition-colors duration-500 p-2 gap-2">
         <!-- Background subtle pattern -->
         <div class="absolute inset-0 opacity-30 pointer-events-none">
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(var(--primary),0.03)_0%,transparent_50%)]" />
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(var(--accent),0.02)_0%,transparent_40%)]" />
         </div>
 
-        <!-- Sidebar (desktop) - flotante -->
+        <!-- Sidebar (desktop) -->
         <aside
             :class="[
-                'hidden md:flex fixed top-3 left-3 bottom-3 z-30 shrink-0 rounded-2xl border backdrop-blur-2xl transition-all duration-500 ease-in-out',
+                'hidden md:flex h-full z-30 shrink-0 rounded-2xl border backdrop-blur-2xl transition-all duration-500 ease-in-out',
                 sidebarOpen ? 'w-64' : 'w-16',
-                'bg-card/50 border-white/15 shadow-xl',
+                ' border-white/20 shadow-xl backdrop-blur-3xl',
             ]"
         >
             <AppSidebar :collapsed="!sidebarOpen" />
@@ -52,14 +52,14 @@ onMounted(() => {
         >
             <aside
                 v-if="mobileOpen"
-                class="fixed inset-y-0 left-0 top-3 bottom-3 z-50 flex h-auto w-72 flex-col rounded-2xl border backdrop-blur-2xl md:hidden bg-card/50 border-white/15 shadow-xl"
+                class="fixed top-2 bottom-2 left-2 z-50 flex h-auto w-72 flex-col rounded-2xl border backdrop-blur-3xl md:hidden bg-transparent border-white/20 shadow-xl"
             >
                 <AppSidebar :collapsed="false" @navigate="mobileOpen = false" />
             </aside>
         </transition>
 
-        <!-- Main content -->
-        <div :class="['flex min-w-0 flex-1 flex-col gap-3 p-3 transition-all duration-500', sidebarOpen ? 'md:pl-72' : 'md:pl-20']">
+        <!-- right column -->
+        <div class="flex h-full min-w-0 flex-1 flex-col overflow-hidden transition-all duration-500">
             <WebHeader>
                 <template #default>
                     <slot name="header" />
